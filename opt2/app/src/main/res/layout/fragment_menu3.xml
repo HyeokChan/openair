@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/ComunityCategoryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#C6DCF0"
+        android:text="전체"
+        android:textColor="#FFF" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/recruitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#D4E5F4"
+            android:text="recruit"
+            android:textColor="@color/ic_launcher_background" />
+
+        <Button
+            android:id="@+id/matchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#D4E5F4"
+            android:text="match"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+
+    <devs.mulham.horizontalcalendar.HorizontalCalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EDF3FA"
+        app:textColorSelected="@color/ic_launcher_background"
+        app:selectorColor="@color/ic_launcher_background"/>
+
+    <FrameLayout
+        android:id="@+id/child_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFF">
+
+    </FrameLayout>
+
+</LinearLayout>
