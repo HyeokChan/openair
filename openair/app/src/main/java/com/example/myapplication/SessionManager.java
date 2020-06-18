@@ -71,6 +71,7 @@ public class SessionManager {
         return mEmail;
     }
 
+
     protected String mEmailToLogin = null;
 
 
@@ -98,6 +99,7 @@ public class SessionManager {
 
         mID = pref.getString(KEY_ID, "");
         mEmail = pref.getString(KEY_EMAIL, "");
+
         if (mID.length() > 0 && mEmail.length() > 0) {
             mIsLogin = true;
         }
@@ -259,7 +261,7 @@ public class SessionManager {
     }
 
     //---------------------------------------------------------------------------
-    public void Signup(String email, String pass, String pass2, String nick, Activity activity)  {
+    public void Signup(String email, String pass, String pass2, String nick, String phone, Activity activity)  {
         String url = SERVER_ADDR + "users/signup.php";
 
         Map<String, String> params = new HashMap<String, String>();
@@ -268,6 +270,7 @@ public class SessionManager {
         params.put("pass2", pass2);
         params.put("nick", nick);
         params.put("token", FirebaseInstanceId.getInstance().getToken());
+        params.put("phone", phone);
         JSONObject jsonObj = new JSONObject(params);
 
         mEmailToLogin = email;

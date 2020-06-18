@@ -79,7 +79,8 @@
                 android:id="@+id/innumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="054-0000-0000" />
+                android:text="054-0000-0000"
+                android:textColor="#000088" />
 
             <TextView
                 android:id="@+id/comment4"

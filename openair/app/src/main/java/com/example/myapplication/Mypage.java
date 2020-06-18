@@ -1,11 +1,14 @@
 package com.example.myapplication;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +28,29 @@ import org.json.JSONObject;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.security.PrivateKey;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
+class Nick_Phone{
+    private String Nick;
+    private String Phone;
+    public Nick_Phone(){}
+    public Nick_Phone(String Nick, String Phone)
+    {
+        this.Nick = Nick;
+        this.Phone = Phone;
+    }
+    public String getNick(){
+        return Nick;
+    }
+    public String getPhone(){
+        return Phone;
+    }
+}
 
 public class Mypage extends AppCompatActivity {
 
@@ -46,8 +67,8 @@ public class Mypage extends AppCompatActivity {
     JSONObject mResult2 = null;
     ArrayList<my_write_recruitInfo> MyWriteRecInfoArrayList = new ArrayList<my_write_recruitInfo>();
     protected my_write_recAdapter mAdapter2 = new my_write_recAdapter(MyWriteRecInfoArrayList);
-    ArrayList<Integer> applicantId = new ArrayList<>();
 
+    ArrayList<Nick_Phone> applicantId = new ArrayList<Nick_Phone>();
     TextView[] textViews;
 
     //-----------------------------------------
@@ -325,8 +346,6 @@ public class Mypage extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(Mypage.this, recno.getText(),
-                        Toast.LENGTH_LONG).show();
                 requestCheckRecruit2(recno.getText().toString());
 
             }
@@ -784,48 +803,57 @@ public class Mypage extends AppCompatActivity {
     }
 
     //-----------------------------------------------------------누가 내글에 참여했는지 recruit
-    public void check_drawList2(String recno) {
+    public void check_drawList2() {
         try {
-
             JSONArray items = mResult.getJSONArray("list");
             applicantId.clear();
             for (int i = 0; i < items.length(); i++) {
                 JSONObject info = items.getJSONObject(i);
-                int community_no = info.getInt("community_no");
-                int applicant_id = info.getInt("applicant_id");
-                if(Integer.parseInt(recno) == community_no)
-                {
-                    applicantId.add(applicant_id);
-                }
+                String nick = info.getString("nick");
+                String phone = info.getString("phone");
+                Log.i("dbdb123",nick+":"+phone);
 
-            }
-            for (int i=0; i<applicantId.size(); i++)
-            {
-                Log.i("tqtq", applicantId.get(i)+"");
+                applicantId.add(new Nick_Phone(nick,phone));
+
+
             }
 
             if (applicantId.size()>=1)
             {
                 textViews = new TextView[applicantId.size()];
 
+
                 AlertDialog.Builder joinedDialog = new AlertDialog.Builder(Mypage.this);
                 joinedDialog.setTitle("등록된 유저의 프라이머리 키");
                 LinearLayout DialogLayout = new LinearLayout(Mypage.this);
-                DialogLayout.setOrientation(LinearLayout.VERTICAL);
+                DialogLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-                    /*final TextView test = new TextView(Mypage.this);
-                    test.setText("test");
-                    DialogLayout.addView(test);*/
+                LinearLayout NickLayout = new LinearLayout(Mypage.this);
+                NickLayout.setOrientation(LinearLayout.VERTICAL);
+
+                LinearLayout PhoneLayout = new LinearLayout(Mypage.this);
+                PhoneLayout.setOrientation(LinearLayout.VERTICAL);
+
+
+                DialogLayout.addView(NickLayout);
+                DialogLayout.addView(PhoneLayout);
 
                 for (int i=0; i<applicantId.size();i++)
                 {
                     textViews[i] = new TextView(Mypage.this);
-                    textViews[i].setText(applicantId.get(i)+"");
-                    DialogLayout.addView(textViews[i]);
+                    textViews[i].setText(applicantId.get(i).getNick());
+                    NickLayout.addView(textViews[i]);
+                }
+                for (int i=0; i<applicantId.size();i++)
+                {
+                    textViews[i] = new TextView(Mypage.this);
+                    textViews[i].setText(applicantId.get(i).getPhone());
+                    PhoneLayout.addView(textViews[i]);
                 }
                 joinedDialog.setView(DialogLayout);
                 joinedDialog.show();
                 applicantId.clear();
+
             }
 
         } catch (JSONException | NullPointerException e) {
@@ -833,17 +861,16 @@ public class Mypage extends AppCompatActivity {
         }
     }
 
-
     private void requestCheckRecruit2(final String recno) {
 
-        String url = SessionManager.getURL() + "recruit/select_applicant.php";
+        String url = SessionManager.getURL() + "users/mypage_joined_recruit.php?recno=" + recno;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         mResult = response;
-                        check_drawList2(recno);
+                        check_drawList2();
                     }
                 },
                 new Response.ErrorListener() {
@@ -866,3 +893,4 @@ public class Mypage extends AppCompatActivity {
     }
 
 }
+

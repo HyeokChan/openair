@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +17,6 @@ public class Reserve extends AppCompatActivity {
 
     final Context mContext = this;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +26,7 @@ public class Reserve extends AppCompatActivity {
 
         String image = intent.getExtras().getString("image");
         String linfo = intent.getExtras().getString("linfo");
-        String number = intent.getExtras().getString("number");
+        final String number = intent.getExtras().getString("number");
         String location = intent.getExtras().getString("location");
         String address = intent.getExtras().getString("address");
 
@@ -38,6 +38,16 @@ public class Reserve extends AppCompatActivity {
 
         TextView tvnumber = (TextView)findViewById(R.id.innumber);
         tvnumber.setText(number);
+
+        // 업체번호 누르면 전화열기
+        tvnumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent phoneDial = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+number));
+                startActivity(phoneDial);
+            }
+        });
+
 
         TextView tvlocation = (TextView)findViewById(R.id.inlocation);
         tvlocation.setText(location);

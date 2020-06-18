@@ -32,7 +32,6 @@ public class ApiExplorer {
     {
         double x;
         double y;
-
     }
 
     ArrayList<String> getWeather(){
@@ -54,26 +53,27 @@ public class ApiExplorer {
 
         ArrayList<String> list = new ArrayList<>();
 
-        long now = System.currentTimeMillis();
+        String today = null;
 
-        Date date = new Date(now);
+        Date date = new Date();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-//        SimpleDateFormat sdf1 = new SimpleDateFormat("hhmm");
-        SimpleDateFormat sdf1 = new SimpleDateFormat("hh");
+        // 포맷변경 ( 년월일 시분초)
+        SimpleDateFormat sdformat = new SimpleDateFormat("yyyyMMdd HHmm");
 
+        // Java 시간 더하기
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-//        cal.add(Calendar.HOUR, -1);
 
-        String getDate = sdf.format(cal.getTime());
-
+        // 1시간 전
         if(cal.get(Calendar.MINUTE) < 45)
-            cal.add(Calendar.HOUR, -1);
-        String getTime = sdf1.format(cal.getTime()) + "30";
+            cal.add(Calendar.MINUTE, -46);
 
 
-//        String getTime = sdf1.format(cal.getTime());
+        today = sdformat.format(cal.getTime());
+        String[] token = today.split(" ");
+        String getDate = token[0];
+        String getTime = token[1];
+
 
         Log.i("datesetapi", " sdf : " + getDate);
         Log.i("datesetapi", " sdf1 : " + getTime);
@@ -93,8 +93,9 @@ public class ApiExplorer {
             urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("150", "UTF-8")); /*한 페이지 결과 수*/
             urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
             urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*xml(기본값), json*/
-            URL url = new URL(urlBuilder.toString());
 
+            URL url = new URL(urlBuilder.toString());
+            Log.i("dds",urlBuilder.toString());
 
             XmlPullParserFactory parserCreator = XmlPullParserFactory.newInstance();
             XmlPullParser parser = parserCreator.newPullParser();
@@ -127,6 +128,7 @@ public class ApiExplorer {
                             valuecheck = false;
                         }
                         break;
+
                     case XmlPullParser.END_TAG:
                         if (parser.getName().equals("item")) {
                             switch(category) {

@@ -38,6 +38,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 
 import com.android.volley.Request;
@@ -134,7 +137,7 @@ public class Menu1Fragment extends Fragment {
     ///////////미세먼지 디비에서 가져올 데이터를 위한 변수 ///////////
     RequestQueue queue;
     JSONObject dustmResult = null;
-    ArrayList<realtimeInfo> curInfoList = new ArrayList<>();
+    ArrayList<realtimeInfo> curInfoList = new ArrayList<>();  //관측소 정보 리스트
 
     class rtweatherInfo{
         String rain; // 강수상태
@@ -143,7 +146,7 @@ public class Menu1Fragment extends Fragment {
         String hum; //습도
     }
 
-    class realtimeInfo{
+    class realtimeInfo{ //관측소 정보
         String address;
         String pm10level;
         String pm25level;
@@ -180,27 +183,25 @@ public class Menu1Fragment extends Fragment {
         appear = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
 
         //각 영역 뷰 가져옴
-        swipe = rootView.findViewById(R.id.swipe);
-        address = rootView.findViewById(R.id.location);
-        sbtn = rootView.findViewById(R.id.sbtn);
-        wImage = rootView.findViewById(R.id.w_icon);
-        wInfo1 = rootView.findViewById(R.id.weather1);
-        wInfo2 = rootView.findViewById(R.id.weather2);
+        swipe = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe);
+        address = (TextView) rootView.findViewById(R.id.location);
+        sbtn = (Button) rootView.findViewById(R.id.sbtn);
+        wImage = (ImageView) rootView.findViewById(R.id.w_icon);
+        wInfo1 = (TextView) rootView.findViewById(R.id.weather1);
+        wInfo2 = (TextView) rootView.findViewById(R.id.weather2);
 
         /*locationManager를 이용한 현재 위경도 받아오기*/
         gpslocation = new LocationTracker(getActivity());
         latitude = gpslocation.getLatitude();
         longitude = gpslocation.getLongitude();
-        Log.i("LocationTracker(위경도) 확인","OK");
+        Log.i("확인", "gpstracker 확인");;
 
         /*지오코더를 이용하여 위경도 -> 주소 변환 */
         String addr = getAddress(getContext(), latitude, longitude);
+        Log.i("ghkrdlsgkrl",addr);
         address.setText(addr);
         curMyAddress = addr;
-        Log.i("getAddress(위경도->주소) 확인","OK");
-
-        requestPlace();
-        Log.i("확인", "requestPlace 확인");
+        Log.i("확인", "지오코더 확인");
 
 
         // 받아온 주소를 공백단위로 자른다.
@@ -219,7 +220,7 @@ public class Menu1Fragment extends Fragment {
             wInfo1.setText("현재 날씨를 확인할 수 없습니다.");
         }
         else if(addr.equals("인터넷 상태 OFF")){ //access fail
-            wInfo1.setText("인터넷 상태를 확인해주세요.");
+            wInfo1.setText("인터넷 상태를 확인해주세요.3");
         }
         /**위경도를 받아오면 현재 날씨 받아옴**/
         else{
@@ -227,7 +228,7 @@ public class Menu1Fragment extends Fragment {
             ArrayList<String> list =  weatherapi.getWeather();
             Log.i("ApiExplorer(날씨 받아오기) 확인","OK");
             Log.i("날씨 데이터 개수 확인",Integer.toString(list.size()));
-
+            Log.i("리스트개수",list.size()+"");
             if(list.size() == 0 ){  //인터넷 연결이 안되어있으면 null 값이 return 됨
                 wInfo1.setText("인터넷 상태를 확인해주세요.");
                 Log.i("인터넷 상태 확인","FAIL");
@@ -332,6 +333,8 @@ public class Menu1Fragment extends Fragment {
         return rootView;
     }
 
+
+    ///////////
     public class TomorrowAdapter extends RecyclerView.Adapter<TomorrowAdapter.ViewHolder> {
 
         ArrayList<finedustInfo> finedustInfoArrayList = null;
@@ -346,11 +349,11 @@ public class Menu1Fragment extends Fragment {
             public ViewHolder(View view){
                 super(view);
                 view.setOnClickListener(this);
-                tvTime = view.findViewById(R.id.ttime);
+                tvTime = (TextView) view.findViewById(R.id.ttime);
                 ivImage1 = (NetworkImageView)view.findViewById(R.id.l10_timage);
-                tvStatus1 = view.findViewById(R.id.l10_status);
+                tvStatus1 = (TextView) view.findViewById(R.id.l10_status);
                 ivImage2 = (NetworkImageView)view.findViewById(R.id.l25_timage);
-                tvStatus2 = view.findViewById(R.id.l25_status);
+                tvStatus2 = (TextView) view.findViewById(R.id.l25_status);
             }
 
             @Override
@@ -379,7 +382,6 @@ public class Menu1Fragment extends Fragment {
             holder.tvStatus1.setText(finedustInfoArrayList.get(position).pm10);
             holder.ivImage2.setImageUrl(SessionManager.getURL() + "weatherImage/" + finedustInfoArrayList.get(position).pm25_image, mImageLoader);
             holder.tvStatus2.setText(finedustInfoArrayList.get(position).pm25);
-
         }
 
         @Override
@@ -388,6 +390,7 @@ public class Menu1Fragment extends Fragment {
         }
     }
 
+    // city 경상북도
     private void requestTomorrowfd(final String city) {
         String url = SessionManager.getURL() + "finedust/select_finedust.php?city=" + city;
         Log.i("urltest", url + "     " + city);
@@ -403,21 +406,28 @@ public class Menu1Fragment extends Fragment {
                             Log.i("jebal", items.toString());
                             for (int i = 0; i < items.length(); i++) {
                                 JSONObject info = items.getJSONObject(i);
+                                //
+
+
                                 String pm10_image = "verybad.png";
                                 String pm25_image = "verybad.png";
+                                //
                                 String time = info.getString("TIME");
 
                                 String pm10 = info.getString("PM10level");
+
                                 if(pm10.equals("좋음")) pm10_image = "good.png";
                                 else if(pm10.equals("보통")) pm10_image = "nomal.png";
                                 else if(pm10.equals("한때 나쁨")) pm10_image = "somebad.png";
                                 else if(pm10.equals("나쁨")) pm10_image = "bad.png";
+                                else pm10 = "매우 나쁨";
 
                                 String pm25 = info.getString("PM25level");
                                 if(pm25.equals("좋음")) pm25_image = "good.png";
                                 else if(pm25.equals("보통")) pm25_image = "nomal.png";
                                 else if(pm25.equals("한때 나쁨")) pm25_image = "somebad.png";
                                 else if(pm25.equals("나쁨")) pm25_image = "bad.png";
+                                else pm25 = "매우 나쁨";
                                 Log.i("jebal", time + "   " + pm10 + "    " + pm25 + "    " + pm10_image + pm25_image);
 
                                 finedustInfoArrayList.add(new finedustInfo(time, pm10_image, pm10, pm25_image, pm25));
@@ -532,11 +542,11 @@ public class Menu1Fragment extends Fragment {
             public ViewHolder(View view){
                 super(view);
                 view.setOnClickListener(this);
-                date = view.findViewById(R.id.date);
-                time = view.findViewById(R.id.time);
-                PM10dust = view.findViewById(R.id.PM10dust);
+                date = (TextView) view.findViewById(R.id.date);
+                time = (TextView) view.findViewById(R.id.time);
+                PM10dust = (TextView) view.findViewById(R.id.PM10dust);
                 ivImage = (NetworkImageView)view.findViewById(R.id.WeatherImage);
-                PM25dust = view.findViewById(R.id.PM25dust);
+                PM25dust = (TextView) view.findViewById(R.id.PM25dust);
                 ivImage2 = (NetworkImageView)view.findViewById(R.id.WeatherImage2);
 
             }
@@ -687,7 +697,7 @@ public class Menu1Fragment extends Fragment {
                 weatherapi = new ApiExplorer(latitude, longitude);
                 ArrayList<String> list = weatherapi.getWeather();
                 if(list.size() == 0 ){  //인터넷 연결이 안되어있으면 null 값이 return 됨
-                    wInfo1.setText("인터넷 상태를 확인해주세요.");
+                    wInfo1.setText("인터넷 상태를 확인해주세요.1");
                     wInfo2.setText("");
                     wImage.setImageResource(0);
                     Log.i("인터넷 상태 확인","FAIL");
@@ -725,11 +735,12 @@ public class Menu1Fragment extends Fragment {
                 //한좌표에 대해 두개이상의 이름이 존재할수있기에 주소배열을 리턴받기 위해 최대갯수 설정
                 address = geocoder.getFromLocation(lat, lng, 1);
 
-                if (address != null && address.size() > 0) {
+                if (address != null && address.size() > 0) { //이 조건문 아니면 에러남
                     // 주소 받아오기
                     String currentLocationAddress = address.get(0).getAddressLine(0).toString();
                     currentLocationAddress = currentLocationAddress.replaceFirst("대한민국 ", "");
                     nowAddress = currentLocationAddress;
+                    Log.i("mpowew",nowAddress);
                 }
             }
         } catch (IOException e) {
@@ -768,11 +779,19 @@ public class Menu1Fragment extends Fragment {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
     //현재 인터넷서비스 상태 확인
-    public boolean checkInternetServicesStatus() {
+    /*public boolean checkInternetServicesStatus() {
         ConnectivityManager connectivityManager = (ConnectivityManager)getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo state = connectivityManager.getActiveNetworkInfo();
 
         if(state != null && state.isConnected() && state.getType() == ConnectivityManager.TYPE_WIFI)
+            return true;
+        else return false;
+    }*/
+    public boolean checkInternetServicesStatus() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo state = connectivityManager.getActiveNetworkInfo();
+
+        if(state != null && state.isConnected())
             return true;
         else return false;
     }
@@ -950,6 +969,7 @@ public class Menu1Fragment extends Fragment {
                     break;
             }
         }
+        Log.i("확인", "setWeather");
     }
 
     private static double distance(double lat1, double lon1, double lat2, double lon2) {
@@ -1005,7 +1025,7 @@ public class Menu1Fragment extends Fragment {
                     case "3": pm25level = "나쁨"; break;
                     case "4": pm25level = "매우나쁨"; break;
                 }
-                curInfoList.add(new realtimeInfo(address, pm10level, pm25level));
+                curInfoList.add(new realtimeInfo(address, pm10level, pm25level));  //이 클래스에 장소, 미세먼지, 초미세먼지 받아옴
             }
 
         } catch (JSONException | NullPointerException e) {
@@ -1016,7 +1036,7 @@ public class Menu1Fragment extends Fragment {
         min_dis = 1000000000;
         curMyLatLng = getPoint(getContext(), curMyAddress);
 
-        for(int i = 0; i<curInfoList.size(); i++){
+        for(int i = 0; i<curInfoList.size(); i++){ //가장 가까운 관측소
             nearList = getPoint(getContext(), curInfoList.get(i).address);
             Log.i("위경도", Double.toString(nearList.getLatitude()) + "     "  + Double.toString(nearList.getLongitude()));
             distance = distance(curMyLatLng.getLatitude(), curMyLatLng.getLongitude(), nearList.getLatitude(), nearList.getLongitude());
@@ -1025,7 +1045,7 @@ public class Menu1Fragment extends Fragment {
             if(min_dis>abs(distance))
             {
                 min_dis = distance;
-                destination = curInfoList.get(i);
+                destination = curInfoList.get(i); //최종 가장 가까운 관측소의 장소, 미세먼지, 초미세먼지 변수
             }
         }
 
@@ -1036,68 +1056,120 @@ public class Menu1Fragment extends Fragment {
         wInfo1.setText(leftstat+"\n"+ "미세먼지 : " + destination.pm10level);
         //초미세먼지
         wInfo2.setText(rightstat+"\n"+ "초미세먼지 : "+ destination.pm25level);
-
+        Log.i("확인", leftstat.toString());
     }
 
-    public void requestPlace() {
+    public void requestPlace(){
         Log.i("servertest0" , "시작");
         queue = Volley.newRequestQueue(getContext());
         //String url = getIP(); 나중에 만들어쓰기   + token[1] + "%";
-        //String url = "http:/13.124.2.247/select_realtime.php?ADDR=%";
+        String url = "http://rnjsgur12.cafe24.com/select_realtime.php?addr=";
+        //String url = "http://rnjsgur12.cafe24.com/select_realtime.php?ADDR=%경북 구미시%";
         Log.i("servertest0" , "test0");
-        String url = "http://rnjsgur12.cafe24.com/select_realtime.php?ADDR=%경북 구미시%";   //얘 수정
 
         Log.i("servertest0" , curMyAddress);
 
-
-        String[] token = curMyAddress.split(" ");
-        Log.i("servertest0" , "test2");
-
-        if(token[0].length()>=5 || token[0].length() == 3)      token[0] = token[0].substring(0, 2);
-        else if(token[0].length() == 4)  token[0] = token[0].substring(0, 1) + token[0].substring(2, 3);
-
         Log.i("servertest0" , "test3");
-        switch(token[0]){
-            case "인천" :
-                if(token[1].equals("옹진군")) token[1] = "중구";
+        String[] token = curMyAddress.split(" ");
+        switch (token[0]) {
+            case "서울특별시":
+                token[0] = "서울";
                 url = url + token[0] + " " + token[1] + "%";
                 break;
-
-            case "경남" :
-                if(token[1].equals("창녕군") || token[1].equals("의령군")) token[1] = "함안군";
-                else if(token[1].equals("합천군")) token[1] = "거창군";
+            case "인천광역시":
+                token[0] = "인천";
+                if (token[1].equals("옹진군")) token[1] = "중구";
+                url = url + token[0] + " " + token[1] + "%";
+                break;
+            case "경기도":
+                token[0] = "경기";
+                url = url + token[0] + " " + token[1] + "%";
+                break;
+            case "대구광역시":
+                token[0] = "대구";
+                url = url + token[0] + " " + token[1] + "%";
+                break;
+            case "제주특별자치도":
+                token[0] = "제주";
+                url = url + token[0] + " " + token[1] + "%";
+                break;
+            case "부산광역시":
+                token[0] = "부산";
+                url = url + token[0] + " " + token[1] + "%";
+                ;
+                break;
+            case "대전광역시":
+                token[0] = "대전";
+                url = url + token[0] + " " + token[1] + "%";
+                break;
+            case "광주광역시":
+                token[0] = "광주";
+                url = url + token[0] + " " + token[1] + "%";
+                break;
+            case "세종특별자치시":
+                token[0] = "세종";
+                url = url + token[0] + "%";
+                break;
+            case "울산광역시":
+                token[0] = "울산";
+                url = url + token[0] + " " + token[1] + "%";
+                ;
+                break;
+            case "경상남도":
+                token[0] = "경남";
+                if (token[1].equals("창녕군") || token[1].equals("의령군")) token[1] = "함안군";
+                else if (token[1].equals("합천군")) token[1] = "거창군";
                 else if (token[1].equals("산청군")) token[1] = "함양군";
                 url = url + token[0] + " " + token[1] + "%";
                 break;
-
-            case "경북" :
-                if(token[1].equals("영덕군") || token[1].equals("영양군") || token[1].equals("청송군")) token[1] = "안동시";
-                else if(token[1].equals("울릉군")) token[1] = "울진군";
-                else if(token[1].equals("성주군")) token[1] = "칠곡군";
-                else if(token[1].equals("고령군")) token[1] = "달성군";
-                else if(token[1].equals("청도군")) token[1] = "경산군";
-                else if(token[1].equals("군위군")) token[1] = "구미시";
-                else if(token[1].equals("의성군")) token[1] = "상주시";
-                else if(token[1].equals("예천군") || token[1].equals("문경시")) token[1] = "영주시";
+            case "경상북도":
+                token[0] = "경북";
+                ;
+                if (token[1].equals("영덕군") || token[1].equals("영양군") || token[1].equals("청송군"))
+                    token[1] = "안동시";
+                else if (token[1].equals("울릉군")) token[1] = "울진군";
+                else if (token[1].equals("성주군")) token[1] = "칠곡군";
+                else if (token[1].equals("고령군")) token[1] = "달성군";
+                else if (token[1].equals("청도군")) token[1] = "경산군";
+                else if (token[1].equals("군위군")) token[1] = "구미시";
+                else if (token[1].equals("의성군")) token[1] = "상주시";
+                else if (token[1].equals("예천군") || token[1].equals("문경시")) token[1] = "영주시";
+                url = url + token[0] + " " + token[1] + "%";
+                break; //예천, 문경시
+            case "강원도":
+                token[0] = "강원";
                 url = url + token[0] + " " + token[1] + "%";
                 break;
-
-            case "전남" :
-                if(token[1].equals("곡성군") || token[1].equals("구례군") ) token[1] = "담양군";
+            case "충청북도":
+                token[0] = "충북";
+                url = url + token[0] + " " + token[1] + "%";
                 break;
-
-            default: url = url + token[0] + " " + token[1] + "%";
-      }
+            case "충청남도":
+                token[0] = "충남";
+                url = url + token[0] + " " + token[1] + "%";
+                break;
+            case "전라북도":
+                token[0] = "전북";
+                url = url + token[0] + " " + token[1] + "%";
+                break;
+            case "전라남도":
+                token[0] = "전남";
+                if (token[1].equals("곡성군") || token[1].equals("구례군")) token[1] = "담양군";
+                url = url + token[0] + " " + token[1] + "%";
+                break;
+        }
 
         Log.i("servertest0" , "test4");
-        Log.i("확인", url);
+        Log.i("url확인", url);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         dustmResult = response;
+
                         drawList();
+                        Log.i("확인", "drawList");
                         Log.i("servertest1" , "전송완료");
                     }
                 },

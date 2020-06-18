@@ -3,6 +3,7 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,9 @@ public class SignupActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private EditText mPasswordView2;
     private EditText mNicknameView;
+    //----
+    private  EditText mPhoneView;
+    //----
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +33,17 @@ public class SignupActivity extends AppCompatActivity {
         mPasswordView  = (EditText) findViewById(R.id.password);
         mPasswordView2 = (EditText) findViewById(R.id.password2);
         mNicknameView  = (EditText) findViewById(R.id.nickname);
+        //----
+        mPhoneView = (EditText) findViewById(R.id.phoneNumber);
+        mPhoneView.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        //----
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+                Log.i("phoneNumberTest",mPhoneView.getText().toString());
             }
         });
 
@@ -48,11 +57,19 @@ public class SignupActivity extends AppCompatActivity {
         mPasswordView2.setError(null);
         mNicknameView.setError(null);
 
+        //----
+        mPhoneView.setError(null);
+        //----
+
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         String password2 = mPasswordView2.getText().toString();
         String nickname = mNicknameView.getText().toString();
+
+        //----
+        String phone = mPhoneView.getText().toString();
+        //----
 
         boolean cancel = false;
         View focusView = null;
@@ -93,6 +110,14 @@ public class SignupActivity extends AppCompatActivity {
             focusView = mNicknameView;
             cancel = true;
         }
+        //----
+        if (TextUtils.isEmpty(phone)) {
+            mPhoneView.setError(getString(R.string.error_field_required));
+            focusView = mPhoneView;
+            cancel = true;
+        }
+        //----
+
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -101,7 +126,7 @@ public class SignupActivity extends AppCompatActivity {
         } else {
             // 회원 가입
             SessionManager.getInstance(getApplicationContext()).
-                    Signup(email, password, password2, nickname, this);
+                    Signup(email, password, password2, nickname, phone, this);
 //            setResult(RESULT_OK);
 //            finish();
         }

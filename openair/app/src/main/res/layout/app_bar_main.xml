@@ -12,7 +12,9 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#fff"
+        android:layout_alignTop="@+id/toolbar"
+        android:layout_marginTop="0dp"
+        android:background="#f9f9f9"
         android:theme="@style/AlertDialog.AppCompat">
 
         <FrameLayout
@@ -21,10 +23,10 @@
             android:layout_gravity="center">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="215dp"
+                android:layout_height="41dp"
                 android:layout_gravity="center"
-                android:src="@drawable/logo" />
+                android:src="@drawable/newlogo" />
 
         </FrameLayout>
 

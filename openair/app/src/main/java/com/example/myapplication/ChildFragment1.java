@@ -240,13 +240,13 @@ public class ChildFragment1 extends Fragment {
             public ViewHolder(View view){
                 super(view);
                 view.setOnClickListener(this);
-                tvCategory = view.findViewById(R.id.tvcategory);
-                tvTime = view.findViewById(R.id.tvtime);
-                tvArea = view.findViewById(R.id.tvarea);
-                tvRecruit_num = view.findViewById(R.id.tvrecruit_num);
+                tvCategory = (TextView) view.findViewById(R.id.tvcategory);
+                tvTime = (TextView) view.findViewById(R.id.tvtime);
+                tvArea = (TextView) view.findViewById(R.id.tvarea);
+                tvRecruit_num = (TextView) view.findViewById(R.id.tvrecruit_num);
 
-                mine = view.findViewById(R.id.mine);
-                recNo = view.findViewById(R.id.rec_no);
+                mine = (TextView) view.findViewById(R.id.mine);
+                recNo = (TextView) view.findViewById(R.id.rec_no);
 
             }
 
