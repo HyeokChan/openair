@@ -40,6 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add"
-        android:tint="@android:color/white"/>
+        android:tint="@android:color/white"
+        app:layout_behavior=".QuickReturnFooterBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

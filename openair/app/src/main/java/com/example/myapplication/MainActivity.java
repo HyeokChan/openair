@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Intent;
@@ -71,8 +72,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //-----------------------------------------
 
+    @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("dateset", "restart");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -89,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (FirebaseInstanceId.getInstance().getToken() != null) {
             Log.d(TAG, "Refreshed token main = " + FirebaseInstanceId.getInstance().getToken());
         }
-
+        Log.i("확인", "checkPoint1");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -119,10 +122,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             TextView tvEnd = (TextView) headerView.findViewById(R.id.textView18);
             tvEnd.setText("님 환영합니다!");
         }
-
+        Log.i("확인", "checkPoint1");
         menu1Fragment = new Menu1Fragment();
-        menu2Fragment = new Menu2Fragment();
-        menu3Fragment = new Menu3Fragment();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
         // 첫 화면 지정
@@ -136,15 +137,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 switch (item.getItemId()) {
                     case R.id.navigation_home: {
-                        transaction.replace(R.id.frame_layout, menu1Fragment).commitAllowingStateLoss();
+                        if(menu1Fragment != null) fragmentManager.beginTransaction().show(menu1Fragment).commit();
+                        if(menu2Fragment != null) fragmentManager.beginTransaction().hide(menu2Fragment).commit();
+                        if(menu3Fragment != null) fragmentManager.beginTransaction().hide(menu3Fragment).commit();
                         break;
                     }
                     case R.id.navigation_dashboard: {
-                        transaction.replace(R.id.frame_layout, menu2Fragment).commitAllowingStateLoss();
+                        mSession.f2_stCategory = "전체";
+                        if(menu2Fragment == null){
+                            menu2Fragment = new Menu2Fragment();
+                            fragmentManager.beginTransaction().add(R.id.frame_layout, menu2Fragment).commit();
+                        }
+                        if(menu1Fragment != null) fragmentManager.beginTransaction().hide(menu1Fragment).commit();
+                        if(menu2Fragment != null) fragmentManager.beginTransaction().show(menu2Fragment).commit();
+                        if(menu3Fragment != null) fragmentManager.beginTransaction().hide(menu3Fragment).commit();
                         break;
                     }
                     case R.id.navigation_notifications: {
-                        transaction.replace(R.id.frame_layout, menu3Fragment).commitAllowingStateLoss();
+                        mSession.f3_stCategory = "전체";
+                        if(menu3Fragment == null){
+                            menu3Fragment = new Menu3Fragment();
+                            fragmentManager.beginTransaction().add(R.id.frame_layout, menu3Fragment).commit();
+                        }
+
+                        if(menu1Fragment != null) fragmentManager.beginTransaction().hide(menu1Fragment).commit();
+                        if(menu2Fragment != null) fragmentManager.beginTransaction().hide(menu2Fragment).commit();
+                        if(menu3Fragment != null) fragmentManager.beginTransaction().show(menu3Fragment).commit();
+                        transaction.detach(menu3Fragment).attach(menu3Fragment);
                         break;
                     }
                 }
@@ -177,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
             //case R.id.action_settings:
-                //return true;
+            //return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -263,7 +282,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.nav_info)
         {
             // 서버에 웹 페이지 만들어서 연결할 것
-            sendPostToFCM("장욱이", "섹스");
         } else if (id == R.id.nav_copyright)
         {
             // 서버에 웹 페이지 만들어서 연결할 것
@@ -323,48 +341,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
         }
-    }
-
-
-
-
-    //////////////////////////////////////////
-
-
-    private static final String FCM_MESSAGE_URL = "https://fcm.googleapis.com/fcm/send";
-    private static final String SERVER_KEY = "AAAA9L5lpRA:APA91bFEzsSfc3WykbzYJXgvKtkZ75KY_B39xnwUdKefYlkgkI-JcTClhPFNLysLXpV-y_NfTXex71mQcW5dwYkTJkRfpxyLLuXX5owWMahVbAFDkyCJ5ueu90cgjmXgsbp4V9hVFhYv";
-    private void sendPostToFCM(final String title, final String body) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // FMC 메시지 생성 start
-                    JSONObject root = new JSONObject();
-                    JSONObject notification = new JSONObject();
-                    notification.put("body", body);
-                    notification.put("title", title);
-                    root.put("notification", notification);
-                    root.put("to", "eVrnCHiXjGg:APA91bFuqO0PZwvOB5H5J7GOYZ78YElYfUytJdnyUUmQ7KqxPw13rCIlqUAtt_H94SEaQYdsfRdnYBQOAqkUlbuh0SWQlMcFS4bhoIcWOgTTKohT5mUL88HNBiJ09Uhw4LPqGn9iXzBW");
-                    //root.put("to", "fS5rE0mv4Sw:APA91bFyBzpzeIKU2zOXRj1Ri_blZt8Tor6vPpwekW4M03omF1jzjDkajw0HH7UBIekResRzTyt48kiGIBUOqgakMSPV4dKTWtbx3-eOkN-dV0btdFNJOJvTMslksh6l4sumztxEpCKO");
-                    // FMC 메시지 생성 end
-                     URL Url = new URL(FCM_MESSAGE_URL);
-                     HttpURLConnection conn = (HttpURLConnection) Url.openConnection();
-                     conn.setRequestMethod("POST");
-                     conn.setDoOutput(true);
-                     conn.setDoInput(true);
-                     conn.addRequestProperty("Authorization", "key=" + SERVER_KEY);
-                     conn.setRequestProperty("Accept", "application/json");
-                     conn.setRequestProperty("Content-type", "application/json");
-                     OutputStream os = conn.getOutputStream();
-                     os.write(root.toString().getBytes("utf-8"));
-                     os.flush();
-                     conn.getResponseCode();
-                     }
-                catch (Exception e) {
-                     e.printStackTrace();
-                }
-            }
-        }).start();
     }
 
 

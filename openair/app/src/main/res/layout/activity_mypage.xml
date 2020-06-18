@@ -43,23 +43,20 @@
                 android:id="@+id/textView14"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="#D4E5F4"
                 android:gravity="center"
                 android:text="My Page"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000" />
 
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#EDF3FA"
                 android:text="내가 예약한 Activity" />
 
             <View
-                android:id="@+id/view20"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#000" />
@@ -69,15 +66,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000" />
-
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#EDF3FA"
                 android:text="내가 작성한 recruit" />
 
             <View
@@ -90,65 +83,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <View
-                android:id="@+id/view23"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000" />
-
             <TextView
                 android:id="@+id/textView24"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#EDF3FA"
                 android:text="내가 작성한 match" />
 
             <View
-                android:id="@+id/view24"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#000" />
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/write_mat_recy"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <View
-                android:id="@+id/view25"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000" />
-
             <TextView
                 android:id="@+id/textView27"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#EDF3FA"
                 android:text="내가 등록된 recruit" />
 
             <View
-                android:id="@+id/view26"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#000" />
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/joined_rec_recy"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
-            <View
-                android:id="@+id/view27"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000" />
 
             <TextView
                 android:id="@+id/textView29"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#EDF3FA"
                 android:text="내가 등록된 match" />
 
             <View
-                android:id="@+id/view28"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#000" />
@@ -156,15 +133,6 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
-            <View
-                android:id="@+id/view29"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000" />
-
-
-
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

@@ -32,7 +32,7 @@ public class DateSelect extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 //Toast.makeText(DateSelect.this, "" + year + "/" +
-                  //      (month + 1) + "/" + dayOfMonth, 0).show();
+                //      (month + 1) + "/" + dayOfMonth, 0).show();
                 c_date = year + "-" + (month+1) + "-" + dayOfMonth;
                 Date date = null;
                 try {

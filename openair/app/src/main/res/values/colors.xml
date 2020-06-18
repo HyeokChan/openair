@@ -3,4 +3,9 @@
     <color name="colorPrimary">#282295</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">@color/ic_launcher_background</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorCard">#FAFBFD</color>
+    <color name="colorGood">#D3D9E6</color>
+    <color name="colorNormal">#F2EEC2</color>
+    <color name="colorBad">#DFBCBC</color>
 </resources>

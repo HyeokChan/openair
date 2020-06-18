@@ -49,7 +49,7 @@
         <EditText
             android:id="@+id/txt_modify_edit"
             android:layout_width="299dp"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_below="@+id/ratingBarDL"
             android:layout_alignStart="@+id/ratingBarDL"
             android:layout_alignLeft="@+id/ratingBarDL"
@@ -62,7 +62,8 @@
             android:layout_marginRight="-30dp"
             android:gravity="center"
             android:hint="한줄평을 써주세요"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent" />
 
         <Button
             android:id="@+id/btn_modify_done"
@@ -71,7 +72,8 @@
             android:layout_below="@+id/txt_modify_edit"
             android:scaleType="fitCenter"
             android:text="입력 완료"
-            android:textColor="#fff" />
+            android:background="#EDF3FA"
+            android:textColor="@color/ic_launcher_background" />
 
     </RelativeLayout>
 

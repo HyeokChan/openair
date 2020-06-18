@@ -25,8 +25,11 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.OutputStream;
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +50,7 @@ public class SessionManager {
     public static final String KEY_EMAIL = "email";
 
     static String f2_stCategory="전체";
+    static String f3_stCategory="전체";
     static Context mContext = null;
 
     protected RequestQueue mQueue = null;
@@ -103,7 +107,7 @@ public class SessionManager {
         mQueue = Volley.newRequestQueue(context);
 
         //mImageLoader = new ImageLoader(mQueue,
-          //      new LruBitmapCache(LruBitmapCache.getCacheSize(mContext)));
+        //      new LruBitmapCache(LruBitmapCache.getCacheSize(mContext)));
     }
 
 
@@ -443,5 +447,43 @@ public class SessionManager {
         if (mQueue != null) {
             mQueue.cancelAll(QUEUE_TAG);
         }
+    }
+
+
+    ////////////////////////////////////////////////////
+
+    private static final String FCM_MESSAGE_URL = "https://fcm.googleapis.com/fcm/send";
+    private static final String SERVER_KEY = "AAAA9L5lpRA:APA91bFEzsSfc3WykbzYJXgvKtkZ75KY_B39xnwUdKefYlkgkI-JcTClhPFNLysLXpV-y_NfTXex71mQcW5dwYkTJkRfpxyLLuXX5owWMahVbAFDkyCJ5ueu90cgjmXgsbp4V9hVFhYv";
+    protected void sendPostToFCM(final String title, final String body, final String Token) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // FMC 메시지 생성 start
+                    JSONObject root = new JSONObject();
+                    JSONObject notification = new JSONObject();
+                    notification.put("body", body);
+                    notification.put("title", title);
+                    root.put("notification", notification);
+                    root.put("to", Token);
+                    // FMC 메시지 생성 end
+                    URL Url = new URL(FCM_MESSAGE_URL);
+                    HttpURLConnection conn = (HttpURLConnection) Url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+                    conn.addRequestProperty("Authorization", "key=" + SERVER_KEY);
+                    conn.setRequestProperty("Accept", "application/json");
+                    conn.setRequestProperty("Content-type", "application/json");
+                    OutputStream os = conn.getOutputStream();
+                    os.write(root.toString().getBytes("utf-8"));
+                    os.flush();
+                    conn.getResponseCode();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

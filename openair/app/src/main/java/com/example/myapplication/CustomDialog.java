@@ -28,9 +28,6 @@ import java.util.Map;
 
 //import butterknife.Bind;
 
-/**
- * Created by kjy on 2016-04-11.
- */
 public class CustomDialog extends AppCompatActivity {
 
     public static final String LOG_TAG = "CustomDialog(insert)";

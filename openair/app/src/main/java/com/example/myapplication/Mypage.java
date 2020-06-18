@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +25,11 @@ import org.json.JSONObject;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class Mypage extends AppCompatActivity {
 
@@ -40,11 +46,27 @@ public class Mypage extends AppCompatActivity {
     JSONObject mResult2 = null;
     ArrayList<my_write_recruitInfo> MyWriteRecInfoArrayList = new ArrayList<my_write_recruitInfo>();
     protected my_write_recAdapter mAdapter2 = new my_write_recAdapter(MyWriteRecInfoArrayList);
+    ArrayList<Integer> applicantId = new ArrayList<>();
+
+    TextView[] textViews;
+
     //-----------------------------------------
     protected RequestQueue mQueue3 = null;
     JSONObject mResult3 = null;
     ArrayList<my_write_recruitInfo> MyWriteMatInfoArrayList = new ArrayList<my_write_recruitInfo>();
     protected my_write_matAdapter mAdapter3 = new my_write_matAdapter(MyWriteMatInfoArrayList);
+    //-----------------------------------------
+    ArrayList<Integer> communityNo = new ArrayList<>();
+    protected RequestQueue mQueue4 = null;
+    JSONObject mResult4 = null;
+    ArrayList<my_write_recruitInfo> MyJoinedRecInfoArrayList = new ArrayList<my_write_recruitInfo>();
+    protected my_joined_recAdapter mAdapter4 = new my_joined_recAdapter(MyJoinedRecInfoArrayList);
+
+    //----------------------------현재 시간
+    long mNow;
+    Date mDate;
+    SimpleDateFormat mFormat = new SimpleDateFormat("yyyyMMdd");
+    String currentDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +94,20 @@ public class Mypage extends AppCompatActivity {
         mRecyclerView3.setHasFixedSize(true);
         mQueue3 = mSession.getQueue();
         requestWriteMatch();
+        //-------------------------------------
+        RecyclerView mRecyclerView4 = (RecyclerView)findViewById(R.id.joined_rec_recy); /////
+        mRecyclerView4.setAdapter(mAdapter4);
+        mRecyclerView4.setLayoutManager(new LinearLayoutManager(Mypage.this));
+        mRecyclerView4.setHasFixedSize(true);
+        mQueue4 = mSession.getQueue();
+        requestCheckRecruit();
+        //requestJoinedRecruit();
 
+        //------------------현재 날짜
+        mNow = System.currentTimeMillis();
+        mDate = new Date(mNow);
+        currentDate = mFormat.format(mDate);
+        Log.i("datetest",currentDate);
     }
 
 
@@ -166,7 +201,12 @@ public class Mypage extends AppCompatActivity {
                     String place_no = info.getString("place_no");
                     String date = info.getString("date");
                     String time = info.getString("time");
-                    MyReserveInfoArrayList.add(new my_reserveInfo(place_no,date ,time));
+
+                    String compareDateReserve = date.replace("-","");
+                    if (Integer.parseInt(currentDate)<= Integer.parseInt(compareDateReserve))
+                    {
+                        MyReserveInfoArrayList.add(new my_reserveInfo(place_no,date ,time));
+                    }
                 }
             }
 
@@ -198,7 +238,7 @@ public class Mypage extends AppCompatActivity {
                         else {
                             Log.i(LOG_TAG, error.getMessage());
                             Toast.makeText(Mypage.this, error.getMessage(),
-                                  Toast.LENGTH_LONG).show();
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -207,6 +247,7 @@ public class Mypage extends AppCompatActivity {
     }
     //---------------------------------------------------- 내가 작성한 recruit
     public class my_write_recruitInfo {
+        public int recno;
         public String category;
         public String place;
         public String date;
@@ -214,8 +255,8 @@ public class Mypage extends AppCompatActivity {
         public String totalnum;
         public String recruitnum;
 
-        public my_write_recruitInfo(String category, String place,String date, String time, String totalnum, String recruitnum) {
-
+        public my_write_recruitInfo(int recno, String category, String place,String date, String time, String totalnum, String recruitnum) {
+            this.recno = recno;
             this.category = category;
             this.place = place;
             this.date = date;
@@ -223,6 +264,10 @@ public class Mypage extends AppCompatActivity {
             this.totalnum = totalnum;
             this.recruitnum = recruitnum;
 
+        }
+
+        public int getRecno() {
+            return recno;
         }
 
         public String getCategory() {
@@ -255,6 +300,7 @@ public class Mypage extends AppCompatActivity {
         ArrayList<my_write_recruitInfo> MyWriteRecInfoArrayList = null;
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            TextView recno;
             TextView category;
             TextView place;
             TextView date;
@@ -266,6 +312,7 @@ public class Mypage extends AppCompatActivity {
             public ViewHolder(View view){
                 super(view);
                 view.setOnClickListener(this);
+                recno = view.findViewById(R.id.rec_no);
                 category = view.findViewById(R.id.category);
                 place = view.findViewById(R.id.place);
                 date = view.findViewById(R.id.date);
@@ -278,6 +325,9 @@ public class Mypage extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                Toast.makeText(Mypage.this, recno.getText(),
+                        Toast.LENGTH_LONG).show();
+                requestCheckRecruit2(recno.getText().toString());
 
             }
         }
@@ -296,6 +346,7 @@ public class Mypage extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.recno.setText(MyWriteRecInfoArrayList.get(position).recno+"");
             holder.category.setText(MyWriteRecInfoArrayList.get(position).category);
             holder.place.setText(MyWriteRecInfoArrayList.get(position).place);
             holder.date.setText(MyWriteRecInfoArrayList.get(position).date);
@@ -320,6 +371,7 @@ public class Mypage extends AppCompatActivity {
                 String userid = info.getString("userid");
                 if(mSession.getID().equals(userid))
                 {
+                    int recno = info.getInt("rec_no");
                     String category = info.getString("category");
                     String place = info.getString("place");
                     String date = info.getString("date");
@@ -327,7 +379,11 @@ public class Mypage extends AppCompatActivity {
                     String totalnum = info.getInt("total_num")+"";
                     String recruitnum = info.getInt("recruit_num")+"";
 
-                    MyWriteRecInfoArrayList.add(new my_write_recruitInfo(category,place ,date,time,totalnum,recruitnum));
+                    String compareDateRecruit = date.replace("-","");
+                    if (Integer.parseInt(currentDate) <= Integer.parseInt(compareDateRecruit))
+                    {
+                        MyWriteRecInfoArrayList.add(new my_write_recruitInfo(recno,category,place ,date,time,totalnum,recruitnum));
+                    }
                 }
             }
 
@@ -371,6 +427,7 @@ public class Mypage extends AppCompatActivity {
         ArrayList<my_write_recruitInfo> MyWriteMatInfoArrayList = null;
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            TextView matno;
             TextView category;
             TextView place;
             TextView date;
@@ -382,6 +439,7 @@ public class Mypage extends AppCompatActivity {
             public ViewHolder(View view){
                 super(view);
                 view.setOnClickListener(this);
+                matno = view.findViewById(R.id.rec_no);
                 category = view.findViewById(R.id.category);
                 place = view.findViewById(R.id.place);
                 date = view.findViewById(R.id.date);
@@ -412,6 +470,7 @@ public class Mypage extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.matno.setText(MyWriteMatInfoArrayList.get(position).recno+"");
             holder.category.setText(MyWriteMatInfoArrayList.get(position).category);
             holder.place.setText(MyWriteMatInfoArrayList.get(position).place);
             holder.date.setText(MyWriteMatInfoArrayList.get(position).date);
@@ -436,6 +495,7 @@ public class Mypage extends AppCompatActivity {
                 String userid = info.getString("userid");
                 if(mSession.getID().equals(userid))
                 {
+                    int matno = info.getInt("mat_no");
                     String category = info.getString("category");
                     String place = info.getString("place");
                     String date = info.getString("date");
@@ -443,7 +503,11 @@ public class Mypage extends AppCompatActivity {
                     String teamname = info.getString("team_name");
                     String recruitnum = info.getInt("recruit_num")+"";
 
-                    MyWriteMatInfoArrayList.add(new my_write_recruitInfo(category,place ,date,time,teamname,recruitnum));
+                    String compareDateMatch = date.replace("-","");
+                    if (Integer.parseInt(currentDate) <= Integer.parseInt(compareDateMatch))
+                    {
+                        MyWriteMatInfoArrayList.add(new my_write_recruitInfo(matno ,category,place ,date,time,teamname,recruitnum));
+                    }
                 }
             }
 
@@ -480,6 +544,325 @@ public class Mypage extends AppCompatActivity {
                 });
         request.setTag(QUEUE_TAG);
         mQueue3.add(request);
+    }
+    //---------------------------------------------------- 등록된 recruit 체크
+
+    public void check_drawList() {
+        try {
+
+            JSONArray items = mResult.getJSONArray("list");
+            communityNo.clear();
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject info = items.getJSONObject(i);
+                int community_no = info.getInt("community_no");
+                int applicant_id = info.getInt("applicant_id");
+                if(Integer.parseInt(mSession.getID()) == applicant_id)
+                {
+                    communityNo.add(community_no);
+                    //Log.i("확인체크숫자",community_no+"");
+                }
+
+            }
+
+
+            requestJoinedRecruit();
+
+        } catch (JSONException | NullPointerException e) {
+            mResult = null;
+        }
+    }
+
+
+    private void requestCheckRecruit() {
+
+        String url = SessionManager.getURL() + "recruit/select_applicant.php";
+        Log.i("ㅅㅅㅅ","확인체크3");
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        mResult = response;
+                        check_drawList();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error.getMessage() == null) {
+                            Log.i(LOG_TAG, "서버 에러");
+                            Toast.makeText(Mypage.this, "서버 에러",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Log.i(LOG_TAG, error.getMessage());
+                            //Toast.makeText(getContext(), error.getMessage(),
+                            //      Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+        request.setTag(QUEUE_TAG);
+        mQueue.add(request);
+    }
+
+
+    //---------------------------------------------------- 내가 등록된 recruit
+    public class my_joined_recruitInfo {
+        public int joino;
+        public String category;
+        public String place;
+        public String date;
+        public String time;
+        public String totalnum;
+        public String recruitnum;
+
+        public my_joined_recruitInfo(int joino, String category, String place,String date, String time, String totalnum, String recruitnum) {
+            this.joino = joino;
+            this.category = category;
+            this.place = place;
+            this.date = date;
+            this.time = time;
+            this.totalnum = totalnum;
+            this.recruitnum = recruitnum;
+
+        }
+
+        public int getJoino()
+        {
+            return joino;
+        }
+
+        public String getCategory() {
+            return category;
+        }
+
+        public String getPlace() {
+            return place;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        public String getTotalnum() {
+            return totalnum;
+        }
+
+        public String getRecruitnum() {
+            return recruitnum;
+        }
+    }
+
+    public class my_joined_recAdapter extends RecyclerView.Adapter<my_joined_recAdapter.ViewHolder>  {
+
+        ArrayList<my_write_recruitInfo> MyJoinedRecInfoArrayList = null;
+
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            TextView joino;
+            TextView category;
+            TextView place;
+            TextView date;
+            TextView time;
+            TextView totalnum;
+            TextView recruitnum;
+
+
+            public ViewHolder(View view){
+                super(view);
+                view.setOnClickListener(this);
+                joino = view.findViewById(R.id.rec_no);
+                category = view.findViewById(R.id.category);
+                place = view.findViewById(R.id.place);
+                date = view.findViewById(R.id.date);
+                time = view.findViewById(R.id.time);
+                totalnum = view.findViewById(R.id.totalnum);
+                recruitnum = view.findViewById(R.id.recruitnum);
+                /////////////////////
+
+            }
+
+            @Override
+            public void onClick(View v) {
+
+            }
+        }
+
+        public my_joined_recAdapter(ArrayList<my_write_recruitInfo> MyJoinedRecInfoArrayList){
+            this.MyJoinedRecInfoArrayList = MyJoinedRecInfoArrayList;
+        }
+
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_row_write_recruit, parent, false);
+            return new ViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.joino.setText(MyJoinedRecInfoArrayList.get(position).recno+"");
+            holder.category.setText(MyJoinedRecInfoArrayList.get(position).category);
+            holder.place.setText(MyJoinedRecInfoArrayList.get(position).place);
+            holder.date.setText(MyJoinedRecInfoArrayList.get(position).date);
+            holder.time.setText(MyJoinedRecInfoArrayList.get(position).time);
+            holder.totalnum.setText(MyJoinedRecInfoArrayList.get(position).totalnum);
+            holder.recruitnum.setText(MyJoinedRecInfoArrayList.get(position).recruitnum);
+        }
+
+        @Override
+        public int getItemCount() {
+            return MyJoinedRecInfoArrayList.size();
+        }
+    }
+
+    public void drawList4() {
+        MyJoinedRecInfoArrayList.clear();
+        try {
+            JSONArray items = mResult4.getJSONArray("list");
+
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject info = items.getJSONObject(i);
+                int joino = info.getInt("rec_no");
+
+                String userid = info.getString("userid");
+                String category = info.getString("category");
+                String place = info.getString("place");
+                String date = info.getString("date");
+                String time = info.getString("time");
+                String totalnum = info.getInt("total_num")+"";
+                String recruitnum = info.getInt("recruit_num")+"";
+
+                String compareDateRecruit = date.replace("-","");
+
+                for (int j=0; j<communityNo.size(); j++)
+                {
+                    if (Integer.parseInt(currentDate) <= Integer.parseInt(compareDateRecruit) && communityNo.get(j)==joino)
+                    {
+                        MyJoinedRecInfoArrayList.add(new my_write_recruitInfo(joino ,category,place ,date,time,totalnum,recruitnum));
+                    }
+                }
+            }
+
+        } catch (JSONException | NullPointerException e) {
+            mResult4 = null;
+        }
+        mAdapter4.notifyDataSetChanged();
+    }
+    private void requestJoinedRecruit() {
+        String url = SessionManager.getURL() + "recruit/select_recruit.php";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        mResult4 = response;
+                        drawList4();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error.getMessage() == null) {
+                            Log.i(LOG_TAG, "서버 에러");
+                            Toast.makeText(Mypage.this, "서버 에러",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Log.i(LOG_TAG, error.getMessage());
+                            Toast.makeText(Mypage.this, error.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+        request.setTag(QUEUE_TAG);
+        mQueue4.add(request);
+    }
+
+    //-----------------------------------------------------------누가 내글에 참여했는지 recruit
+    public void check_drawList2(String recno) {
+        try {
+
+            JSONArray items = mResult.getJSONArray("list");
+            applicantId.clear();
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject info = items.getJSONObject(i);
+                int community_no = info.getInt("community_no");
+                int applicant_id = info.getInt("applicant_id");
+                if(Integer.parseInt(recno) == community_no)
+                {
+                    applicantId.add(applicant_id);
+                }
+
+            }
+            for (int i=0; i<applicantId.size(); i++)
+            {
+                Log.i("tqtq", applicantId.get(i)+"");
+            }
+
+            if (applicantId.size()>=1)
+            {
+                textViews = new TextView[applicantId.size()];
+
+                AlertDialog.Builder joinedDialog = new AlertDialog.Builder(Mypage.this);
+                joinedDialog.setTitle("등록된 유저의 프라이머리 키");
+                LinearLayout DialogLayout = new LinearLayout(Mypage.this);
+                DialogLayout.setOrientation(LinearLayout.VERTICAL);
+
+                    /*final TextView test = new TextView(Mypage.this);
+                    test.setText("test");
+                    DialogLayout.addView(test);*/
+
+                for (int i=0; i<applicantId.size();i++)
+                {
+                    textViews[i] = new TextView(Mypage.this);
+                    textViews[i].setText(applicantId.get(i)+"");
+                    DialogLayout.addView(textViews[i]);
+                }
+                joinedDialog.setView(DialogLayout);
+                joinedDialog.show();
+                applicantId.clear();
+            }
+
+        } catch (JSONException | NullPointerException e) {
+            mResult = null;
+        }
+    }
+
+
+    private void requestCheckRecruit2(final String recno) {
+
+        String url = SessionManager.getURL() + "recruit/select_applicant.php";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        mResult = response;
+                        check_drawList2(recno);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error.getMessage() == null) {
+                            Log.i(LOG_TAG, "서버 에러");
+                            Toast.makeText(Mypage.this, "서버 에러",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Log.i(LOG_TAG, error.getMessage());
+                            //Toast.makeText(getContext(), error.getMessage(),
+                            //      Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+        request.setTag(QUEUE_TAG);
+        mQueue.add(request);
     }
 
 }

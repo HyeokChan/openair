@@ -1,12 +1,12 @@
 package com.example.myapplication;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -53,12 +53,13 @@ public class ChildFragment1 extends Fragment {
 
     protected RequestQueue mQueue = null;
     JSONObject mResult = null;
-    ArrayList<recruitInfo> recruitInfoArrayList = new ArrayList<recruitInfo>(); //
-    protected RecruitAdapter mAdapter = new RecruitAdapter(recruitInfoArrayList); //
+    ArrayList<recruitInfo> recruitInfoArrayList = new ArrayList<recruitInfo>();
+    protected RecruitAdapter mAdapter = new RecruitAdapter(recruitInfoArrayList);
     SessionManager mSession = SessionManager.getInstance(getContext());
 
     CustomDialogCombo customDialogCombo;
 
+    public int check_applicant=0;
 
 
     @Override
@@ -78,7 +79,7 @@ public class ChildFragment1 extends Fragment {
 
                 customDialogCombo = new CustomDialogCombo(v.getContext());
 
-                if(!Menu3Fragment.stCategory.equals("전체") && mSession.isLogin())
+                if(!mSession.f3_stCategory.equals("전체") && mSession.isLogin())
                 {
                     final Dialog dlg_combo = new Dialog(v.getContext());
                     // 액티비티의 타이틀바를 숨긴다.
@@ -107,15 +108,13 @@ public class ChildFragment1 extends Fragment {
 
                     ViewGroup.LayoutParams params = dlg_combo.getWindow().getAttributes();
                     params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                    //params.height = ViewGroup.LayoutParams.MATCH_PARENT;
                     dlg_combo.getWindow().setAttributes((WindowManager.LayoutParams)params);
-
 
                     ok_button_combo.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             //main_label.setText(txt_modify_edit.getText().toString());
-                            String insert_activity = Menu3Fragment.stCategory;
+                            String insert_activity = mSession.f3_stCategory;
                             String insert_time1 = spinner1_combo.getSelectedItem().toString();
                             String insert_time2 = spinner2_combo.getSelectedItem().toString();
                             String insert_time = insert_time1 + " ~ " + insert_time2;
@@ -141,7 +140,7 @@ public class ChildFragment1 extends Fragment {
 
 
                 }
-                else if (Menu3Fragment.stCategory.equals("전체") && mSession.isLogin())
+                else if (mSession.f3_stCategory.equals("전체") && mSession.isLogin())
                 {
                     Toast.makeText(v.getContext(), "카테고리를 선택해주세요", Toast.LENGTH_SHORT).show();
                 }
@@ -248,11 +247,12 @@ public class ChildFragment1 extends Fragment {
 
                 mine = view.findViewById(R.id.mine);
                 recNo = view.findViewById(R.id.rec_no);
+
             }
 
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder dlJoin = new AlertDialog.Builder(v.getContext());
+                android.app.AlertDialog.Builder dlJoin = new AlertDialog.Builder(v.getContext());
                 dlJoin.setTitle("참가여부");
 
                 LinearLayout tvLayout = new LinearLayout(v.getContext());
@@ -283,7 +283,7 @@ public class ChildFragment1 extends Fragment {
                 int t_nums = Integer.parseInt(total_num);
                 final int r_nums = t_nums - j_nums;
 
-                if (mine.getText().equals("내가쓴글"))
+                if (mine.getText().equals("ME"))
                 {
                     dlJoin.setNegativeButton("삭제하기",
                             new DialogInterface.OnClickListener() {
@@ -306,7 +306,9 @@ public class ChildFragment1 extends Fragment {
                                     {
                                         if (r_nums>0)
                                         {
-                                            joinRecruit(recNo.getText().toString());
+                                            check_applicant = 0;
+                                            check_Recruit(recNo.getText().toString());
+
                                         }
                                         else
                                         {
@@ -329,6 +331,7 @@ public class ChildFragment1 extends Fragment {
                                 public void onClick(DialogInterface dialog, int id)
                                 {
                                     // 프로그램을 종료한다
+                                    Log.i("recNO",recNo.getText().toString());
                                     dialog.dismiss(); // 누르면 바로 닫히는 형태
                                 }
                             });
@@ -356,7 +359,7 @@ public class ChildFragment1 extends Fragment {
         public void onBindViewHolder(ViewHolder holder, int position) {
             if(mSession.getID().equals(recruitInfoArrayList.get(position).userid))
             {
-                holder.mine.setText("내가쓴글");
+                holder.mine.setText("ME");
             }
             else {
                 holder.mine.setText("");
@@ -386,7 +389,7 @@ public class ChildFragment1 extends Fragment {
                 Date check_time = date_format.parse(date);
                 if(Menu3Fragment.select_year == check_time.getYear() && Menu3Fragment.select_month == check_time.getMonth()
                         && Menu3Fragment.select_date == check_time.getDate() &&
-                        (info.getString("category").equals(Menu3Fragment.stCategory) || Menu3Fragment.stCategory.equals("전체"))) {
+                        (info.getString("category").equals(mSession.f3_stCategory) || mSession.f3_stCategory.equals("전체"))) {
                     String recno = info.getInt("rec_no")+"";
                     String userid = info.getString("userid");
                     String category = info.getString("category");
@@ -444,15 +447,15 @@ public class ChildFragment1 extends Fragment {
     protected void writeRecruit(recruitInfo insert_data) {
         String url = SessionManager.getURL() + "recruit/insert_recruit.php";
 
-        Map<String, String> params = new HashMap<String, String>();
+        java.util.Map<String, String> params = new HashMap<String, String>();
         params.put("id", mSession.getID());
         params.put("category", insert_data.category);
         params.put("total_num", insert_data.total_num);
         params.put("recruit_num", insert_data.recruit_num);
         params.put("time", insert_data.time);
         params.put("area", insert_data.area);
-        params.put("date", (Menu3Fragment.select_year + 1900) + "-" + ((Menu3Fragment.select_month + 1) < 10 ? "0" + (Menu3Fragment.select_month + 1) :
-                (Menu3Fragment.select_month + 1)) + "-" + ((Menu3Fragment.select_date) < 10 ? "0" + (Menu3Fragment.select_date) : (Menu3Fragment.select_date)));
+        params.put("date", (Menu3Fragment.select_year + 1900) + "-" + ((Menu3Fragment.select_month + 1) < 10 ? "0" + (Menu3Fragment.select_month + 1) : (Menu3Fragment.select_month + 1))
+                + "-" + ((Menu3Fragment.select_date) < 10 ? "0" + (Menu3Fragment.select_date) : (Menu3Fragment.select_date)));
         JSONObject jsonObj = new JSONObject(params);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
@@ -486,11 +489,9 @@ public class ChildFragment1 extends Fragment {
         request.setTag(QUEUE_TAG);
         mQueue.add(request);
     }
-
     protected void deleteRecruit(String recno) {
         String url = SessionManager.getURL() + "recruit/delete_recruit.php";
-        Map<String, String> params = new HashMap<String, String>();
-        Log.i("wpwp",recno);
+        java.util.Map<String, String> params = new HashMap<String, String>();
         params.put("rec_no", recno);
 
         JSONObject jsonObj = new JSONObject(params);
@@ -534,7 +535,9 @@ public class ChildFragment1 extends Fragment {
     protected void joinRecruit(String recno) {
         String url = SessionManager.getURL() + "recruit/join_recruit.php";
         Map<String, String> params = new HashMap<String, String>();
+        params.put("community", "recruit");
         params.put("rec_no", recno);
+        params.put("id", mSession.getID());
 
         JSONObject jsonObj = new JSONObject(params);
 
@@ -570,7 +573,119 @@ public class ChildFragment1 extends Fragment {
         request.setTag(QUEUE_TAG);
         mQueue.add(request);
 
+        int checkedItem;
+        for (checkedItem = 0; checkedItem < recruitInfoArrayList.size(); checkedItem++)
+        {
+            if(recruitInfoArrayList.get(checkedItem).getRecNo().equals(recno))
+                applicant_notification(recruitInfoArrayList.get(checkedItem).getUserid());
+        }
+    }
 
+
+
+    private void applicant_notification(final String recno) {
+        String url = SessionManager.getURL() + "recruit/recruit_token.php";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        mResult = response;
+                        try {
+                            JSONArray items = mResult.getJSONArray("list");
+
+                            String nick = "", token = "";
+                            for (int i = 0; i < items.length(); i++) {
+                                JSONObject info = items.getJSONObject(i);
+                                if(recno.equals(info.getInt("id") + "")) {
+                                    token = info.getString("token");
+                                }
+                                if(mSession.getID().equals(info.getString("id"))){
+                                    nick = info.getString("nick");
+                                }
+                            }
+                            mSession.sendPostToFCM("모집신청", nick + "님이 모집글에 참여신청하였습니다.", token);
+
+                        } catch (JSONException | NullPointerException e) {
+                            Toast.makeText(getContext(),
+                                    "아이디가 존재하지 않습니다.", Toast.LENGTH_LONG).show();
+                            mResult = null;
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error.getMessage() == null) {
+                            Log.i(LOG_TAG, "서버 에러");
+                            Toast.makeText(getContext(), "서버 에러",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Log.i(LOG_TAG, error.getMessage());
+                        }
+                    }
+                });
+        request.setTag(QUEUE_TAG);
+        mQueue.add(request);
+    }
+
+
+    public void check_drawList(int recno) {
+        try {
+            JSONArray items = mResult.getJSONArray("list");
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject info = items.getJSONObject(i);
+                int community_no = info.getInt("community_no");
+                int applicant_id = info.getInt("applicant_id");
+                if(community_no == recno && Integer.parseInt(mSession.getID()) == applicant_id)
+                {
+                    check_applicant = 1;
+                }
+
+            }
+            if (check_applicant == 0)
+            {
+                joinRecruit(recno+"");
+            }
+            else {
+                Toast.makeText(getContext(), "이미 참가하였습니다.",
+                        Toast.LENGTH_LONG).show();
+            }
+
+        } catch (JSONException | NullPointerException e) {
+            mResult = null;
+        }
+    }
+
+    private void check_Recruit(final String recno) {
+        String url = SessionManager.getURL() + "recruit/select_applicant.php";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        mResult = response;
+                        check_drawList(Integer.parseInt(recno));
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error.getMessage() == null) {
+                            Log.i(LOG_TAG, "서버 에러");
+                            Toast.makeText(getContext(), "서버 에러",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Log.i(LOG_TAG, error.getMessage());
+                            //Toast.makeText(getContext(), error.getMessage(),
+                            //      Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+        request.setTag(QUEUE_TAG);
+        mQueue.add(request);
     }
 
 }

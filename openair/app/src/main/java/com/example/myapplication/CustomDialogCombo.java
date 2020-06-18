@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -29,9 +30,6 @@ import java.util.Map;
 
 //import butterknife.Bind;
 
-/**
- * Created by kjy on 2016-04-11.
- */
 public class CustomDialogCombo extends AppCompatActivity {
 
     public static final String LOG_TAG = "CustomDialogCombo(insert)";
@@ -68,6 +66,11 @@ public class CustomDialogCombo extends AppCompatActivity {
 
         // 커스텀 다이얼로그의 레이아웃을 설정한다.
         dlg_combo.setContentView(R.layout.custom_dialog_combo);
+
+        WindowManager.LayoutParams wm = new WindowManager.LayoutParams();
+        wm.copyFrom(dlg_combo.getWindow().getAttributes());
+        wm.width=400;
+
 
         // 커스텀 다이얼로그를 노출한다.
         dlg_combo.show();

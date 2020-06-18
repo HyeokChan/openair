@@ -72,17 +72,17 @@ public class Menu2Fragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_menu2, container, false);
 
-        final String [] items = {"전체", "축구", "풋살", "농구", "등산", "낚시","골프"};
+        final String [] items = {"전체", "축구", "풋살", "골프", "낚시"};
 
         btCategory = (Button) v.findViewById(R.id.ActivityCategoryButton);
-        btCategory.setText(SessionManager.f2_stCategory);
+        btCategory.setText(mSession.f2_stCategory);
         btCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 int checkedItem;
                 for (checkedItem = 0; checkedItem < items.length; checkedItem++)
                 {
-                    if(items[checkedItem].equals(SessionManager.f2_stCategory))
+                    if(items[checkedItem].equals(mSession.f2_stCategory))
                         break;
                 }
 
@@ -95,7 +95,7 @@ public class Menu2Fragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO Auto-generated method stub
                         //Toast.makeText(v.getContext(), items[which], Toast.LENGTH_SHORT).show();
-                        SessionManager.f2_stCategory = items[which];
+                        mSession.f2_stCategory = items[which];
                     }
                 });
                 dl.setPositiveButton("선택완료",
@@ -134,7 +134,7 @@ public class Menu2Fragment extends Fragment {
         mImageLoader = new ImageLoader(mQueue,
                 new ImageLoader.ImageCache() {
                     private final LruCache<String, Bitmap>
-                            cache = new LruCache<String, Bitmap>(20);
+                            cache = new LruCache<String, Bitmap>(50);
                     @Override
                     public Bitmap getBitmap(String url) {
                         return cache.get(url);
@@ -150,8 +150,6 @@ public class Menu2Fragment extends Fragment {
 
         mQueue = mSession.getQueue();
         requestPlace();
-
-        //-------------------------------
 
         final EditText mEditText = (EditText)v.findViewById(R.id.editText);
         mEditText.addTextChangedListener(new TextWatcher() {
@@ -350,7 +348,7 @@ public class Menu2Fragment extends Fragment {
 
             for (int i = 0; i < items.length(); i++) {
                 JSONObject info = items.getJSONObject(i);
-                if(info.getString("category").equals(SessionManager.f2_stCategory) || SessionManager.f2_stCategory.equals("전체")) {
+                if(info.getString("category").equals(mSession.f2_stCategory) || mSession.f2_stCategory.equals("전체")) {
                     String category = info.getString("category"); // 야외활동지 분류
                     String name = info.getString("name"); // 야외활동지 명
                     String image = info.getString("image"); // 야외활동지 이미지 파일 명

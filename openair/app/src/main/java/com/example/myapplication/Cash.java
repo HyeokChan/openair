@@ -66,7 +66,9 @@ public class Cash extends AppCompatActivity {
                 //insertReserve(mSession.getID(), Menu2Fragment.c_name, DateSelect.c_date,)
 
                 Intent HomeIntent = new Intent(Cash.this, MainActivity.class);
+                HomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Cash.this.startActivity(HomeIntent);
+
             }
         });
 
@@ -102,7 +104,7 @@ public class Cash extends AppCompatActivity {
                             }
                         }
                         //else
-                          //  requestRecruit();
+                        //  requestRecruit();
                     }
                 },
                 new Response.ErrorListener() {

@@ -162,28 +162,27 @@ public class TimeSelect extends AppCompatActivity {
             myViewHolder.tvDust.setText(timeSelectInfoArrayList.get(position).dust);
             myViewHolder.cbSelect.setEnabled(timeSelectInfoArrayList.get(position).isSelected);
 
-
             if (myViewHolder.tvDust.getText().toString().equals("좋음"))
             {
-                myViewHolder.tvTime.setBackgroundColor(Color.parseColor("#E0FFFF"));
-                myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#E0FFFF"));
-                myViewHolder.tvDust.setBackgroundColor(Color.parseColor("#E0FFFF"));
-                myViewHolder.cbSelect.setBackgroundColor(Color.parseColor("#E0FFFF"));
+                myViewHolder.tvTime.setBackgroundColor(Color.parseColor("#D3D9E6"));
+                myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#D3D9E6"));
+                myViewHolder.tvDust.setBackgroundColor(Color.parseColor("#D3D9E6"));
+                myViewHolder.cbSelect.setBackgroundColor(Color.parseColor("#D3D9E6"));
             }
 
             else if (myViewHolder.tvDust.getText().toString().equals("보통"))
             {
-                myViewHolder.tvTime.setBackgroundColor(Color.parseColor("#FFA500"));
-                myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#FFA500"));
-                myViewHolder.tvDust.setBackgroundColor(Color.parseColor("#FFA500"));
-                myViewHolder.cbSelect.setBackgroundColor(Color.parseColor("#FFA500"));
+                myViewHolder.tvTime.setBackgroundColor(Color.parseColor("#F2EEC2"));
+                myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#F2EEC2"));
+                myViewHolder.tvDust.setBackgroundColor(Color.parseColor("#F2EEC2"));
+                myViewHolder.cbSelect.setBackgroundColor(Color.parseColor("#F2EEC2"));
             }
             else if (myViewHolder.tvDust.getText().toString().equals("나쁨"))
             {
-                myViewHolder.tvTime.setBackgroundColor(Color.parseColor("#FF6347"));
-                myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#FF6347"));
-                myViewHolder.tvDust.setBackgroundColor(Color.parseColor("#FF6347"));
-                myViewHolder.cbSelect.setBackgroundColor(Color.parseColor("#FF6347"));
+                myViewHolder.tvTime.setBackgroundColor(Color.parseColor("#DFBCBC"));
+                myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#DFBCBC"));
+                myViewHolder.tvDust.setBackgroundColor(Color.parseColor("#DFBCBC"));
+                myViewHolder.cbSelect.setBackgroundColor(Color.parseColor("#DFBCBC"));
             }
 
             myViewHolder.cbSelect.setOnClickListener(new View.OnClickListener() {

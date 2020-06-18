@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -74,7 +75,7 @@ public class ChildFragment2 extends Fragment {
 
                 customDialogComboMatch = new CustomDialogCombo(v.getContext());
 
-                if(!Menu3Fragment.stCategory.equals("전체") && mSession.isLogin())
+                if(!mSession.f3_stCategory.equals("전체") && mSession.isLogin())
                 {
 
                     final Dialog dlg_combo = new Dialog(v.getContext());
@@ -102,11 +103,15 @@ public class ChildFragment2 extends Fragment {
 
                     final Button ok_button_combo = (Button) dlg_combo.findViewById(R.id.okButtonCombo);
 
+                    ViewGroup.LayoutParams params = dlg_combo.getWindow().getAttributes();
+                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    dlg_combo.getWindow().setAttributes((WindowManager.LayoutParams)params);
+
                     ok_button_combo.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             //main_label.setText(txt_modify_edit.getText().toString());
-                            String insert_activity = Menu3Fragment.stCategory;
+                            String insert_activity = mSession.f3_stCategory;
                             String insert_time1 = spinner1_combo.getSelectedItem().toString();
                             String insert_time2 = spinner2_combo.getSelectedItem().toString();
                             String insert_time = insert_time1 + " ~ " + insert_time2;
@@ -132,7 +137,7 @@ public class ChildFragment2 extends Fragment {
 
 
                 }
-                else if (Menu3Fragment.stCategory.equals("전체") && mSession.isLogin())
+                else if (mSession.f3_stCategory.equals("전체") && mSession.isLogin())
                 {
                     Toast.makeText(v.getContext(), "카테고리를 선택해주세요", Toast.LENGTH_SHORT).show();
                 }
@@ -263,7 +268,7 @@ public class ChildFragment2 extends Fragment {
 
                 dlJoin.setView(tvLayout);
 
-                if (mine.getText().equals("내가쓴글"))
+                if (mine.getText().equals("ME"))
                 {
                     dlJoin.setNegativeButton("삭제하기",
                             new DialogInterface.OnClickListener() {
@@ -283,6 +288,7 @@ public class ChildFragment2 extends Fragment {
                                 public void onClick(DialogInterface dialog, int id)
                                 {
                                     // 프로그램을 종료한다
+                                    joinMatch(matNo.getText().toString());
                                     dialog.dismiss(); // 누르면 바로 닫히는 형태
                                 }
                             });
@@ -317,7 +323,10 @@ public class ChildFragment2 extends Fragment {
         public void onBindViewHolder(ViewHolder holder, int position) {
             if(mSession.getID().equals(matchInfoArrayList.get(position).userid))
             {
-                holder.mine.setText("내가쓴글");
+                holder.mine.setText("ME");
+            }
+            else {
+                holder.mine.setText("");
             }
             holder.tvCategory.setText(matchInfoArrayList.get(position).category);
             holder.tvTime.setText(matchInfoArrayList.get(position).time);
@@ -342,9 +351,11 @@ public class ChildFragment2 extends Fragment {
                 String date = info.getString("date");
                 SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd");
                 Date check_time = date_format.parse(date);
-                if(Menu3Fragment.select_year == check_time.getYear() && Menu3Fragment.select_month == check_time.getMonth()
-                        && Menu3Fragment.select_date == check_time.getDate() &&
-                        (info.getString("category").equals(Menu3Fragment.stCategory) || Menu3Fragment.stCategory.equals("전체"))) {
+                if(info.getString("status").equals("false")
+                        && Menu3Fragment.select_year == check_time.getYear()
+                        && Menu3Fragment.select_month == check_time.getMonth()
+                        && Menu3Fragment.select_date == check_time.getDate()
+                        && (info.getString("category").equals(mSession.f3_stCategory) || mSession.f3_stCategory.equals("전체"))) {
                     String matno = info.getInt("mat_no")+"";
                     String userid = info.getString("userid");
                     String category = info.getString("category");
@@ -487,6 +498,105 @@ public class ChildFragment2 extends Fragment {
         request.setTag(QUEUE_TAG);
         mQueue.add(request);
 
-
     }
+
+
+    protected void joinMatch(String matno) {
+        String url = SessionManager.getURL() + "match/join_match.php";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("community", "match");
+        params.put("mat_no", matno);
+        params.put("id", mSession.getID());
+
+        JSONObject jsonObj = new JSONObject(params);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObj,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i(LOG_TAG, "Response: " + response.toString());
+                        mResult = response;
+                        if (response.has("error")) {
+                            try {
+                                Toast.makeText(getContext(),
+                                        response.getString("error").toString(),
+                                        Toast.LENGTH_LONG).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else
+                            requestMatch();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(LOG_TAG, error.getMessage());
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+        request.setTag(QUEUE_TAG);
+        mQueue.add(request);
+
+        int checkedItem;
+        for (checkedItem = 0; checkedItem < matchInfoArrayList.size(); checkedItem++)
+        {
+            if(matchInfoArrayList.get(checkedItem).getMatNo().equals(matno))
+                applicant_notification(matchInfoArrayList.get(checkedItem).getUserid());
+        }
+    }
+
+
+
+    private void applicant_notification(final String matno) {
+        String url = SessionManager.getURL() + "match/match_token.php";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        mResult = response;
+                        try {
+                            JSONArray items = mResult.getJSONArray("list");
+
+                            String nick = "", token = "";
+                            for (int i = 0; i < items.length(); i++) {
+                                JSONObject info = items.getJSONObject(i);
+                                if(matno.equals(info.getInt("id") + "")) {
+                                    token = info.getString("token");
+                                }
+                                if(mSession.getID().equals(info.getString("id"))){
+                                    nick = info.getString("nick");
+                                }
+                            }
+                            mSession.sendPostToFCM("매칭신청", nick + "님이 매칭 신청하였습니다.", token);
+
+                        } catch (JSONException | NullPointerException e) {
+                            Toast.makeText(getContext(),
+                                    "아이디가 존재하지 않습니다.", Toast.LENGTH_LONG).show();
+                            mResult = null;
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error.getMessage() == null) {
+                            Log.i(LOG_TAG, "서버 에러");
+                            Toast.makeText(getContext(), "서버 에러",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Log.i(LOG_TAG, error.getMessage());
+                        }
+                    }
+                });
+        request.setTag(QUEUE_TAG);
+        mQueue.add(request);
+    }
+
 }

@@ -6,11 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="5dp"
     app:cardCornerRadius="5dp"
-    android:layout_marginBottom="1dp"
-    android:layout_marginLeft="2dp"
-    android:layout_marginRight="2dp"
-    android:layout_marginStart="2dp"
-    android:layout_marginEnd="2dp"
+    android:layout_margin="4dp"
     >
 
     <LinearLayout
@@ -19,29 +15,30 @@
         android:orientation="horizontal"
         >
 
-
-
         <TextView
             android:id="@+id/tvcategory"
-            android:layout_width="59dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
-            android:layout_weight="1"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_weight="1.2"
             android:gravity="center"
-            android:text="축구" />
+            android:text="축구"
+            android:background="#EDF3FA" />
 
         <LinearLayout
-            android:layout_width="258dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="4"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
                 android:gravity="center_vertical"
                 android:textSize="20sp"
                 tools:text="09:00 ~ 11:00" />
@@ -49,33 +46,37 @@
             <TextView
                 android:id="@+id/tvarea"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
                 android:gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:textSize="14dp"
                 android:text="구미시 금오공과 대학교 대운동장" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="125dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="4.8"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvrecruit_num"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="7/8" />
 
             <TextView
                 android:id="@+id/mine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right" />
+                android:gravity="right"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/ic_launcher_background"
+                android:text="MY"/>
+
+            <TextView
+                android:id="@+id/tvrecruit_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="9"
+                android:gravity="center"
+                android:text="7/8" />
 
             <TextView
                 android:id="@+id/rec_no"

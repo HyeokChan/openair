@@ -51,8 +51,7 @@
                 android:id="@+id/inimage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                app:srcCompat="@drawable/suf" />
+                android:adjustViewBounds="true" />
 
             <TextView
                 android:id="@+id/comment2"

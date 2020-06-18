@@ -11,7 +11,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/ic_launcher_background"
         android:theme="@style/AlertDialog.AppCompat">
 
@@ -34,7 +34,7 @@
     <TextView
         android:id="@+id/textView16"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:gravity="center"
         android:text="시간 선택"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
@@ -44,45 +44,35 @@
         android:layout_height="1dp"
         android:background="#000" />
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/TimeRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="569dp" />
-
-
-        </LinearLayout>
-
-    </android.support.v4.widget.NestedScrollView>
-
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_weight="50"
+        android:orientation="vertical">
 
-
-        <Button
-            android:id="@+id/TimeSelectButton"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/TimeRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
-            android:background="@drawable/bt_corner"
-            android:text="Select"
-            android:textColor="#000" />
+            android:layout_weight="3">
+
+        </android.support.v7.widget.RecyclerView>
 
 
     </LinearLayout>
+
+
+    <Button
+        android:id="@+id/TimeSelectButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:background="@drawable/bt_corner"
+        android:text="Select"
+        android:textColor="#000" />
 
 
 </LinearLayout>

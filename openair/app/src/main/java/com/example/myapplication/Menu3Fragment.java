@@ -29,8 +29,8 @@ public class Menu3Fragment extends Fragment {
     View v;
     Button btCategory;
     private int pageNum;
-    static String stCategory="전체";
     static int select_year, select_month, select_date;
+    SessionManager mSession = SessionManager.getInstance(getContext());
 
 
     @Nullable
@@ -93,7 +93,7 @@ public class Menu3Fragment extends Fragment {
             }
         });
 
-        final String [] items = {"전체", "축구", "풋살", "농구", "등산", "낚시"};
+        final String [] items = {"전체", "축구", "풋살", "골프", "낚시"};
 
         btCategory = (Button) v.findViewById(R.id.ComunityCategoryButton);
         btCategory.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +104,7 @@ public class Menu3Fragment extends Fragment {
                 int checkedItem;
                 for (checkedItem = 0; checkedItem < items.length; checkedItem++)
                 {
-                    if(items[checkedItem].equals(stCategory))
+                    if(items[checkedItem].equals(mSession.f3_stCategory))
                         break;
                 }
                 //Toast.makeText(v.getContext(), "ddd", Toast.LENGTH_SHORT).show();
@@ -116,7 +116,7 @@ public class Menu3Fragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO Auto-generated method stub
                         //Toast.makeText(v.getContext(), items[which], Toast.LENGTH_SHORT).show();
-                        stCategory = items[which];
+                        mSession.f3_stCategory = items[which];
                     }
                 });
                 dl.setPositiveButton("선택완료",
@@ -128,7 +128,7 @@ public class Menu3Fragment extends Fragment {
                                     getFragmentManager().beginTransaction().replace(R.id.child_fragment, new ChildFragment1()).commit();
                                 else if(pageNum == 2)
                                     getFragmentManager().beginTransaction().replace(R.id.child_fragment, new ChildFragment2()).commit();
-                                btCategory.setText(stCategory);
+                                btCategory.setText(mSession.f3_stCategory);
                                 dialog.dismiss(); // 누르면 바로 닫히는 형태
                             }
                         });
