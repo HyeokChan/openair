@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">오픈에어</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="title_activity_signup">회원 가입</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">아이디 또는 이메일</string>
+    <string name="prompt_password">비밀번호</string>
+    <string name="prompt_password2">비밀번호 확인</string>
+    <string name="prompt_nickname">닉네임</string>
+    <string name="action_sign_up">회원 가입</string>
+    <string name="action_sign_in">로그인</string>
+    <string name="action_sign_in_short">확인</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_different_password">This password is different</string>
+    <string name="error_invalid_nickname">This nickname is Invalid</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_login">로그인</string>
+    <string name="title_activity_insert_data">등록</string>
+</resources>
