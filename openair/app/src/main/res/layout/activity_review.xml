@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#AFEEEE	"
+        android:background="@color/ic_launcher_background"
         android:theme="@style/AlertDialog.AppCompat">
 
         <FrameLayout
@@ -106,7 +106,6 @@
             android:layout_marginRight="24dp"
             android:layout_marginBottom="24dp"
             android:foregroundGravity="top"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@android:drawable/ic_input_add" />
@@ -117,4 +116,3 @@
 
 
 </LinearLayout>
-

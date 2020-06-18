@@ -85,4 +85,3 @@ public class CustomDialog extends AppCompatActivity {
 
 
 }
-

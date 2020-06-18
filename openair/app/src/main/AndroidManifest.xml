@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ReviewActivity"></activity>
+        <activity android:name=".Mypage"></activity>
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
@@ -27,6 +27,7 @@
         <activity android:name=".TimeSelect" />
         <activity android:name=".DateSelect" />
         <activity android:name=".Reserve" />
+        <activity android:name=".ReviewActivity" />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".SplashActivity"

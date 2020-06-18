@@ -9,9 +9,9 @@
         android:id="@+id/ComunityCategoryButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#88BBCC"
-        android:text="ALL"
-        android:textColor="#fff" />
+        android:background="#C6DCF0"
+        android:text="전체"
+        android:textColor="#FFF" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,16 +23,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#AACCDD"
+            android:background="#D4E5F4"
             android:text="recruit"
-            android:textColor="#000" />
+            android:textColor="@color/ic_launcher_background" />
 
         <Button
             android:id="@+id/matchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#AACCDD"
+            android:background="#D4E5F4"
             android:text="match"
             android:textColor="#fff" />
     </LinearLayout>
@@ -42,9 +42,9 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#EEE"
-        app:textColorSelected="#999"
-        app:selectorColor="#999"/>
+        android:background="#EDF3FA"
+        app:textColorSelected="@color/ic_launcher_background"
+        app:selectorColor="@color/ic_launcher_background"/>
 
     <FrameLayout
         android:id="@+id/child_fragment"

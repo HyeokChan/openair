@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="님 환영합니다!" />
+            android:text="오픈에어를 이용해 주셔서 감사합니다." />
     </LinearLayout>
 
 </LinearLayout>

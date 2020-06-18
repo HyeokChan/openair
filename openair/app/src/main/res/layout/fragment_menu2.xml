@@ -10,9 +10,9 @@
         android:id="@+id/ActivityCategoryButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#88BBCC"
-        android:text="카테고리"
-        android:textColor="#fff" />
+        android:background="#C6DCF0"
+        android:text="전체"
+        android:textColor="#FFF" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
         android:layout_height="1dp"
         android:background="#000" />
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -57,10 +57,10 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/ActivityRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
 
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 
 </LinearLayout>

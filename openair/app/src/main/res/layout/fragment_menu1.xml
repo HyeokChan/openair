@@ -34,11 +34,7 @@
                 android:text="open air 이벤트 정보"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="match_parent"
-                android:layout_height="224dp"
-                app:srcCompat="@drawable/nain_visual_01" />
+
 
             <View
                 android:layout_width="match_parent"
