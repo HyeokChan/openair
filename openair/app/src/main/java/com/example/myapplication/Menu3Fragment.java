@@ -100,12 +100,18 @@ public class Menu3Fragment extends Fragment {
             @Override
             public void onClick(final View v) {
 
-                stCategory = "전체";
+
+                int checkedItem;
+                for (checkedItem = 0; checkedItem < items.length; checkedItem++)
+                {
+                    if(items[checkedItem].equals(stCategory))
+                        break;
+                }
                 //Toast.makeText(v.getContext(), "ddd", Toast.LENGTH_SHORT).show();
                 // TODO Auto-generated method stub
                 AlertDialog.Builder dl = new AlertDialog.Builder(v.getContext());
                 dl.setTitle("카테고리 선택");
-                dl.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                dl.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO Auto-generated method stub

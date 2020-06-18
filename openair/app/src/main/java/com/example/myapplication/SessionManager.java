@@ -46,6 +46,7 @@ public class SessionManager {
     public static final String KEY_ID = "id";
     public static final String KEY_EMAIL = "email";
 
+    static String f2_stCategory="전체";
     static Context mContext = null;
 
     protected RequestQueue mQueue = null;

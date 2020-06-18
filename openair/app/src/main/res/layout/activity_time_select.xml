@@ -11,7 +11,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:background="@color/ic_launcher_background"
         android:theme="@style/AlertDialog.AppCompat">
 
@@ -34,7 +34,7 @@
     <TextView
         android:id="@+id/textView16"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="시간 선택"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
@@ -44,7 +44,7 @@
         android:layout_height="1dp"
         android:background="#000" />
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -56,12 +56,12 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/TimeRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="569dp" />
 
 
         </LinearLayout>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 
     <LinearLayout

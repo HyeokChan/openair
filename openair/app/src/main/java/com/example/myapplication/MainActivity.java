@@ -52,9 +52,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // FrameLayout에 각 메뉴의 Fragment를 바꿔 줌
     private FragmentManager fragmentManager = getSupportFragmentManager();
     // 3개의 메뉴에 들어갈 Fragment들
-    private Menu1Fragment menu1Fragment = new Menu1Fragment();
-    private Menu2Fragment menu2Fragment = new Menu2Fragment();
-    private Menu3Fragment menu3Fragment = new Menu3Fragment();
+    private Menu1Fragment menu1Fragment = null;
+    private Menu2Fragment menu2Fragment = null;
+    private Menu3Fragment menu3Fragment = null;
 
     //private DrawerLayout mDrawerLayout;
 
@@ -119,6 +119,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             TextView tvEnd = (TextView) headerView.findViewById(R.id.textView18);
             tvEnd.setText("님 환영합니다!");
         }
+
+        menu1Fragment = new Menu1Fragment();
+        menu2Fragment = new Menu2Fragment();
+        menu3Fragment = new Menu3Fragment();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
         // 첫 화면 지정
@@ -243,10 +247,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this, "로그아웃되었습니다.",
                     Toast.LENGTH_SHORT).show();
         }
+        else if (id == R.id.nav_mypage)
+        {
+            if (mSession.isLogin() == true)
+            {
+                Intent intent = new Intent(this, Mypage.class);
+                startActivityForResult(intent, ACTIVITY_SIGNUP);
+            }
+            else
+            {
+                Toast.makeText(this, "로그인 후 이용해 주세요.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
         else if (id == R.id.nav_info)
         {
             // 서버에 웹 페이지 만들어서 연결할 것
-            sendPostToFCM("종덕", "정신차립시다");
+            sendPostToFCM("장욱이", "섹스");
         } else if (id == R.id.nav_copyright)
         {
             // 서버에 웹 페이지 만들어서 연결할 것
@@ -327,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     notification.put("body", body);
                     notification.put("title", title);
                     root.put("notification", notification);
-                    root.put("to", "c3DSL1fSo6o:APA91bFkHpi4hYUv3zhAcAXYIOZtNoGaMYavgseVg0owAE4NlB_7trohx4WPwu9khQ2ksvl3AKuUDyHOkzMIgVVCDcKp2Qab-DmupfuQtMmSjH8XHEad0QL9-rlzEj8wb3dYzLf6bdBz");
+                    root.put("to", "eVrnCHiXjGg:APA91bFuqO0PZwvOB5H5J7GOYZ78YElYfUytJdnyUUmQ7KqxPw13rCIlqUAtt_H94SEaQYdsfRdnYBQOAqkUlbuh0SWQlMcFS4bhoIcWOgTTKohT5mUL88HNBiJ09Uhw4LPqGn9iXzBW");
                     //root.put("to", "fS5rE0mv4Sw:APA91bFyBzpzeIKU2zOXRj1Ri_blZt8Tor6vPpwekW4M03omF1jzjDkajw0HH7UBIekResRzTyt48kiGIBUOqgakMSPV4dKTWtbx3-eOkN-dV0btdFNJOJvTMslksh6l4sumztxEpCKO");
                     // FMC 메시지 생성 end
                      URL Url = new URL(FCM_MESSAGE_URL);

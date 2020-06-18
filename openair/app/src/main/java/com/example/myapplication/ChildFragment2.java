@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -113,7 +114,7 @@ public class ChildFragment2 extends Fragment {
                             String insert_total_num = team_name_combo.getText().toString();
                             String insert_recruit_num = recruit_combo.getText().toString();
 
-                            writeMatch(new matchInfo(insert_activity, insert_time, insert_area, insert_total_num, insert_recruit_num));
+                            writeMatch(new matchInfo("",mSession.getID(), insert_activity, insert_time, insert_area, insert_total_num, insert_recruit_num));
 
                             dlg_combo.dismiss(); // 누르면 바로 닫히는 형태
                         }
@@ -146,6 +147,17 @@ public class ChildFragment2 extends Fragment {
 
         mQueue = mSession.getQueue();
         requestMatch();
+
+        final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_child2);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestMatch();
+
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         return v;
     }
 
@@ -157,12 +169,19 @@ public class ChildFragment2 extends Fragment {
         public String team_name;
         public String recruit_num;
 
-        public matchInfo(String category, String time, String area, String team_name, String recruit_num){
+        public String userid;
+        public String matNo;
+
+        public matchInfo(String matNo, String userid, String category, String time, String area, String team_name, String recruit_num){
             this.category = category;
             this.time = time;
             this.area = area;
             this.team_name = team_name;
             this.recruit_num = recruit_num;
+
+            this.userid = userid;
+            this.matNo = matNo;
+
         }
 
         public String getCategory() {
@@ -184,6 +203,14 @@ public class ChildFragment2 extends Fragment {
         public String getRecruit_num() {
             return recruit_num;
         }
+        public String getUserid()
+        {
+            return userid;
+        }
+        public String getMatNo()
+        {
+            return matNo;
+        }
     }
 
     public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder>  {
@@ -196,6 +223,9 @@ public class ChildFragment2 extends Fragment {
             TextView tvArea;
             TextView tvRecruit_num;
 
+            TextView mine;
+            TextView matNo;
+
             public ViewHolder(View view){
                 super(view);
                 view.setOnClickListener(this);
@@ -203,6 +233,9 @@ public class ChildFragment2 extends Fragment {
                 tvTime = view.findViewById(R.id.tvtime);
                 tvArea = view.findViewById(R.id.tvarea);
                 tvRecruit_num = view.findViewById(R.id.tvrecruit_num);
+
+                mine = view.findViewById(R.id.mine);
+                matNo = view.findViewById(R.id.rec_no);
             }
 
             @Override
@@ -230,23 +263,39 @@ public class ChildFragment2 extends Fragment {
 
                 dlJoin.setView(tvLayout);
 
-                dlJoin.setPositiveButton("예",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id)
-                            {
-                                // 프로그램을 종료한다
-                                dialog.dismiss(); // 누르면 바로 닫히는 형태
-                            }
-                        });
+                if (mine.getText().equals("내가쓴글"))
+                {
+                    dlJoin.setNegativeButton("삭제하기",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id)
+                                {
+                                    // 프로그램을 종료한다
+                                    deleteMatch(matNo.getText().toString());
+                                    dialog.dismiss(); // 누르면 바로 닫히는 형태
+                                }
+                            });
+                }
 
-                dlJoin.setNegativeButton("아니요",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id)
-                            {
-                                // 프로그램을 종료한다
-                                dialog.dismiss(); // 누르면 바로 닫히는 형태
-                            }
-                        });
+                else
+                {
+                    dlJoin.setPositiveButton("예",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id)
+                                {
+                                    // 프로그램을 종료한다
+                                    dialog.dismiss(); // 누르면 바로 닫히는 형태
+                                }
+                            });
+
+                    dlJoin.setNegativeButton("아니요",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id)
+                                {
+                                    // 프로그램을 종료한다
+                                    dialog.dismiss(); // 누르면 바로 닫히는 형태
+                                }
+                            });
+                }
                 dlJoin.show();
 
             }
@@ -258,18 +307,23 @@ public class ChildFragment2 extends Fragment {
 
 
         @Override
-        public MatchAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_row_recruit, parent, false);
-            return new MatchAdapter.ViewHolder(v);
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(MatchAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            if(mSession.getID().equals(matchInfoArrayList.get(position).userid))
+            {
+                holder.mine.setText("내가쓴글");
+            }
             holder.tvCategory.setText(matchInfoArrayList.get(position).category);
             holder.tvTime.setText(matchInfoArrayList.get(position).time);
             holder.tvArea.setText(matchInfoArrayList.get(position).area);
             holder.tvRecruit_num.setText( matchInfoArrayList.get(position).recruit_num + " (" + matchInfoArrayList.get(position).team_name + ")");
+            holder.matNo.setText(matchInfoArrayList.get(position).matNo);
         }
 
         @Override
@@ -291,13 +345,15 @@ public class ChildFragment2 extends Fragment {
                 if(Menu3Fragment.select_year == check_time.getYear() && Menu3Fragment.select_month == check_time.getMonth()
                         && Menu3Fragment.select_date == check_time.getDate() &&
                         (info.getString("category").equals(Menu3Fragment.stCategory) || Menu3Fragment.stCategory.equals("전체"))) {
+                    String matno = info.getInt("mat_no")+"";
+                    String userid = info.getString("userid");
                     String category = info.getString("category");
                     String time = info.getString("time");
                     String area = info.getString("place");
                     String team_name = info.getString("team_name");
                     String recruit_num = info.getString("recruit_num");
 
-                    matchInfoArrayList.add(new matchInfo(category, time, area, team_name, recruit_num));
+                    matchInfoArrayList.add(new matchInfo(matno, userid, category, time, area, team_name, recruit_num));
                 }
             }
 
@@ -387,5 +443,50 @@ public class ChildFragment2 extends Fragment {
                 });
         request.setTag(QUEUE_TAG);
         mQueue.add(request);
+    }
+
+
+    protected void deleteMatch(String matno) {
+        String url = SessionManager.getURL() + "match/delete_match.php";
+        Map<String, String> params = new HashMap<String, String>();
+        Log.i("wpwp",matno);
+        params.put("mat_no", matno);
+
+        JSONObject jsonObj = new JSONObject(params);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObj,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("adad","ok");
+                        Log.i(LOG_TAG, "Response: " + response.toString());
+                        mResult = response;
+                        if (response.has("error")) {
+                            try {
+                                Toast.makeText(getContext(),
+                                        response.getString("error").toString(),
+                                        Toast.LENGTH_LONG).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else
+                            requestMatch();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(LOG_TAG, error.getMessage());
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+        request.setTag(QUEUE_TAG);
+        mQueue.add(request);
+
+
     }
 }

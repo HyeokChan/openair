@@ -55,10 +55,9 @@ public class ReviewActivity extends AppCompatActivity {
 
     CustomDialog customDialog;
 
-    public float ratingsum = 0f;
     public TextView tvratingsum;
-    public int reviewcnt = 0;
-
+    protected float ratingsum;
+    protected int reviewcnt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +103,7 @@ public class ReviewActivity extends AppCompatActivity {
                             String insert_user_email = mSession.getEmail();
                             String insert_content = txt_modify_edit.getText().toString();
                             String insert_rating = rb_ratingBar.getRating()+"";
-                            writeNews(new ReviewInfo(insert_user_email, insert_content, insert_rating));
+                            writeNews(new ReviewInfo(insert_user_email, insert_content, insert_rating), ratingsum, reviewcnt);
                             dlg.dismiss();
                         }
                     });
@@ -177,7 +176,6 @@ public class ReviewActivity extends AppCompatActivity {
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
             MyAdapterReview.MyViewHolder myViewHolder = (MyAdapterReview.MyViewHolder) holder;
-            Log.i("k2k", "1515");
             myViewHolder.tvNic.setText(reviewInfoArrayList.get(position).nicname);
             myViewHolder.tvSen.setText(reviewInfoArrayList.get(position).sentence);
             myViewHolder.rbRating.setRating(reviewInfoArrayList.get(position).ratingFloat);
@@ -225,6 +223,8 @@ public class ReviewActivity extends AppCompatActivity {
         try {
             JSONArray items = mResult.getJSONArray("list");
 
+            reviewcnt = 0;
+            ratingsum = 0f;
             for (int i = 0; i < items.length(); i++) {
                 JSONObject info = items.getJSONObject(i);
                 String c_name = info.getString("c_name");
@@ -241,8 +241,6 @@ public class ReviewActivity extends AppCompatActivity {
             }
             String stratingnum = String.format("%.2f",ratingsum/reviewcnt);
             tvratingsum.setText("평점 " + stratingnum + "/5");
-            reviewcnt = 0;
-            ratingsum = 0f;
 
 
         } catch (JSONException | NullPointerException e) {
@@ -287,7 +285,7 @@ public class ReviewActivity extends AppCompatActivity {
         mQueue.add(request);
     }
 
-    protected void writeNews(ReviewInfo insert_data) {
+    protected void writeNews(ReviewInfo insert_data, float starsum, int cnt) {
         String url = SessionManager.getURL() + "review/insert_review.php";
 
         Map<String, String> params = new HashMap<String, String>();
@@ -295,6 +293,7 @@ public class ReviewActivity extends AppCompatActivity {
         params.put("user_email", insert_data.nicname);
         params.put("content", insert_data.sentence);
         params.put("rating", insert_data.rating);
+        params.put("star", String.format("%.2f", ((starsum + Float.parseFloat(insert_data.rating)) / (cnt + 1))));
         JSONObject jsonObj = new JSONObject(params);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,

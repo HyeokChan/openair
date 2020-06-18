@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -50,11 +53,13 @@ public class ChildFragment1 extends Fragment {
 
     protected RequestQueue mQueue = null;
     JSONObject mResult = null;
-    ArrayList<recruitInfo> recruitInfoArrayList = new ArrayList<recruitInfo>();
-    protected RecruitAdapter mAdapter = new RecruitAdapter(recruitInfoArrayList);
+    ArrayList<recruitInfo> recruitInfoArrayList = new ArrayList<recruitInfo>(); //
+    protected RecruitAdapter mAdapter = new RecruitAdapter(recruitInfoArrayList); //
     SessionManager mSession = SessionManager.getInstance(getContext());
 
     CustomDialogCombo customDialogCombo;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,6 +105,12 @@ public class ChildFragment1 extends Fragment {
 
                     final Button ok_button_combo = (Button) dlg_combo.findViewById(R.id.okButtonCombo);
 
+                    ViewGroup.LayoutParams params = dlg_combo.getWindow().getAttributes();
+                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    //params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                    dlg_combo.getWindow().setAttributes((WindowManager.LayoutParams)params);
+
+
                     ok_button_combo.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -112,7 +123,7 @@ public class ChildFragment1 extends Fragment {
                             String insert_total_num = total_combo.getText().toString();
                             String insert_recruit_num = recruit_combo.getText().toString();
 
-                            writeRecruit(new recruitInfo(insert_activity, insert_time, insert_area, insert_total_num, insert_recruit_num));
+                            writeRecruit(new recruitInfo("",mSession.getID(),insert_activity, insert_time, insert_area, insert_total_num, insert_recruit_num));
 
                             dlg_combo.dismiss(); // 누르면 바로 닫히는 형태
                         }
@@ -142,10 +153,23 @@ public class ChildFragment1 extends Fragment {
 
         });
 
+
+
         CookieHandler.setDefault(new CookieManager());
 
         mQueue = mSession.getQueue();
         requestRecruit();
+
+        final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_child1);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestRecruit();
+
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         return v;
     }
 
@@ -156,13 +180,19 @@ public class ChildFragment1 extends Fragment {
         public String total_num;
         public String recruit_num;
 
-        public recruitInfo(String category, String time, String area, String total_num, String recruit_num) {
+        public String userid;
+        public String recNo;
+
+        public recruitInfo(String recNo, String userid, String category, String time, String area, String total_num, String recruit_num) {
 
             this.category = category;
             this.time = time;
             this.area = area;
             this.total_num = total_num;
             this.recruit_num = recruit_num;
+
+            this.userid = userid;
+            this.recNo = recNo;
         }
 
         public String getCategory() {
@@ -184,6 +214,13 @@ public class ChildFragment1 extends Fragment {
         public String getRecruit_num() {
             return recruit_num;
         }
+
+        public String getUserid()
+        {
+            return userid;
+        }
+
+        public String getRecNo() { return recNo; }
     }
 
     public class RecruitAdapter extends RecyclerView.Adapter<RecruitAdapter.ViewHolder>  {
@@ -196,6 +233,11 @@ public class ChildFragment1 extends Fragment {
             TextView tvArea;
             TextView tvRecruit_num;
 
+            TextView mine;
+            TextView recNo;
+
+
+
             public ViewHolder(View view){
                 super(view);
                 view.setOnClickListener(this);
@@ -203,6 +245,9 @@ public class ChildFragment1 extends Fragment {
                 tvTime = view.findViewById(R.id.tvtime);
                 tvArea = view.findViewById(R.id.tvarea);
                 tvRecruit_num = view.findViewById(R.id.tvrecruit_num);
+
+                mine = view.findViewById(R.id.mine);
+                recNo = view.findViewById(R.id.rec_no);
             }
 
             @Override
@@ -227,26 +272,69 @@ public class ChildFragment1 extends Fragment {
                 final TextView dlMessage = new TextView(v.getContext());
                 dlMessage.setText("    참가하시겠습니까?");
                 tvLayout.addView(dlMessage);
-
                 dlJoin.setView(tvLayout);
 
-                dlJoin.setPositiveButton("예",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id)
-                            {
-                                // 프로그램을 종료한다
-                                dialog.dismiss(); // 누르면 바로 닫히는 형태
-                            }
-                        });
+                int idx = tvRecruit_num.getText().toString().indexOf("/");
+                String join_num = tvRecruit_num.getText().toString().substring(0,idx);
+                join_num = join_num.trim();
+                String total_num = tvRecruit_num.getText().toString().substring(idx+1);
+                total_num = total_num.trim();
+                int j_nums = Integer.parseInt(join_num);
+                int t_nums = Integer.parseInt(total_num);
+                final int r_nums = t_nums - j_nums;
 
-                dlJoin.setNegativeButton("아니요",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id)
-                            {
-                                // 프로그램을 종료한다
-                                dialog.dismiss(); // 누르면 바로 닫히는 형태
-                            }
-                        });
+                if (mine.getText().equals("내가쓴글"))
+                {
+                    dlJoin.setNegativeButton("삭제하기",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id)
+                                {
+                                    // 프로그램을 종료한다
+                                    deleteRecruit(recNo.getText().toString());
+                                    dialog.dismiss(); // 누르면 바로 닫히는 형태
+                                }
+                            });
+                }
+
+                else
+                {
+                    dlJoin.setPositiveButton("예",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id)
+                                {
+                                    if(mSession.isLogin()==true )
+                                    {
+                                        if (r_nums>0)
+                                        {
+                                            joinRecruit(recNo.getText().toString());
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(getContext(), "정원이 가득 찼습니다.",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(getContext(), "로그인 후 이용해주세요.",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                    dialog.dismiss(); // 누르면 바로 닫히는 형태
+                                }
+                            });
+
+                    dlJoin.setNegativeButton("아니요",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id)
+                                {
+                                    // 프로그램을 종료한다
+                                    dialog.dismiss(); // 누르면 바로 닫히는 형태
+                                }
+                            });
+                }
+
+
                 dlJoin.show();
 
             }
@@ -266,10 +354,18 @@ public class ChildFragment1 extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
+            if(mSession.getID().equals(recruitInfoArrayList.get(position).userid))
+            {
+                holder.mine.setText("내가쓴글");
+            }
+            else {
+                holder.mine.setText("");
+            }
             holder.tvCategory.setText(recruitInfoArrayList.get(position).category);
             holder.tvTime.setText(recruitInfoArrayList.get(position).time);
             holder.tvArea.setText(recruitInfoArrayList.get(position).area);
             holder.tvRecruit_num.setText((Integer.parseInt(recruitInfoArrayList.get(position).total_num) - Integer.parseInt(recruitInfoArrayList.get(position).recruit_num)) + " / " + recruitInfoArrayList.get(position).total_num);
+            holder.recNo.setText(recruitInfoArrayList.get(position).recNo);
         }
 
         @Override
@@ -291,13 +387,15 @@ public class ChildFragment1 extends Fragment {
                 if(Menu3Fragment.select_year == check_time.getYear() && Menu3Fragment.select_month == check_time.getMonth()
                         && Menu3Fragment.select_date == check_time.getDate() &&
                         (info.getString("category").equals(Menu3Fragment.stCategory) || Menu3Fragment.stCategory.equals("전체"))) {
+                    String recno = info.getInt("rec_no")+"";
+                    String userid = info.getString("userid");
                     String category = info.getString("category");
                     String time = info.getString("time");
                     String area = info.getString("place");
                     String total_num = info.getString("total_num");
                     String recruit_num = info.getString("recruit_num");
 
-                    recruitInfoArrayList.add(new recruitInfo(category, time, area, total_num, recruit_num));
+                    recruitInfoArrayList.add(new recruitInfo(recno,userid ,category, time, area, total_num, recruit_num));
                 }
             }
 
@@ -353,8 +451,8 @@ public class ChildFragment1 extends Fragment {
         params.put("recruit_num", insert_data.recruit_num);
         params.put("time", insert_data.time);
         params.put("area", insert_data.area);
-        params.put("date", (Menu3Fragment.select_year + 1900) + "-" + ((Menu3Fragment.select_month + 1) < 10 ? "0" + (Menu3Fragment.select_month + 1) : (Menu3Fragment.select_month + 1))
-                + "-" + ((Menu3Fragment.select_date) < 10 ? "0" + (Menu3Fragment.select_date) : (Menu3Fragment.select_date)));
+        params.put("date", (Menu3Fragment.select_year + 1900) + "-" + ((Menu3Fragment.select_month + 1) < 10 ? "0" + (Menu3Fragment.select_month + 1) :
+                (Menu3Fragment.select_month + 1)) + "-" + ((Menu3Fragment.select_date) < 10 ? "0" + (Menu3Fragment.select_date) : (Menu3Fragment.select_date)));
         JSONObject jsonObj = new JSONObject(params);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
@@ -387,6 +485,92 @@ public class ChildFragment1 extends Fragment {
                 });
         request.setTag(QUEUE_TAG);
         mQueue.add(request);
+    }
+
+    protected void deleteRecruit(String recno) {
+        String url = SessionManager.getURL() + "recruit/delete_recruit.php";
+        Map<String, String> params = new HashMap<String, String>();
+        Log.i("wpwp",recno);
+        params.put("rec_no", recno);
+
+        JSONObject jsonObj = new JSONObject(params);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObj,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("adad","ok");
+                        Log.i(LOG_TAG, "Response: " + response.toString());
+                        mResult = response;
+                        if (response.has("error")) {
+                            try {
+                                Toast.makeText(getContext(),
+                                        response.getString("error").toString(),
+                                        Toast.LENGTH_LONG).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else
+                            requestRecruit();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(LOG_TAG, error.getMessage());
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+        request.setTag(QUEUE_TAG);
+        mQueue.add(request);
+
+
+    }
+
+    protected void joinRecruit(String recno) {
+        String url = SessionManager.getURL() + "recruit/join_recruit.php";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("rec_no", recno);
+
+        JSONObject jsonObj = new JSONObject(params);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                url, jsonObj,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i(LOG_TAG, "Response: " + response.toString());
+                        mResult = response;
+                        if (response.has("error")) {
+                            try {
+                                Toast.makeText(getContext(),
+                                        response.getString("error").toString(),
+                                        Toast.LENGTH_LONG).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else
+                            requestRecruit();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(LOG_TAG, error.getMessage());
+                        Toast.makeText(getContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+        request.setTag(QUEUE_TAG);
+        mQueue.add(request);
+
+
     }
 
 }

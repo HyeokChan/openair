@@ -30,9 +30,10 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,58 +41,82 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/comment1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="업체 관련 사진" />
 
-            <View
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/inimage"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 app:srcCompat="@drawable/suf" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000" />
-
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/comment2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="7dp"
                 android:text="업체 정보" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000" />
-
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/inlinfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="푸켓은 5~10월 서핑 시즌에는 초∙중급 서퍼들이 서핑을 즐길만한 적당한 높이 파도 덕분에 서핑의 메카로 불린다. 특히 카타비치(Kata beach)는 해변이 넓고 바다가 깊지 않아 수영을 잘하지 못하는 서퍼들도 충분히 즐길 수 있으며 파통비치에 비해 조용하고 한산하다는 것이 장점. 그에 비해 카타노이비치(Kata Noi beach)와 수린비치(Surin beach)는 수심이 깊고 파도가 카타비치에 비해 거칠어 중급 이상의 실력자들이 모이는 곳이다. 또 파통비치 북쪽에 위치한 칼림비치(Kalim beach)는 푸켓 최고의 서핑 장소라 불리는 곳으로 최대 3m에 이르는 높은 파도를 탈 수 있으며 퀵실버 태국 서핑 대회(Quicksilver Thailand Surf Competiotion) 후원 서핑 콘테스트가 개최되는 곳이기도 하다. 푸켓에서 아름답기로 소문난 해변에서 서핑을 즐기며 멋진 풍경을 보고 싶다면 지금 당장 떠나보자." />
+                android:text="업체의 긴 설명입니다." />
 
-            <View
+            <TextView
+                android:id="@+id/comment3"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000" />
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="7dp"
+                android:text="업체 전화번호" />
 
+            <TextView
+                android:id="@+id/innumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="054-0000-0000" />
+
+            <TextView
+                android:id="@+id/comment4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="7dp"
+                android:text="업체 지역" />
+
+            <TextView
+                android:id="@+id/inlocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="구미" />
+
+            <TextView
+                android:id="@+id/comment5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="7dp"
+                android:text="업체 주소" />
+
+            <TextView
+                android:id="@+id/inaddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="경상북도" />
 
 
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
 
@@ -102,9 +127,9 @@
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:layout_weight="1"
+            android:background="@drawable/bt_corner"
             android:text="Reserve"
-            android:textColor="#000"
-            android:background="@drawable/bt_corner"/>
+            android:textColor="#000" />
 
         <Button
             android:id="@+id/ReviewButton"
@@ -113,9 +138,9 @@
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:layout_weight="1"
+            android:background="@drawable/bt_corner"
             android:text="Review"
-            android:textColor="#000"
-            android:background="@drawable/bt_corner" />
+            android:textColor="#000" />
     </LinearLayout>
 
 
