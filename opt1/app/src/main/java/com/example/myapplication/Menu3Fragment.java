@@ -29,7 +29,7 @@ public class Menu3Fragment extends Fragment {
     View v;
     Button btCategory;
     private int pageNum;
-    static String stCategory="ALL";
+    static String stCategory="전체";
     static int select_year, select_month, select_date;
 
 
@@ -51,7 +51,7 @@ public class Menu3Fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 pageNum = 1;
-                subButton1.setTextColor(Color.BLACK);
+                subButton1.setTextColor(Color.rgb(157, 195, 230));
                 subButton2.setTextColor(Color.WHITE);
                 getFragmentManager().beginTransaction().replace(R.id.child_fragment, new ChildFragment1()).commit();
             }
@@ -61,7 +61,7 @@ public class Menu3Fragment extends Fragment {
             public void onClick(View view) {
                 pageNum = 2;
                 subButton1.setTextColor(Color.WHITE);
-                subButton2.setTextColor(Color.BLACK);
+                subButton2.setTextColor(Color.rgb(157, 195, 230));
                 getFragmentManager().beginTransaction().replace(R.id.child_fragment, new ChildFragment2()).commit();
             }
         });
@@ -90,20 +90,17 @@ public class Menu3Fragment extends Fragment {
                     getFragmentManager().beginTransaction().replace(R.id.child_fragment, new ChildFragment1()).commit();
                 else if(pageNum == 2)
                     getFragmentManager().beginTransaction().replace(R.id.child_fragment, new ChildFragment2()).commit();
-
-                Log.i("checksibal", select_year +"  "+ select_month +"  "+ select_date);
-
             }
         });
 
-        final String [] items = {"ALL", "축구", "풋살", "농구", "등산", "낚시"};
+        final String [] items = {"전체", "축구", "풋살", "농구", "등산", "낚시"};
 
         btCategory = (Button) v.findViewById(R.id.ComunityCategoryButton);
         btCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
 
-                stCategory = "ALL";
+                stCategory = "전체";
                 //Toast.makeText(v.getContext(), "ddd", Toast.LENGTH_SHORT).show();
                 // TODO Auto-generated method stub
                 AlertDialog.Builder dl = new AlertDialog.Builder(v.getContext());

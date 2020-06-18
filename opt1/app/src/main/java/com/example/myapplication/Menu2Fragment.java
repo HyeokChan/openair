@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,15 +10,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
@@ -32,7 +28,7 @@ public class Menu2Fragment extends Fragment {
 
     View v;
     Button ActivityBtCategoty;
-    static String ActivityStCategory="";
+    static String ActivityStCategory="전체";
     static boolean ActivitySelectBool = false;
 
     private RequestQueue mRequestQueue = null;
@@ -42,13 +38,15 @@ public class Menu2Fragment extends Fragment {
     RecyclerView.LayoutManager mLayoutManagerActivity;
 
     static String c_name;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         v = inflater.inflate(R.layout.fragment_menu2, container, false);
 
-        final String [] items = {"축구", "풋살", "농구", "등산", "낚시"};
+        final String [] items = {"전체", "축구", "풋살", "농구", "등산", "낚시"};
 
         ActivityBtCategoty = (Button) v.findViewById(R.id.ActivityCategoryButton);
         ActivityBtCategoty.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +92,8 @@ public class Menu2Fragment extends Fragment {
         });
 
         mRecyclerViewActivity = (RecyclerView)v.findViewById(R.id.ActivityRecycler);
-        mRecyclerViewActivity.setHasFixedSize(true);
+        mRecyclerViewActivity.setNestedScrollingEnabled(false);
+        //mRecyclerViewActivity.setHasFixedSize(true);
         mLayoutManagerActivity = new LinearLayoutManager(this.getContext());
         mRecyclerViewActivity.setLayoutManager(mLayoutManagerActivity);
         //mRecyclerViewActivity.setNestedScrollingEnabled(false);
