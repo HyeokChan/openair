@@ -119,7 +119,7 @@ public class ChildFragment2 extends Fragment {
                             String insert_total_num = team_name_combo.getText().toString();
                             String insert_recruit_num = recruit_combo.getText().toString();
 
-                            writeMatch(new matchInfo("",mSession.getID(), insert_activity, insert_time, insert_area, insert_total_num, insert_recruit_num));
+                            writeMatch(new matchInfo("",mSession.getID(), insert_activity, insert_time, insert_area, insert_total_num, insert_recruit_num,""));
 
                             dlg_combo.dismiss(); // 누르면 바로 닫히는 형태
                         }
@@ -177,7 +177,10 @@ public class ChildFragment2 extends Fragment {
         public String userid;
         public String matNo;
 
-        public matchInfo(String matNo, String userid, String category, String time, String area, String team_name, String recruit_num){
+        public String status;
+
+        public matchInfo(String matNo, String userid, String category, String time, String area, String team_name, String recruit_num, String status){
+
             this.category = category;
             this.time = time;
             this.area = area;
@@ -186,6 +189,8 @@ public class ChildFragment2 extends Fragment {
 
             this.userid = userid;
             this.matNo = matNo;
+
+            this.status = status;
 
         }
 
@@ -216,6 +221,8 @@ public class ChildFragment2 extends Fragment {
         {
             return matNo;
         }
+
+        public String getStatus() {return status;}
     }
 
     public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.ViewHolder>  {
@@ -231,6 +238,8 @@ public class ChildFragment2 extends Fragment {
             TextView mine;
             TextView matNo;
 
+
+
             public ViewHolder(View view){
                 super(view);
                 view.setOnClickListener(this);
@@ -241,69 +250,73 @@ public class ChildFragment2 extends Fragment {
 
                 mine = view.findViewById(R.id.mine);
                 matNo = view.findViewById(R.id.rec_no);
+
             }
 
             @Override
             public void onClick(View v) {
-                android.support.v7.app.AlertDialog.Builder dlJoin = new android.support.v7.app.AlertDialog.Builder(v.getContext());
-                dlJoin.setTitle("참가여부");
 
-                LinearLayout tvLayout = new LinearLayout(v.getContext());
-                tvLayout.setOrientation(LinearLayout.VERTICAL);
-                final TextView dlCategory = new TextView(v.getContext());
-                dlCategory.setText("    카테고리:"+tvCategory.getText());
-                tvLayout.addView(dlCategory);
-                final TextView dlTime = new TextView(v.getContext());
-                dlTime.setText("    시간:"+tvTime.getText());
-                tvLayout.addView(dlTime);
-                final TextView dlArea = new TextView(v.getContext());
-                dlArea.setText("    장소:"+tvArea.getText());
-                tvLayout.addView(dlArea);
-                final TextView dlRecruit_num = new TextView(v.getContext());
-                dlRecruit_num.setText("    매칭인원 (팀 이름):"+tvRecruit_num.getText());
-                tvLayout.addView(dlRecruit_num);
-                final TextView dlMessage = new TextView(v.getContext());
-                dlMessage.setText("    신청하시겠습니까?");
-                tvLayout.addView(dlMessage);
 
-                dlJoin.setView(tvLayout);
-
-                if (mine.getText().equals("ME"))
+                if (!tvRecruit_num.getText().toString().substring(0,4).equals("매칭완료"))
                 {
-                    dlJoin.setNegativeButton("삭제하기",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id)
-                                {
-                                    // 프로그램을 종료한다
-                                    deleteMatch(matNo.getText().toString());
-                                    dialog.dismiss(); // 누르면 바로 닫히는 형태
-                                }
-                            });
+                    android.support.v7.app.AlertDialog.Builder dlJoin = new android.support.v7.app.AlertDialog.Builder(v.getContext());
+                    dlJoin.setTitle("참가여부");
+                    LinearLayout tvLayout = new LinearLayout(v.getContext());
+                    tvLayout.setOrientation(LinearLayout.VERTICAL);
+                    final TextView dlCategory = new TextView(v.getContext());
+                    dlCategory.setText("    카테고리:"+tvCategory.getText());
+                    tvLayout.addView(dlCategory);
+                    final TextView dlTime = new TextView(v.getContext());
+                    dlTime.setText("    시간:"+tvTime.getText());
+                    tvLayout.addView(dlTime);
+                    final TextView dlArea = new TextView(v.getContext());
+                    dlArea.setText("    장소:"+tvArea.getText());
+                    tvLayout.addView(dlArea);
+                    final TextView dlRecruit_num = new TextView(v.getContext());
+                    dlRecruit_num.setText("    매칭인원 (팀 이름):"+tvRecruit_num.getText());
+                    tvLayout.addView(dlRecruit_num);
+                    final TextView dlMessage = new TextView(v.getContext());
+                    dlMessage.setText("    신청하시겠습니까?");
+                    tvLayout.addView(dlMessage);
+
+                    dlJoin.setView(tvLayout);
+                    if (mine.getText().equals("ME"))
+                    {
+                        dlJoin.setNegativeButton("삭제하기",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id)
+                                    {
+                                        // 프로그램을 종료한다
+                                        deleteMatch(matNo.getText().toString());
+                                        dialog.dismiss(); // 누르면 바로 닫히는 형태
+                                    }
+                                });
+                    }
+
+                    else
+                    {
+                        dlJoin.setPositiveButton("예",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id)
+                                    {
+                                        // 프로그램을 종료한다
+
+                                        joinMatch(matNo.getText().toString());
+                                        dialog.dismiss(); // 누르면 바로 닫히는 형태
+                                    }
+                                });
+
+                        dlJoin.setNegativeButton("아니요",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id)
+                                    {
+                                        // 프로그램을 종료한다
+                                        dialog.dismiss(); // 누르면 바로 닫히는 형태
+                                    }
+                                });
+                    }
+                    dlJoin.show();
                 }
-
-                else
-                {
-                    dlJoin.setPositiveButton("예",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id)
-                                {
-                                    // 프로그램을 종료한다
-                                    joinMatch(matNo.getText().toString());
-                                    dialog.dismiss(); // 누르면 바로 닫히는 형태
-                                }
-                            });
-
-                    dlJoin.setNegativeButton("아니요",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id)
-                                {
-                                    // 프로그램을 종료한다
-                                    dialog.dismiss(); // 누르면 바로 닫히는 형태
-                                }
-                            });
-                }
-                dlJoin.show();
-
             }
         }
 
@@ -331,7 +344,15 @@ public class ChildFragment2 extends Fragment {
             holder.tvCategory.setText(matchInfoArrayList.get(position).category);
             holder.tvTime.setText(matchInfoArrayList.get(position).time);
             holder.tvArea.setText(matchInfoArrayList.get(position).area);
-            holder.tvRecruit_num.setText( matchInfoArrayList.get(position).recruit_num + " (" + matchInfoArrayList.get(position).team_name + ")");
+            if (matchInfoArrayList.get(position).status.equals("true"))
+            {
+                holder.tvRecruit_num.setText( "매칭완료" + " (" + matchInfoArrayList.get(position).team_name + ")");
+            }
+            else
+            {
+                holder.tvRecruit_num.setText( matchInfoArrayList.get(position).recruit_num + " (" + matchInfoArrayList.get(position).team_name + ")");
+            }
+
             holder.matNo.setText(matchInfoArrayList.get(position).matNo);
         }
 
@@ -351,11 +372,11 @@ public class ChildFragment2 extends Fragment {
                 String date = info.getString("date");
                 SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd");
                 Date check_time = date_format.parse(date);
-                if(info.getString("status").equals("false")
-                        && Menu3Fragment.select_year == check_time.getYear()
+                if(Menu3Fragment.select_year == check_time.getYear()
                         && Menu3Fragment.select_month == check_time.getMonth()
                         && Menu3Fragment.select_date == check_time.getDate()
                         && (info.getString("category").equals(mSession.f3_stCategory) || mSession.f3_stCategory.equals("전체"))) {
+                    String status = info.getString("status");
                     String matno = info.getInt("mat_no")+"";
                     String userid = info.getString("userid");
                     String category = info.getString("category");
@@ -364,7 +385,7 @@ public class ChildFragment2 extends Fragment {
                     String team_name = info.getString("team_name");
                     String recruit_num = info.getString("recruit_num");
 
-                    matchInfoArrayList.add(new matchInfo(matno, userid, category, time, area, team_name, recruit_num));
+                    matchInfoArrayList.add(new matchInfo(matno, userid, category, time, area, team_name, recruit_num, status));
                 }
             }
 
@@ -380,7 +401,7 @@ public class ChildFragment2 extends Fragment {
     }
 
     private void requestMatch() {
-        String url = SessionManager.getURL() + "match/select_match.php";
+        String url = SessionManager.getURL() + "match/select_matchTest.php";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener<JSONObject>() {

@@ -205,9 +205,9 @@ public class Menu1Fragment extends Fragment {
 
 
         // 받아온 주소를 공백단위로 자른다.
-        String city;
-        String[] addr_token = addr.split(" ");
 
+        String[] addr_token = addr.split(" ");
+        String city;
         city = addr_token[0];
         if(city.length() == 5) {
             // 광역시일 경우 광역시를 제거한다.
@@ -276,6 +276,7 @@ public class Menu1Fragment extends Fragment {
 
 
 
+        //---------여기서부터---------
         final RecyclerView mRecyclerView = (RecyclerView)rootView.findViewById(R.id.tRecycler);
         mRecyclerView.setAdapter(mAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
@@ -327,6 +328,7 @@ public class Menu1Fragment extends Fragment {
 
         mQueue = mSession.getQueue();
         mQueue2 = mSession.getQueue();
+        Log.i("이이",city);
         requestTomorrowfd(city);
         requestWeather(city);
 
@@ -406,27 +408,25 @@ public class Menu1Fragment extends Fragment {
                             Log.i("jebal", items.toString());
                             for (int i = 0; i < items.length(); i++) {
                                 JSONObject info = items.getJSONObject(i);
-                                //
-
-
-                                String pm10_image = "verybad.png";
-                                String pm25_image = "verybad.png";
+                                // 초기화
+                                String pm10_image = "verybad2.png";
+                                String pm25_image = "verybad2.png";
                                 //
                                 String time = info.getString("TIME");
 
                                 String pm10 = info.getString("PM10level");
 
-                                if(pm10.equals("좋음")) pm10_image = "good.png";
-                                else if(pm10.equals("보통")) pm10_image = "nomal.png";
-                                else if(pm10.equals("한때 나쁨")) pm10_image = "somebad.png";
-                                else if(pm10.equals("나쁨")) pm10_image = "bad.png";
+                                if(pm10.equals("좋음")) pm10_image = "good2.png";
+                                else if(pm10.equals("보통")) pm10_image = "normal2.png";
+                                else if(pm10.equals("한때 나쁨")) pm10_image = "somebad2.png";
+                                else if(pm10.equals("나쁨")) pm10_image = "bad2.png";
                                 else pm10 = "매우 나쁨";
 
                                 String pm25 = info.getString("PM25level");
-                                if(pm25.equals("좋음")) pm25_image = "good.png";
-                                else if(pm25.equals("보통")) pm25_image = "nomal.png";
-                                else if(pm25.equals("한때 나쁨")) pm25_image = "somebad.png";
-                                else if(pm25.equals("나쁨")) pm25_image = "bad.png";
+                                if(pm25.equals("좋음")) pm25_image = "good2.png";
+                                else if(pm25.equals("보통")) pm25_image = "normal2.png";
+                                else if(pm25.equals("한때 나쁨")) pm25_image = "somebad2.png";
+                                else if(pm25.equals("나쁨")) pm25_image = "bad2.png";
                                 else pm25 = "매우 나쁨";
                                 Log.i("jebal", time + "   " + pm10 + "    " + pm25 + "    " + pm10_image + pm25_image);
 
@@ -574,45 +574,45 @@ public class Menu1Fragment extends Fragment {
             holder.PM10dust.setText(weatherInfoArrayList.get(position).PM10level);
             if(holder.PM10dust.getText().toString().equals("좋음"))
             {
-                holder.ivImage.setImageUrl(SessionManager.getURL() + "weatherImage/good.png", mImageLoader2);
+                holder.ivImage.setImageUrl(SessionManager.getURL() + "weatherImage/good2.png", mImageLoader2);
             }
             else if(holder.PM10dust.getText().toString().equals("보통"))
             {
-                holder.ivImage.setImageUrl(SessionManager.getURL() + "weatherImage/nomal.png", mImageLoader2);
+                holder.ivImage.setImageUrl(SessionManager.getURL() + "weatherImage/normal2.png", mImageLoader2);
             }
             else if(holder.PM10dust.getText().toString().equals("한때 나쁨"))
             {
-                holder.ivImage.setImageUrl(SessionManager.getURL() + "weatherImage/somebad.png", mImageLoader2);
+                holder.ivImage.setImageUrl(SessionManager.getURL() + "weatherImage/somebad2.png", mImageLoader2);
             }
             else if(holder.PM10dust.getText().toString().equals("나쁨"))
             {
-                holder.ivImage.setImageUrl(SessionManager.getURL() + "weatherImage/bad.png", mImageLoader2);
+                holder.ivImage.setImageUrl(SessionManager.getURL() + "weatherImage/bad2.png", mImageLoader2);
             }
             else if(holder.PM10dust.getText().toString().equals("매우 나쁨"))
             {
-                holder.ivImage.setImageUrl(SessionManager.getURL() + "weatherImage/verybad.png", mImageLoader2);
+                holder.ivImage.setImageUrl(SessionManager.getURL() + "weatherImage/verybad2.png", mImageLoader2);
             }
 
             holder.PM25dust.setText(weatherInfoArrayList.get(position).PM25level);
             if(holder.PM25dust.getText().toString().equals("좋음"))
             {
-                holder.ivImage2.setImageUrl(SessionManager.getURL() + "weatherImage/good.png", mImageLoader2);
+                holder.ivImage2.setImageUrl(SessionManager.getURL() + "weatherImage/good2.png", mImageLoader2);
             }
             else if(holder.PM25dust.getText().toString().equals("보통"))
             {
-                holder.ivImage2.setImageUrl(SessionManager.getURL() + "weatherImage/nomal.png", mImageLoader2);
+                holder.ivImage2.setImageUrl(SessionManager.getURL() + "weatherImage/normal2.png", mImageLoader2);
             }
             else if(holder.PM25dust.getText().toString().equals("한때 나쁨"))
             {
-                holder.ivImage2.setImageUrl(SessionManager.getURL() + "weatherImage/somebad.png", mImageLoader2);
+                holder.ivImage2.setImageUrl(SessionManager.getURL() + "weatherImage/somebad2.png", mImageLoader2);
             }
             else if(holder.PM25dust.getText().toString().equals("나쁨"))
             {
-                holder.ivImage2.setImageUrl(SessionManager.getURL() + "weatherImage/bad.png", mImageLoader2);
+                holder.ivImage2.setImageUrl(SessionManager.getURL() + "weatherImage/bad2.png", mImageLoader2);
             }
             else if(holder.PM25dust.getText().toString().equals("매우 나쁨"))
             {
-                holder.ivImage2.setImageUrl(SessionManager.getURL() + "weatherImage/verybad.png", mImageLoader2);
+                holder.ivImage2.setImageUrl(SessionManager.getURL() + "weatherImage/verybad2.png", mImageLoader2);
             }
         }
 
@@ -686,6 +686,8 @@ public class Menu1Fragment extends Fragment {
                 address.setText(changeaddr);
                 curMyAddress = changeaddr;
 
+
+
                 Location loc = getPoint(getContext(), changeaddr); //위경도를 다시 주소로 변환하는 함수
                 Log.i("지오코더(주소->위경도) 확인","OK");
 
@@ -705,7 +707,9 @@ public class Menu1Fragment extends Fragment {
                 else{
                     setWeather(list);
                     requestPlace();
+
                     Log.i("Intent setWeather 확인","OK");
+
                 }
 
             }

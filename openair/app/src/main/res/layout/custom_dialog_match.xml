@@ -14,6 +14,7 @@
         android:id="@+id/dialogTitleCombo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/ygotjalnanfont"
         android:gravity="center"
         android:text="매칭모집 글쓰기"
         android:textColor="#000"
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:ems="10"
+        android:fontFamily="@font/ygotjalnanfont"
         android:hint="team"
         android:inputType="textPersonName" />
 
@@ -35,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:ems="10"
+        android:fontFamily="@font/ygotjalnanfont"
         android:hint="recruit"
         android:inputType="textPersonName" />
 
@@ -58,6 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:ems="10"
+        android:fontFamily="@font/ygotjalnanfont"
         android:hint="area"
         android:inputType="textPersonName" />
 
@@ -73,19 +77,21 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:text="취소"
             android:background="#EDF3FA"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:text="취소"
             android:textColor="@color/ic_launcher_background" />
 
         <Button
             android:id="@+id/okButtonCombo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:text="입력완료"
             android:background="#EDF3FA"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:text="입력완료"
             android:textColor="@color/ic_launcher_background" />
     </LinearLayout>
 

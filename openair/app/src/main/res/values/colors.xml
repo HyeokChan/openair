@@ -5,7 +5,8 @@
     <color name="colorAccent">@color/ic_launcher_background</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorCard">#FAFBFD</color>
-    <color name="colorGood">#D3D9E6</color>
+    <color name="colorGood">#96A7AA</color>
     <color name="colorNormal">#F2EEC2</color>
     <color name="colorBad">#DFBCBC</color>
+    <color name="colorSplash">#F9F9F9</color>
 </resources>

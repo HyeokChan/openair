@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/ic_launcher_background"
+    android:background="#f9f9f9"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="385dp"
-        android:layout_height="132dp"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="30dp"
         app:srcCompat="@drawable/newlogo" />

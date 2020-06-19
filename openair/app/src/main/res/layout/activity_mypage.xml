@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/ic_launcher_background"
+        android:background="#f9f9f9"
         android:theme="@style/AlertDialog.AppCompat">
 
         <FrameLayout
@@ -21,10 +21,10 @@
             android:layout_gravity="center">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:src="@drawable/logo" />
+                android:src="@drawable/newlogo" />
 
         </FrameLayout>
 
@@ -44,9 +44,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#D4E5F4"
+                android:fontFamily="@font/ygotjalnanfont"
                 android:gravity="center"
                 android:text="My Page"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textSize="16sp" />
 
 
             <TextView
@@ -54,7 +56,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#EDF3FA"
-                android:text="내가 예약한 Activity" />
+                android:fontFamily="@font/ygotjalnanfont"
+                android:text="예약 내역" />
 
             <View
                 android:layout_width="match_parent"
@@ -71,7 +74,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#EDF3FA"
-                android:text="내가 작성한 recruit" />
+                android:fontFamily="@font/ygotjalnanfont"
+                android:text="내가 작성한 모집 내역" />
 
             <View
                 android:layout_width="match_parent"
@@ -88,7 +92,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#EDF3FA"
-                android:text="내가 작성한 match" />
+                android:fontFamily="@font/ygotjalnanfont"
+                android:text="내가 작성한 매칭 내역" />
 
             <View
                 android:layout_width="match_parent"
@@ -106,7 +111,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#EDF3FA"
-                android:text="내가 등록된 recruit" />
+                android:fontFamily="@font/ygotjalnanfont"
+                android:text="내가 참가한 모집 내역" />
 
             <View
                 android:layout_width="match_parent"
@@ -123,7 +129,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#EDF3FA"
-                android:text="내가 등록된 match" />
+                android:fontFamily="@font/ygotjalnanfont"
+                android:text="내가 참가한 매칭 내역" />
 
             <View
                 android:layout_width="match_parent"
@@ -131,6 +138,7 @@
                 android:background="#000" />
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/joined_mat_recy"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

@@ -16,8 +16,10 @@
             android:id="@+id/ttime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/ygotjalnanfont"
             android:text="오늘 00시"
-            android:layout_gravity="center"/>
+            android:textColor="#747474" />
         <LinearLayout
         android:layout_width="wrap_content"
         android:layout_margin="8dp"
@@ -32,9 +34,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="PM10"
+                    android:layout_gravity="center"
                     android:layout_marginBottom="5dp"
-                    android:layout_gravity="center"/>
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:text="PM10" />
 
                 <com.android.volley.toolbox.NetworkImageView
                     android:id="@+id/l10_timage"
@@ -45,9 +48,11 @@
                     android:id="@+id/l10_status"
                     android:layout_width="30dp"
                     android:layout_height="36dp"
-                    android:text="한때 나쁨"
                     android:layout_gravity="center"
-                    android:gravity="center"/>
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="한때 나쁨"
+                    android:textSize="10sp" />
 
             </LinearLayout>
             <LinearLayout
@@ -59,9 +64,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="PM25"
+                    android:layout_gravity="center"
                     android:layout_marginBottom="5dp"
-                    android:layout_gravity="center"/>
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:text="PM25" />
 
                 <com.android.volley.toolbox.NetworkImageView
                     android:id="@+id/l25_timage"
@@ -72,9 +78,11 @@
                     android:id="@+id/l25_status"
                     android:layout_width="30dp"
                     android:layout_height="36dp"
-                    android:text="좋음"
                     android:layout_gravity="center"
-                    android:gravity="center"/>
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="좋음"
+                    android:textSize="10sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

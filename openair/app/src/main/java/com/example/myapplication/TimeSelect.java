@@ -57,6 +57,12 @@ public class TimeSelect extends AppCompatActivity {
     );
 
 
+    //----------------------------현재 시간
+    long mNow;
+    Date mDate;
+    SimpleDateFormat mFormat = new SimpleDateFormat("yyyyMMdd");
+    String currentDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +76,6 @@ public class TimeSelect extends AppCompatActivity {
         TimeSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 Intent CashIntent = new Intent(TimeSelect.this, Cash.class);
                 TimeSelect.this.startActivity(CashIntent);
             }
@@ -83,29 +87,16 @@ public class TimeSelect extends AppCompatActivity {
         mLayoutManagerTime = new LinearLayoutManager(this);
         mRecyclerViewTime.setLayoutManager(mLayoutManagerTime);
 
-
-        /*timeInfoArrayList.add(new TimeSelectInfo("09:00", "예약가능", "좋음",true));
-        timeInfoArrayList.add(new TimeSelectInfo("10:00", "예약가능", "나쁨",true));
-        timeInfoArrayList.add(new TimeSelectInfo("11:00", "예약불가", "보통",true));
-        timeInfoArrayList.add(new TimeSelectInfo("12:00", "예약가능", "좋음",false));
-        timeInfoArrayList.add(new TimeSelectInfo("13:00", "예약가능", "좋음",false));
-        timeInfoArrayList.add(new TimeSelectInfo("14:00", "예약가능", "나쁨",false));
-        timeInfoArrayList.add(new TimeSelectInfo("15:00", "예약가능", "좋음",false));
-        timeInfoArrayList.add(new TimeSelectInfo("16:00", "예약가능", "나쁨",false));
-        timeInfoArrayList.add(new TimeSelectInfo("17:00", "예약가능", "나쁨",false));
-        timeInfoArrayList.add(new TimeSelectInfo("18:00", "예약가능", "좋음",false));
-        timeInfoArrayList.add(new TimeSelectInfo("19:00", "예약가능", "좋음",false));
-        timeInfoArrayList.add(new TimeSelectInfo("20:00", "예약가능", "보통",false));
-        timeInfoArrayList.add(new TimeSelectInfo("21:00", "예약가능", "보통",false));*/
-
-
-
-
-
-
         CookieHandler.setDefault(new CookieManager());
 
         mQueue = mSession.getQueue();
+
+        mNow = System.currentTimeMillis();
+        mDate = new Date(mNow);
+        currentDate = mFormat.format(mDate);
+        Log.i("datetest123",currentDate);
+
+
         requestRecruit();
     }
 
@@ -211,6 +202,35 @@ public class TimeSelect extends AppCompatActivity {
         }
     }
 
+    public class TimeSelectInfo {
+        public String time;
+        public String reserve;
+        public String dust;
+        public boolean isSelected;
+
+        public TimeSelectInfo(String time, String reserve, String dust, boolean isSelected){
+            this.time = time;
+            this.reserve = reserve;
+            this.dust = dust;
+            this.isSelected = isSelected;
+        }
+
+        public String getTime(){
+            return time;
+        }
+        public String getReserve()
+        {
+            return reserve;
+        }
+        public String getDust() {
+            return dust;
+        }
+        public boolean isSelected()
+        {
+            return isSelected;
+        }
+    }
+
     public void drawList() {
         int j;
         int k=1;
@@ -226,13 +246,14 @@ public class TimeSelect extends AppCompatActivity {
                     String place_no = info.getString("place_no");
                     String date = info.getString("date");
                     String time = info.getString("time");
-                    if (place_no.equals(Menu2Fragment.c_name) && date.equals(DateSelect.c_date) && time.equals(base_time.get(j)))
+                    if (place_no.equals(Menu2Fragment.c_name) && date.equals(DateSelect.c_date) && time.equals(base_time.get(j))) // 예약된게 있을 때
                     {
+
                         timeInfoArrayList.add(new TimeSelectInfo(base_time.get(j),"예약불가","좋음",false));
                         k=0;
                     }
                 }
-                if(k==1)
+                if(k==1) // 예약된게 없을 때
                 {
                     timeInfoArrayList.add(new TimeSelectInfo(base_time.get(j),"예약가능","나쁨",true));
                 }

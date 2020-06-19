@@ -1,14 +1,11 @@
 package com.example.myapplication;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,41 +25,21 @@ import org.json.JSONObject;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
-import java.security.PrivateKey;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
-
-class Nick_Phone{
-    private String Nick;
-    private String Phone;
-    public Nick_Phone(){}
-    public Nick_Phone(String Nick, String Phone)
-    {
-        this.Nick = Nick;
-        this.Phone = Phone;
-    }
-    public String getNick(){
-        return Nick;
-    }
-    public String getPhone(){
-        return Phone;
-    }
-}
 
 public class Mypage extends AppCompatActivity {
 
     public static final String LOG_TAG = "ChildFragment1(Recruit)";
     public static final String QUEUE_TAG = "VolleyRequest";
     SessionManager mSession = SessionManager.getInstance(Mypage.this);
-    //-----------------------------------------
+    //----------------------------------------- 내가 예약한 리스트
     protected RequestQueue mQueue = null;
     JSONObject mResult = null;
     ArrayList<my_reserveInfo> MyReserveInfoArrayList = new ArrayList<my_reserveInfo>();
     protected my_reserveAdapter mAdapter = new my_reserveAdapter(MyReserveInfoArrayList);
-    //----------------------------------------
+    //---------------------------------------- 내가작성한 모집 리스트
     protected RequestQueue mQueue2 = null;
     JSONObject mResult2 = null;
     ArrayList<my_write_recruitInfo> MyWriteRecInfoArrayList = new ArrayList<my_write_recruitInfo>();
@@ -71,17 +48,29 @@ public class Mypage extends AppCompatActivity {
     ArrayList<Nick_Phone> applicantId = new ArrayList<Nick_Phone>();
     TextView[] textViews;
 
-    //-----------------------------------------
+    // ---------------- 내가 작성한 매칭 리스트
     protected RequestQueue mQueue3 = null;
     JSONObject mResult3 = null;
     ArrayList<my_write_recruitInfo> MyWriteMatInfoArrayList = new ArrayList<my_write_recruitInfo>();
     protected my_write_matAdapter mAdapter3 = new my_write_matAdapter(MyWriteMatInfoArrayList);
-    //-----------------------------------------
+
+    ArrayList<Nick_Phone> applicantIdMatch = new ArrayList<Nick_Phone>();
+
+    //----------------------------------------- 내가 참가한 모집 리스트
     ArrayList<Integer> communityNo = new ArrayList<>();
     protected RequestQueue mQueue4 = null;
     JSONObject mResult4 = null;
     ArrayList<my_write_recruitInfo> MyJoinedRecInfoArrayList = new ArrayList<my_write_recruitInfo>();
     protected my_joined_recAdapter mAdapter4 = new my_joined_recAdapter(MyJoinedRecInfoArrayList);
+
+    //----------------------------------------- 내가 참가한 매칭 리스트
+    ArrayList<Integer> communityNoMatch = new ArrayList<>();
+    protected RequestQueue mQueue5 = null;
+    JSONObject mResult5 = null;
+    ArrayList<my_write_recruitInfo> MyJoinedMatInfoArrayList = new ArrayList<my_write_recruitInfo>();
+    protected my_joined_matAdapter mAdapter5 = new my_joined_matAdapter(MyJoinedMatInfoArrayList);
+
+
 
     //----------------------------현재 시간
     long mNow;
@@ -115,14 +104,24 @@ public class Mypage extends AppCompatActivity {
         mRecyclerView3.setHasFixedSize(true);
         mQueue3 = mSession.getQueue();
         requestWriteMatch();
-        //-------------------------------------
+        //------------------------------------- 내가 참가한 모집 리스트
         RecyclerView mRecyclerView4 = (RecyclerView)findViewById(R.id.joined_rec_recy); /////
         mRecyclerView4.setAdapter(mAdapter4);
         mRecyclerView4.setLayoutManager(new LinearLayoutManager(Mypage.this));
         mRecyclerView4.setHasFixedSize(true);
         mQueue4 = mSession.getQueue();
         requestCheckRecruit();
-        //requestJoinedRecruit();
+
+        //------------------------------------- 내가 참가한 매치 리스트
+        RecyclerView mRecyclerView5 = (RecyclerView)findViewById(R.id.joined_mat_recy); /////
+        mRecyclerView5.setAdapter(mAdapter5);
+        mRecyclerView5.setLayoutManager(new LinearLayoutManager(Mypage.this));
+        mRecyclerView5.setHasFixedSize(true);
+        mQueue5 = mSession.getQueue();
+        requestCheckMatch();
+
+
+
 
         //------------------현재 날짜
         mNow = System.currentTimeMillis();
@@ -440,6 +439,8 @@ public class Mypage extends AppCompatActivity {
         request.setTag(QUEUE_TAG);
         mQueue2.add(request);
     }
+
+
     //--------------------------------------------------- 내가 작성한 match
     public class my_write_matAdapter extends RecyclerView.Adapter<my_write_matAdapter.ViewHolder>  {
 
@@ -471,6 +472,7 @@ public class Mypage extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                requestCheckMatch2(matno.getText().toString());
 
             }
         }
@@ -536,7 +538,7 @@ public class Mypage extends AppCompatActivity {
         mAdapter3.notifyDataSetChanged();
     }
     private void requestWriteMatch() {
-        String url = SessionManager.getURL() + "match/select_match.php";
+        String url = SessionManager.getURL() + "match/select_matchTest.php";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener<JSONObject>() {
@@ -564,9 +566,10 @@ public class Mypage extends AppCompatActivity {
         request.setTag(QUEUE_TAG);
         mQueue3.add(request);
     }
-    //---------------------------------------------------- 등록된 recruit 체크
 
-    public void check_drawList() {
+
+    //---------------------------------------------------- 등록된 recruit 체크
+    public void check_drawListRecruit() {
         try {
 
             JSONArray items = mResult.getJSONArray("list");
@@ -575,7 +578,8 @@ public class Mypage extends AppCompatActivity {
                 JSONObject info = items.getJSONObject(i);
                 int community_no = info.getInt("community_no");
                 int applicant_id = info.getInt("applicant_id");
-                if(Integer.parseInt(mSession.getID()) == applicant_id)
+                String community = info.getString("community");
+                if(community.equals("recruit") && Integer.parseInt(mSession.getID()) == applicant_id)
                 {
                     communityNo.add(community_no);
                     //Log.i("확인체크숫자",community_no+"");
@@ -593,7 +597,6 @@ public class Mypage extends AppCompatActivity {
 
 
     private void requestCheckRecruit() {
-
         String url = SessionManager.getURL() + "recruit/select_applicant.php";
         Log.i("ㅅㅅㅅ","확인체크3");
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
@@ -602,7 +605,7 @@ public class Mypage extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         mResult = response;
-                        check_drawList();
+                        check_drawListRecruit();
                     }
                 },
                 new Response.ErrorListener() {
@@ -803,7 +806,7 @@ public class Mypage extends AppCompatActivity {
     }
 
     //-----------------------------------------------------------누가 내글에 참여했는지 recruit
-    public void check_drawList2() {
+    public void check_drawListRecruit2() {
         try {
             JSONArray items = mResult.getJSONArray("list");
             applicantId.clear();
@@ -870,7 +873,7 @@ public class Mypage extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         mResult = response;
-                        check_drawList2();
+                        check_drawListRecruit2();
                     }
                 },
                 new Response.ErrorListener() {
@@ -891,6 +894,365 @@ public class Mypage extends AppCompatActivity {
         request.setTag(QUEUE_TAG);
         mQueue.add(request);
     }
+
+    static class Nick_Phone{
+        private String Nick;
+        private String Phone;
+        public Nick_Phone(){}
+        public Nick_Phone(String Nick, String Phone)
+        {
+            this.Nick = Nick;
+            this.Phone = Phone;
+        }
+        public String getNick(){
+            return Nick;
+        }
+        public String getPhone(){
+            return Phone;
+        }
+    }
+
+
+    //---------------------------------------------------- 등록된 매치 체크
+
+    public void check_drawListMatch() {
+        try {
+
+            JSONArray items = mResult.getJSONArray("list");
+            communityNoMatch.clear();
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject info = items.getJSONObject(i);
+                int community_no = info.getInt("community_no");
+                int applicant_id = info.getInt("applicant_id");
+                String community = info.getString("community");
+                if(community.equals("match") && Integer.parseInt(mSession.getID()) == applicant_id)
+                {
+                    communityNoMatch.add(community_no);
+                    //Log.i("확인체크숫자",community_no+"");
+                }
+
+            }
+
+            requestJoinedMatch();
+
+        } catch (JSONException | NullPointerException e) {
+            mResult = null;
+        }
+    }
+
+    private void requestCheckMatch() {
+
+        String url = SessionManager.getURL() + "recruit/select_applicant.php";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        mResult = response;
+                        check_drawListMatch();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error.getMessage() == null) {
+                            Log.i(LOG_TAG, "서버 에러");
+                            Toast.makeText(Mypage.this, "서버 에러",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Log.i(LOG_TAG, error.getMessage());
+                            //Toast.makeText(getContext(), error.getMessage(),
+                            //      Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+        request.setTag(QUEUE_TAG);
+        mQueue.add(request);
+    }
+
+    //---------------------------------------------------- 내가 등록된 match
+    public class my_joined_matchInfo {
+        public int joino;
+        public String category;
+        public String place;
+        public String date;
+        public String time;
+        public String teamname;
+        public String recruitnum;
+
+        public my_joined_matchInfo(int joino, String category, String place,String date, String time, String teamname, String recruitnum) {
+            this.joino = joino;
+            this.category = category;
+            this.place = place;
+            this.date = date;
+            this.time = time;
+            this.teamname = teamname;
+            this.recruitnum = recruitnum;
+
+        }
+
+        public int getJoino()
+        {
+            return joino;
+        }
+
+        public String getCategory() {
+            return category;
+        }
+
+        public String getPlace() {
+            return place;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        public String getTeamname() {
+            return teamname;
+        }
+
+        public String getRecruitnum() {
+            return recruitnum;
+        }
+    }
+
+    public class my_joined_matAdapter extends RecyclerView.Adapter<my_joined_matAdapter.ViewHolder>  {
+
+        ArrayList<my_write_recruitInfo> MyJoinedMatInfoArrayList = null;
+
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            TextView joino;
+            TextView category;
+            TextView place;
+            TextView date;
+            TextView time;
+            TextView teamname;
+            TextView recruitnum;
+
+
+            public ViewHolder(View view){
+                super(view);
+                view.setOnClickListener(this);
+                joino = view.findViewById(R.id.rec_no);
+                category = view.findViewById(R.id.category);
+                place = view.findViewById(R.id.place);
+                date = view.findViewById(R.id.date);
+                time = view.findViewById(R.id.time);
+                teamname = view.findViewById(R.id.totalnum);
+                recruitnum = view.findViewById(R.id.recruitnum);
+                /////////////////////
+
+            }
+
+            @Override
+            public void onClick(View v) {
+
+            }
+        }
+
+        public my_joined_matAdapter(ArrayList<my_write_recruitInfo> MyJoinedMatInfoArrayList){
+            this.MyJoinedMatInfoArrayList = MyJoinedMatInfoArrayList;
+        }
+
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_row_write_recruit, parent, false);
+            return new ViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.joino.setText(MyJoinedMatInfoArrayList.get(position).recno+"");
+            holder.category.setText(MyJoinedMatInfoArrayList.get(position).category);
+            holder.place.setText(MyJoinedMatInfoArrayList.get(position).place);
+            holder.date.setText(MyJoinedMatInfoArrayList.get(position).date);
+            holder.time.setText(MyJoinedMatInfoArrayList.get(position).time);
+            holder.teamname.setText(MyJoinedMatInfoArrayList.get(position).totalnum);
+            holder.recruitnum.setText(MyJoinedMatInfoArrayList.get(position).recruitnum);
+        }
+
+        @Override
+        public int getItemCount() {
+            return MyJoinedMatInfoArrayList.size();
+        }
+    }
+
+    public void drawList5() {
+        MyJoinedMatInfoArrayList.clear();
+        try {
+            JSONArray items = mResult5.getJSONArray("list");
+
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject info = items.getJSONObject(i);
+                int joino = info.getInt("mat_no");
+
+                String userid = info.getString("userid");
+                String category = info.getString("category");
+                String place = info.getString("place");
+                String date = info.getString("date");
+                String time = info.getString("time");
+                String teamname = info.getString("team_name");
+                String recruitnum = info.getInt("recruit_num")+"";
+
+                String compareDateMatch = date.replace("-","");
+
+                for (int j=0; j<communityNoMatch.size(); j++)
+                {
+                    if (Integer.parseInt(currentDate) <= Integer.parseInt(compareDateMatch) && communityNoMatch.get(j)==joino)
+                    {
+                        MyJoinedMatInfoArrayList.add(new my_write_recruitInfo(joino ,category,place ,date,time,teamname,recruitnum));
+                    }
+                }
+            }
+
+        } catch (JSONException | NullPointerException e) {
+            mResult5 = null;
+        }
+        mAdapter5.notifyDataSetChanged();
+    }
+    private void requestJoinedMatch() {
+        String url = SessionManager.getURL() + "match/select_matchTest.php";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        mResult5 = response;
+                        drawList5();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error.getMessage() == null) {
+                            Log.i(LOG_TAG, "서버 에러");
+                            Toast.makeText(Mypage.this, "서버 에러",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Log.i(LOG_TAG, error.getMessage());
+                            Toast.makeText(Mypage.this, error.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+        request.setTag(QUEUE_TAG);
+        mQueue5.add(request);
+    }
+
+    //-----------------------------------------------------------누가 내글에 참여했는지 recruit
+    public void check_drawListMatch2() {
+        try {
+            JSONArray items = mResult.getJSONArray("list");
+            applicantIdMatch.clear();
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject info = items.getJSONObject(i);
+                String nick = info.getString("nick");
+                String phone = info.getString("phone");
+                Log.i("dbdb123",nick+":"+phone);
+
+                applicantIdMatch.add(new Nick_Phone(nick,phone));
+            }
+
+            if (applicantIdMatch.size()>=1)
+            {
+                textViews = new TextView[applicantIdMatch.size()];
+
+
+                AlertDialog.Builder joinedDialog = new AlertDialog.Builder(Mypage.this);
+                joinedDialog.setTitle("등록된 유저 정보");
+                LinearLayout DialogLayout = new LinearLayout(Mypage.this);
+                DialogLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                LinearLayout NickLayout = new LinearLayout(Mypage.this);
+                NickLayout.setOrientation(LinearLayout.VERTICAL);
+
+                LinearLayout PhoneLayout = new LinearLayout(Mypage.this);
+                PhoneLayout.setOrientation(LinearLayout.VERTICAL);
+
+
+                DialogLayout.addView(NickLayout);
+                DialogLayout.addView(PhoneLayout);
+
+                for (int i=0; i<applicantIdMatch.size();i++)
+                {
+                    textViews[i] = new TextView(Mypage.this);
+                    textViews[i].setText(applicantIdMatch.get(i).getNick());
+                    NickLayout.addView(textViews[i]);
+                }
+                for (int i=0; i<applicantIdMatch.size();i++)
+                {
+                    textViews[i] = new TextView(Mypage.this);
+                    textViews[i].setText(applicantIdMatch.get(i).getPhone());
+                    PhoneLayout.addView(textViews[i]);
+                }
+                joinedDialog.setView(DialogLayout);
+                joinedDialog.show();
+                applicantIdMatch.clear();
+
+            }
+
+        } catch (JSONException | NullPointerException e) {
+            mResult = null;
+        }
+    }
+
+    private void requestCheckMatch2(final String matno) {
+
+        String url = SessionManager.getURL() + "users/mypage_joined_match.php?matno=" + matno;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        mResult = response;
+                        check_drawListMatch2();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error.getMessage() == null) {
+                            Log.i(LOG_TAG, "서버 에러");
+                            Toast.makeText(Mypage.this, "서버 에러",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Log.i(LOG_TAG, error.getMessage());
+                            //Toast.makeText(getContext(), error.getMessage(),
+                            //      Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+        request.setTag(QUEUE_TAG);
+        mQueue.add(request);
+    }
+
+    static class Nick_PhoneMatch{
+        private String Nick;
+        private String Phone;
+        public Nick_PhoneMatch(){}
+        public Nick_PhoneMatch(String Nick, String Phone)
+        {
+            this.Nick = Nick;
+            this.Phone = Phone;
+        }
+        public String getNick(){
+            return Nick;
+        }
+        public String getPhone(){
+            return Phone;
+        }
+    }
+
 
 }
 

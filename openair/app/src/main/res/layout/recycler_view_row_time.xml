@@ -24,15 +24,17 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
+            android:fontFamily="@font/ygotjalnanfont"
             android:gravity="center_vertical"
             android:textSize="20sp"
-            tools:text="09:00 ~ 11:00" />
+            tools:text="  09:00 ~ 11:00" />
 
         <TextView
             android:id="@+id/TimeReserve"
             android:layout_width="147dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/ygotjalnanfont"
             android:gravity="center"
             android:text="예약가능" />
 
@@ -41,6 +43,7 @@
             android:layout_width="81dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/ygotjalnanfont"
             android:gravity="center"
             android:text="좋음" />
 

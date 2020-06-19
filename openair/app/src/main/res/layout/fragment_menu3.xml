@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#C6DCF0"
+        android:fontFamily="@font/ygotjalnanfont"
         android:text="전체"
         android:textColor="#FFF" />
 
@@ -24,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#D4E5F4"
-            android:text="recruit"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:text="모 집"
             android:textColor="@color/ic_launcher_background" />
 
         <Button
@@ -33,7 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#D4E5F4"
-            android:text="match"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:text="매 칭"
             android:textColor="#fff" />
     </LinearLayout>
 
