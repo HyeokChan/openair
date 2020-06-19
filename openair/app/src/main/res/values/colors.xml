@@ -9,4 +9,5 @@
     <color name="colorNormal">#F2EEC2</color>
     <color name="colorBad">#DFBCBC</color>
     <color name="colorSplash">#F9F9F9</color>
+    <color name="colorLogo">#86C1CF</color>
 </resources>

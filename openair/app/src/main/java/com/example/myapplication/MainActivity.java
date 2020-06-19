@@ -119,8 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setNavEmail(mSession.getEmail());
             navigationView.getMenu().findItem(R.id.nav_login).setTitle("로그아웃");
             View headerView = navigationView.getHeaderView(0);
-            TextView tvEnd = (TextView) headerView.findViewById(R.id.textView18);
-            tvEnd.setText("님 환영합니다!");
+
         }
         Log.i("확인", "checkPoint1");
         menu1Fragment = new Menu1Fragment();
@@ -143,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     }
                     case R.id.navigation_dashboard: {
-                        mSession.f2_stCategory = "전체";
+                        mSession.f2_stCategory = "카테고리 선택";
                         if(menu2Fragment == null){
                             menu2Fragment = new Menu2Fragment();
                             fragmentManager.beginTransaction().add(R.id.frame_layout, menu2Fragment).commit();
@@ -211,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView tvNavEmail = (TextView) headerView.findViewById(R.id.textNavEmail);
         tvNavEmail.setText(email);
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -259,8 +259,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             TextView tvNavEmail = (TextView)findViewById(R.id.textNavEmail);
             tvNavEmail.setText("");
-            TextView tvEnd = (TextView)findViewById(R.id.textView18);
-            tvEnd.setText("오픈에어를 이용해 주셔서 감사합니다.");
+
             item.setTitle("로그인");
             mSession.Logout();
             Toast.makeText(this, "로그아웃되었습니다.",
@@ -281,9 +280,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if (id == R.id.nav_info)
         {
+            Intent intent = new Intent(this, InfoAppActivity.class);
+            startActivity(intent);
             // 서버에 웹 페이지 만들어서 연결할 것
         } else if (id == R.id.nav_copyright)
         {
+            Intent intent = new Intent(this, LicenseActivity.class);
+            startActivity(intent);
             // 서버에 웹 페이지 만들어서 연결할 것
             // 활용한 소스코드나 이미지 등 저작권 관련 정보
         }
@@ -310,8 +313,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     navigationView.getMenu().findItem(R.id.nav_login).setTitle("로그아웃");
                     TextView tv = (TextView)findViewById(R.id.textNavEmail);
                     tv.setText(mSession.getEmail());
-                    TextView tvEnd = (TextView)findViewById(R.id.textView18);
-                    tvEnd.setText("님 환영합니다!");
+                    // 커뮤니티 부분에서 로그아웃->다른 아이디로 로그인 할때 내가쓴글Me 표시가 최신화 되지 않아서 변경
+                    Intent home = new Intent(this,MainActivity.class);
+                    startActivity(home);
                 }
                 else {
                     Log.i(LOG_TAG, "Fail");
@@ -329,9 +333,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
                     navigationView.getMenu().findItem(R.id.nav_login).setTitle("로그아웃");
                     TextView tv = (TextView)findViewById(R.id.textNavEmail);
-                    tv.setText(mSession.getEmail());
-                    TextView tvEnd = (TextView)findViewById(R.id.textView18);
-                    tvEnd.setText("님 환영합니다!");
+                    tv.setText(mSession.getEmail()+"ㄴㅇㄴㅇㄴ");
+
                 }
                 else {
 

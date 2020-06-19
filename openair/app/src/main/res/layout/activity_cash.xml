@@ -43,6 +43,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#FFF"
             android:orientation="vertical">
 
 
@@ -51,24 +52,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/bt_corner"
                 android:fontFamily="@font/ygotjalnanfont"
+                android:gravity="center"
                 android:text="예약자 정보"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
-            <View
-                android:id="@+id/view19"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="#000" />
-
-            <TextView
-                android:id="@+id/textView34"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <View
                 android:id="@+id/view"
@@ -82,16 +72,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#FFF"
                 android:fontFamily="@font/ygotjalnanfont"
-                android:text="이름"
+                android:text="이름 (예금주명)"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:textSize="16sp" />
 
-            <TextView
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#000" />
+
+            <EditText
                 android:id="@+id/textView20"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="#FFF"
+                android:fontFamily="@font/hoonddukbokki"
+                android:hint="이름을 입력하세요."
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <View
@@ -105,56 +106,32 @@
                 android:id="@+id/textView21"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:layout_weight="1"
+                android:background="#FFF"
                 android:fontFamily="@font/ygotjalnanfont"
                 android:text="연락처"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:textSize="16sp" />
 
-            <TextView
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#000" />
+
+            <EditText
                 android:id="@+id/textView22"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="#FFF"
+                android:fontFamily="@font/hoonddukbokki"
+                android:hint="연락처를 입력하세요."
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            <View
-                android:id="@+id/view14"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="#000" />
 
-            <TextView
-                android:id="@+id/textView23"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/ygotjalnanfont"
-                android:text="이메일"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/textView25"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-            <View
-                android:id="@+id/view15"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="#000" />
-
-            <TextView
-                android:id="@+id/textView26"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <View
                 android:id="@+id/view16"
@@ -168,10 +145,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginTop="15dp"
                 android:fontFamily="@font/ygotjalnanfont"
                 android:text="결제수단"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:textSize="16sp" />
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#000" />
 
             <RadioGroup
                 android:layout_width="wrap_content"
@@ -179,33 +164,52 @@
                 android:layout_weight="1">
 
                 <RadioButton
-                    android:id="@+id/radioButton2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="신용카드" />
-
-                <RadioButton
                     android:id="@+id/radioButton3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="소액결제" />
+                    android:fontFamily="@font/hoonddukbokki"
+                    android:text="계좌 이체 (카카오뱅크 3333-06-8405874)" />
 
                 <RadioButton
                     android:id="@+id/radioButton4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="현장결제" />
+                    android:fontFamily="@font/hoonddukbokki"
+                    android:text="현장 결제" />
             </RadioGroup>
 
             <View
-                android:id="@+id/view18"
+                android:id="@+id/view99"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_weight="1"
                 android:background="#000" />
+
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/ygotjalnanfont"
+                android:text="주의!"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/hoonddukbokki"
+                android:text="잦은 예약 취소 및 허위 예약, 예약 완료 후 빠른 시간안에 결제를 완료하지 않을 시 다음 예약시에 불이익이 있을 수 있습니다."
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textSize="15sp" />
+
+
 
 
         </LinearLayout>
@@ -215,6 +219,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FFF"
         android:orientation="horizontal">
 
 

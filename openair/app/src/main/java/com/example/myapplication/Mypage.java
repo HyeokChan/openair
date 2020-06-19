@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.app.Dialog;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +34,8 @@ import java.util.Date;
 
 public class Mypage extends AppCompatActivity {
 
+    CustomDialogMypage customDialogMypage;
+
     public static final String LOG_TAG = "ChildFragment1(Recruit)";
     public static final String QUEUE_TAG = "VolleyRequest";
     SessionManager mSession = SessionManager.getInstance(Mypage.this);
@@ -45,7 +50,7 @@ public class Mypage extends AppCompatActivity {
     ArrayList<my_write_recruitInfo> MyWriteRecInfoArrayList = new ArrayList<my_write_recruitInfo>();
     protected my_write_recAdapter mAdapter2 = new my_write_recAdapter(MyWriteRecInfoArrayList);
 
-    ArrayList<Nick_Phone> applicantId = new ArrayList<Nick_Phone>();
+    static ArrayList<Nick_Phone> applicantId = new ArrayList<Nick_Phone>();
     TextView[] textViews;
 
     // ---------------- 내가 작성한 매칭 리스트
@@ -54,7 +59,7 @@ public class Mypage extends AppCompatActivity {
     ArrayList<my_write_recruitInfo> MyWriteMatInfoArrayList = new ArrayList<my_write_recruitInfo>();
     protected my_write_matAdapter mAdapter3 = new my_write_matAdapter(MyWriteMatInfoArrayList);
 
-    ArrayList<Nick_Phone> applicantIdMatch = new ArrayList<Nick_Phone>();
+    static ArrayList<Nick_Phone> applicantIdMatch = new ArrayList<Nick_Phone>();
 
     //----------------------------------------- 내가 참가한 모집 리스트
     ArrayList<Integer> communityNo = new ArrayList<>();
@@ -78,6 +83,12 @@ public class Mypage extends AppCompatActivity {
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyyMMdd");
     String currentDate;
 
+    //----------------------------하나도 없을 때 체크
+    boolean reserve_check;
+    boolean recruit_write_check;
+    boolean match_write_check;
+    boolean recruit_joined_check;
+    boolean match_joined_check;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,8 +130,6 @@ public class Mypage extends AppCompatActivity {
         mRecyclerView5.setHasFixedSize(true);
         mQueue5 = mSession.getQueue();
         requestCheckMatch();
-
-
 
 
         //------------------현재 날짜
@@ -210,6 +219,7 @@ public class Mypage extends AppCompatActivity {
 
     public void drawList() {
         MyReserveInfoArrayList.clear();
+        reserve_check = false;
         try {
             JSONArray items = mResult.getJSONArray("list");
 
@@ -226,8 +236,13 @@ public class Mypage extends AppCompatActivity {
                     if (Integer.parseInt(currentDate)<= Integer.parseInt(compareDateReserve))
                     {
                         MyReserveInfoArrayList.add(new my_reserveInfo(place_no,date ,time));
+                        reserve_check = true;
                     }
                 }
+            }
+            if (reserve_check == false)
+            {
+                MyReserveInfoArrayList.add(new my_reserveInfo("예약된 내역이 없습니다.","" ,""));
             }
 
         } catch (JSONException | NullPointerException e) {
@@ -381,6 +396,7 @@ public class Mypage extends AppCompatActivity {
 
     public void drawList2() {
         MyWriteRecInfoArrayList.clear();
+        recruit_write_check = false;
         try {
             JSONArray items = mResult2.getJSONArray("list");
 
@@ -401,8 +417,14 @@ public class Mypage extends AppCompatActivity {
                     if (Integer.parseInt(currentDate) <= Integer.parseInt(compareDateRecruit))
                     {
                         MyWriteRecInfoArrayList.add(new my_write_recruitInfo(recno,category,place ,date,time,totalnum,recruitnum));
+                        recruit_write_check = true;
                     }
+
                 }
+            }
+            if (recruit_write_check == false)
+            {
+                MyWriteRecInfoArrayList.add(new my_write_recruitInfo(0,"작성한 모집글이 없습니다.","" ,"","","",""));
             }
 
         } catch (JSONException | NullPointerException e) {
@@ -508,6 +530,7 @@ public class Mypage extends AppCompatActivity {
 
     public void drawList3() {
         MyWriteMatInfoArrayList.clear();
+        match_write_check = false;
         try {
             JSONArray items = mResult3.getJSONArray("list");
 
@@ -528,8 +551,13 @@ public class Mypage extends AppCompatActivity {
                     if (Integer.parseInt(currentDate) <= Integer.parseInt(compareDateMatch))
                     {
                         MyWriteMatInfoArrayList.add(new my_write_recruitInfo(matno ,category,place ,date,time,teamname,recruitnum));
+                        match_write_check = true;
                     }
                 }
+            }
+            if (match_write_check == false)
+            {
+                MyWriteMatInfoArrayList.add(new my_write_recruitInfo(0,"작성한 매칭글이 없습니다.","" ,"","","",""));
             }
 
         } catch (JSONException | NullPointerException e) {
@@ -744,6 +772,7 @@ public class Mypage extends AppCompatActivity {
 
     public void drawList4() {
         MyJoinedRecInfoArrayList.clear();
+        recruit_joined_check = false;
         try {
             JSONArray items = mResult4.getJSONArray("list");
 
@@ -766,8 +795,14 @@ public class Mypage extends AppCompatActivity {
                     if (Integer.parseInt(currentDate) <= Integer.parseInt(compareDateRecruit) && communityNo.get(j)==joino)
                     {
                         MyJoinedRecInfoArrayList.add(new my_write_recruitInfo(joino ,category,place ,date,time,totalnum,recruitnum));
+                        recruit_joined_check = true;
                     }
                 }
+
+            }
+            if (recruit_joined_check == false)
+            {
+                MyJoinedRecInfoArrayList.add(new my_write_recruitInfo(0,"참여한 모집글이 없습니다.","" ,"","","",""));
             }
 
         } catch (JSONException | NullPointerException e) {
@@ -818,46 +853,21 @@ public class Mypage extends AppCompatActivity {
 
                 applicantId.add(new Nick_Phone(nick,phone));
 
-
             }
-
             if (applicantId.size()>=1)
             {
-                textViews = new TextView[applicantId.size()];
+                Log.i("dpdp",Mypage.applicantId.get(0).getNick());
+                customDialogMypage = new CustomDialogMypage(Mypage.this);
 
+                customDialogMypage.callFunction();
 
-                AlertDialog.Builder joinedDialog = new AlertDialog.Builder(Mypage.this);
-                joinedDialog.setTitle("등록된 유저의 프라이머리 키");
-                LinearLayout DialogLayout = new LinearLayout(Mypage.this);
-                DialogLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                LinearLayout NickLayout = new LinearLayout(Mypage.this);
-                NickLayout.setOrientation(LinearLayout.VERTICAL);
-
-                LinearLayout PhoneLayout = new LinearLayout(Mypage.this);
-                PhoneLayout.setOrientation(LinearLayout.VERTICAL);
-
-
-                DialogLayout.addView(NickLayout);
-                DialogLayout.addView(PhoneLayout);
-
-                for (int i=0; i<applicantId.size();i++)
-                {
-                    textViews[i] = new TextView(Mypage.this);
-                    textViews[i].setText(applicantId.get(i).getNick());
-                    NickLayout.addView(textViews[i]);
-                }
-                for (int i=0; i<applicantId.size();i++)
-                {
-                    textViews[i] = new TextView(Mypage.this);
-                    textViews[i].setText(applicantId.get(i).getPhone());
-                    PhoneLayout.addView(textViews[i]);
-                }
-                joinedDialog.setView(DialogLayout);
-                joinedDialog.show();
                 applicantId.clear();
 
             }
+
+
+
+
 
         } catch (JSONException | NullPointerException e) {
             mResult = null;
@@ -895,22 +905,7 @@ public class Mypage extends AppCompatActivity {
         mQueue.add(request);
     }
 
-    static class Nick_Phone{
-        private String Nick;
-        private String Phone;
-        public Nick_Phone(){}
-        public Nick_Phone(String Nick, String Phone)
-        {
-            this.Nick = Nick;
-            this.Phone = Phone;
-        }
-        public String getNick(){
-            return Nick;
-        }
-        public String getPhone(){
-            return Phone;
-        }
-    }
+
 
 
     //---------------------------------------------------- 등록된 매치 체크
@@ -1087,6 +1082,7 @@ public class Mypage extends AppCompatActivity {
 
     public void drawList5() {
         MyJoinedMatInfoArrayList.clear();
+        match_joined_check = false;
         try {
             JSONArray items = mResult5.getJSONArray("list");
 
@@ -1109,8 +1105,13 @@ public class Mypage extends AppCompatActivity {
                     if (Integer.parseInt(currentDate) <= Integer.parseInt(compareDateMatch) && communityNoMatch.get(j)==joino)
                     {
                         MyJoinedMatInfoArrayList.add(new my_write_recruitInfo(joino ,category,place ,date,time,teamname,recruitnum));
+                        match_joined_check = true;
                     }
                 }
+            }
+            if (match_joined_check == false)
+            {
+                MyJoinedMatInfoArrayList.add(new my_write_recruitInfo(0,"참여한 매칭글이 없습니다.","" ,"","","",""));
             }
 
         } catch (JSONException | NullPointerException e) {
@@ -1164,38 +1165,8 @@ public class Mypage extends AppCompatActivity {
 
             if (applicantIdMatch.size()>=1)
             {
-                textViews = new TextView[applicantIdMatch.size()];
-
-
-                AlertDialog.Builder joinedDialog = new AlertDialog.Builder(Mypage.this);
-                joinedDialog.setTitle("등록된 유저 정보");
-                LinearLayout DialogLayout = new LinearLayout(Mypage.this);
-                DialogLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                LinearLayout NickLayout = new LinearLayout(Mypage.this);
-                NickLayout.setOrientation(LinearLayout.VERTICAL);
-
-                LinearLayout PhoneLayout = new LinearLayout(Mypage.this);
-                PhoneLayout.setOrientation(LinearLayout.VERTICAL);
-
-
-                DialogLayout.addView(NickLayout);
-                DialogLayout.addView(PhoneLayout);
-
-                for (int i=0; i<applicantIdMatch.size();i++)
-                {
-                    textViews[i] = new TextView(Mypage.this);
-                    textViews[i].setText(applicantIdMatch.get(i).getNick());
-                    NickLayout.addView(textViews[i]);
-                }
-                for (int i=0; i<applicantIdMatch.size();i++)
-                {
-                    textViews[i] = new TextView(Mypage.this);
-                    textViews[i].setText(applicantIdMatch.get(i).getPhone());
-                    PhoneLayout.addView(textViews[i]);
-                }
-                joinedDialog.setView(DialogLayout);
-                joinedDialog.show();
+                customDialogMypage = new CustomDialogMypage(Mypage.this);
+                customDialogMypage.callFunctionMatch();
                 applicantIdMatch.clear();
 
             }
@@ -1256,3 +1227,19 @@ public class Mypage extends AppCompatActivity {
 
 }
 
+class Nick_Phone{
+    private String Nick;
+    private String Phone;
+    public Nick_Phone(){}
+    public Nick_Phone(String Nick, String Phone)
+    {
+        this.Nick = Nick;
+        this.Phone = Phone;
+    }
+    public String getNick(){
+        return Nick;
+    }
+    public String getPhone(){
+        return Phone;
+    }
+}

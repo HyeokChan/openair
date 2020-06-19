@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -15,7 +16,7 @@ public class LoginActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
 
-    @Override
+     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -29,6 +30,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+                /*Intent home = new Intent(LoginActivity.this,MainActivity.class);
+                startActivity(home);*/
             }
         });
     }
@@ -73,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
 //            setResult(RESULT_OK);
 //            finish();
         }
+
     }
 
     private boolean isEmailValid(String email) {

@@ -42,7 +42,7 @@ public class DateSelect extends AppCompatActivity {
                 }
 
                 c_date = new SimpleDateFormat("yyyy-MM-dd").format(date);
-                Toast.makeText(DateSelect.this, c_date, 0).show();
+
 
             }
         });

@@ -348,7 +348,7 @@ public class Menu2Fragment extends Fragment {
 
             for (int i = 0; i < items.length(); i++) {
                 JSONObject info = items.getJSONObject(i);
-                if(info.getString("category").equals(mSession.f2_stCategory) || mSession.f2_stCategory.equals("전체")) {
+                if(info.getString("category").equals(mSession.f2_stCategory) || mSession.f2_stCategory.equals("카테고리 선택") || mSession.f2_stCategory.equals("전체") ) {
                     String category = info.getString("category"); // 야외활동지 분류
                     String name = info.getString("name"); // 야외활동지 명
                     String image = info.getString("image"); // 야외활동지 이미지 파일 명
@@ -366,7 +366,8 @@ public class Menu2Fragment extends Fragment {
 
         } catch (JSONException | NullPointerException e) {
             Toast.makeText(getContext(),
-                    "야외활동지가 존재하지 않습니다.", Toast.LENGTH_LONG).show();
+                    "야외활동지가 존" +
+                            "재하지 않습니다.", Toast.LENGTH_LONG).show();
             mResult = null;
         }
 

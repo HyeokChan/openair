@@ -53,15 +53,9 @@ public class TimeSelect extends AppCompatActivity {
     Button TimeSelectButton;
     static final ArrayList<String> arr_time = new ArrayList<>();
     static final ArrayList<String> base_time = new ArrayList<String>(
-            Arrays.asList("09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00")
+            Arrays.asList("09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","22:00","23:00","24:00")
     );
 
-
-    //----------------------------현재 시간
-    long mNow;
-    Date mDate;
-    SimpleDateFormat mFormat = new SimpleDateFormat("yyyyMMdd");
-    String currentDate;
 
 
     @Override
@@ -76,6 +70,8 @@ public class TimeSelect extends AppCompatActivity {
         TimeSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 Intent CashIntent = new Intent(TimeSelect.this, Cash.class);
                 TimeSelect.this.startActivity(CashIntent);
             }
@@ -87,16 +83,29 @@ public class TimeSelect extends AppCompatActivity {
         mLayoutManagerTime = new LinearLayoutManager(this);
         mRecyclerViewTime.setLayoutManager(mLayoutManagerTime);
 
+
+        /*timeInfoArrayList.add(new TimeSelectInfo("09:00", "예약가능", "좋음",true));
+        timeInfoArrayList.add(new TimeSelectInfo("10:00", "예약가능", "나쁨",true));
+        timeInfoArrayList.add(new TimeSelectInfo("11:00", "예약불가", "보통",true));
+        timeInfoArrayList.add(new TimeSelectInfo("12:00", "예약가능", "좋음",false));
+        timeInfoArrayList.add(new TimeSelectInfo("13:00", "예약가능", "좋음",false));
+        timeInfoArrayList.add(new TimeSelectInfo("14:00", "예약가능", "나쁨",false));
+        timeInfoArrayList.add(new TimeSelectInfo("15:00", "예약가능", "좋음",false));
+        timeInfoArrayList.add(new TimeSelectInfo("16:00", "예약가능", "나쁨",false));
+        timeInfoArrayList.add(new TimeSelectInfo("17:00", "예약가능", "나쁨",false));
+        timeInfoArrayList.add(new TimeSelectInfo("18:00", "예약가능", "좋음",false));
+        timeInfoArrayList.add(new TimeSelectInfo("19:00", "예약가능", "좋음",false));
+        timeInfoArrayList.add(new TimeSelectInfo("20:00", "예약가능", "보통",false));
+        timeInfoArrayList.add(new TimeSelectInfo("21:00", "예약가능", "보통",false));*/
+
+
+
+
+
+
         CookieHandler.setDefault(new CookieManager());
 
         mQueue = mSession.getQueue();
-
-        mNow = System.currentTimeMillis();
-        mDate = new Date(mNow);
-        currentDate = mFormat.format(mDate);
-        Log.i("datetest123",currentDate);
-
-
         requestRecruit();
     }
 
@@ -153,37 +162,43 @@ public class TimeSelect extends AppCompatActivity {
             myViewHolder.tvDust.setText(timeSelectInfoArrayList.get(position).dust);
             myViewHolder.cbSelect.setEnabled(timeSelectInfoArrayList.get(position).isSelected);
 
-            if (myViewHolder.tvDust.getText().toString().equals("좋음"))
+            if (myViewHolder.tvReserve.getText().equals("예약불가"))
             {
-                myViewHolder.tvTime.setBackgroundColor(Color.parseColor("#D3D9E6"));
-                myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#D3D9E6"));
-                myViewHolder.tvDust.setBackgroundColor(Color.parseColor("#D3D9E6"));
-                myViewHolder.cbSelect.setBackgroundColor(Color.parseColor("#D3D9E6"));
+                myViewHolder.tvReserve.setTextColor(Color.RED);
+            }
+            else
+            {
+                myViewHolder.tvReserve.setTextColor(Color.BLACK);
+            }
+
+            /*if (myViewHolder.tvDust.getText().toString().equals("좋음"))
+            {
+                myViewHolder.tvTime.setBackgroundColor(Color.parseColor("#ffffff"));
+                myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#ffffff"));
+                myViewHolder.tvDust.setBackgroundColor(Color.parseColor("#ffffff"));
+                myViewHolder.cbSelect.setBackgroundColor(Color.parseColor("#ffffff"));
             }
 
             else if (myViewHolder.tvDust.getText().toString().equals("보통"))
             {
-                myViewHolder.tvTime.setBackgroundColor(Color.parseColor("#F2EEC2"));
-                myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#F2EEC2"));
-                myViewHolder.tvDust.setBackgroundColor(Color.parseColor("#F2EEC2"));
-                myViewHolder.cbSelect.setBackgroundColor(Color.parseColor("#F2EEC2"));
+                myViewHolder.tvTime.setBackgroundColor(Color.parseColor("#ffffff"));
+                myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#ffffff"));
+                myViewHolder.tvDust.setBackgroundColor(Color.parseColor("#ffffff"));
+                myViewHolder.cbSelect.setBackgroundColor(Color.parseColor("#ffffff"));
             }
             else if (myViewHolder.tvDust.getText().toString().equals("나쁨"))
             {
-                myViewHolder.tvTime.setBackgroundColor(Color.parseColor("#DFBCBC"));
-                myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#DFBCBC"));
-                myViewHolder.tvDust.setBackgroundColor(Color.parseColor("#DFBCBC"));
-                myViewHolder.cbSelect.setBackgroundColor(Color.parseColor("#DFBCBC"));
-            }
+                myViewHolder.tvTime.setBackgroundColor(Color.parseColor("#ffffff"));
+                myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#ffffff"));
+                myViewHolder.tvDust.setBackgroundColor(Color.parseColor("#ffffff"));
+                myViewHolder.cbSelect.setBackgroundColor(Color.parseColor("#ffffff"));
+            }*/
 
             myViewHolder.cbSelect.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     CheckBox cb = (CheckBox) v;
                     if(myViewHolder.cbSelect.isChecked()==true) {
                         arr_time.add(myViewHolder.tvTime.getText().toString());
-                        Toast.makeText(
-                                TimeSelect.this,
-                                myViewHolder.tvTime.getText().toString(), Toast.LENGTH_LONG).show();
                     }
                     else
                     {
@@ -202,35 +217,6 @@ public class TimeSelect extends AppCompatActivity {
         }
     }
 
-    public class TimeSelectInfo {
-        public String time;
-        public String reserve;
-        public String dust;
-        public boolean isSelected;
-
-        public TimeSelectInfo(String time, String reserve, String dust, boolean isSelected){
-            this.time = time;
-            this.reserve = reserve;
-            this.dust = dust;
-            this.isSelected = isSelected;
-        }
-
-        public String getTime(){
-            return time;
-        }
-        public String getReserve()
-        {
-            return reserve;
-        }
-        public String getDust() {
-            return dust;
-        }
-        public boolean isSelected()
-        {
-            return isSelected;
-        }
-    }
-
     public void drawList() {
         int j;
         int k=1;
@@ -246,16 +232,15 @@ public class TimeSelect extends AppCompatActivity {
                     String place_no = info.getString("place_no");
                     String date = info.getString("date");
                     String time = info.getString("time");
-                    if (place_no.equals(Menu2Fragment.c_name) && date.equals(DateSelect.c_date) && time.equals(base_time.get(j))) // 예약된게 있을 때
+                    if (place_no.equals(Menu2Fragment.c_name) && date.equals(DateSelect.c_date) && time.equals(base_time.get(j)))
                     {
-
                         timeInfoArrayList.add(new TimeSelectInfo(base_time.get(j),"예약불가","좋음",false));
                         k=0;
                     }
                 }
-                if(k==1) // 예약된게 없을 때
+                if(k==1)
                 {
-                    timeInfoArrayList.add(new TimeSelectInfo(base_time.get(j),"예약가능","나쁨",true));
+                    timeInfoArrayList.add(new TimeSelectInfo(base_time.get(j),"예약가능","보통",true));
                 }
 
             }

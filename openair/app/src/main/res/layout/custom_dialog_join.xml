@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#D4E5F4"
+        android:fontFamily="@font/ygotjalnanfont"
+        android:gravity="center"
+        android:text="참가 여부"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DCDCDC" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#EDF3FA"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:gravity="center|center_vertical"
+            android:text="카테고리" />
+
+        <TextView
+            android:id="@+id/dialog_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:gravity="center"
+            android:text="카테고리" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#EDF3FA"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:gravity="center"
+            android:text="시간" />
+
+        <TextView
+            android:id="@+id/dialog_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:gravity="center"
+            android:text="시간" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#EDF3FA"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:gravity="center"
+            android:text="장소" />
+
+        <TextView
+            android:id="@+id/dialog_area"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:gravity="center"
+            android:text="장소" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/rec_mat_change"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#EDF3FA"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:gravity="center"
+            android:text="모집인원" />
+
+        <TextView
+            android:id="@+id/dialog_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:gravity="center"
+            android:text="모집인원" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ygotjalnanfont"
+        android:gravity="center"
+        android:text="신청하시겠습니까?"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/dialog_no_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#D4E5F4"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:text="취소" />
+
+        <Button
+            android:id="@+id/dialog_yes_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#D4E5F4"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:text="예" />
+    </LinearLayout>
+
+</LinearLayout>

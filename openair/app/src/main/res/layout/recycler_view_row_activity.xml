@@ -18,8 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:background="@android:drawable/alert_light_frame"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY" />
 
         <View
             android:layout_width="match_parent"
@@ -42,7 +41,8 @@
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="카테고리" />
+                android:text="카테고리"
+                android:textColor="#000" />
 
             <TextView
                 android:id="@+id/ActivityName"
@@ -53,6 +53,7 @@
                 android:gravity="center"
                 android:text="풋살장a"
                 android:textSize="20dp"
+                android:textColor="#000"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -64,6 +65,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="42dp"
+            android:textColor="#000"
             android:orientation="horizontal">
 
             <TextView
@@ -71,27 +73,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="8.5"
-                android:fontFamily="@font/ygotjalnanfont"
+                android:fontFamily="@font/hoonddukbokki"
                 android:gravity="center"
-                android:text="넓고 쾌적한 풋살장" />
+                android:text="넓고 쾌적한 풋살장"
+                android:textColor="#000"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:fontFamily="@font/ygotjalnanfont"
+                android:fontFamily="@font/dx"
                 android:gravity="center|right"
-                android:text="평점 : " />
+                android:text="평점 : "
+                android:textColor="#000"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ActivityStar"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:fontFamily="@font/ygotjalnanfont"
+                android:layout_weight="1.0"
+                android:fontFamily="@font/hoonddukbokki"
                 android:gravity="center|left"
-                android:text="4.5" />
+                android:text="4.5"
+                android:textColor="#000"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <View
@@ -103,7 +111,7 @@
             android:id="@+id/ActivityPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/ygotjalnanfont"
+            android:fontFamily="@font/hoonddukbokki"
             android:gravity="center"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"

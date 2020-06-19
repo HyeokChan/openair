@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -64,6 +65,10 @@ public class Cash extends AppCompatActivity {
                 array_time.clear();
 
                 //insertReserve(mSession.getID(), Menu2Fragment.c_name, DateSelect.c_date,)
+
+                Toast.makeText(Cash.this,
+                        "예약 신청중입니다.",
+                        Toast.LENGTH_LONG).show();
 
                 Intent HomeIntent = new Intent(Cash.this, MainActivity.class);
                 HomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

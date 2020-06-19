@@ -33,19 +33,13 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#F9F9F9">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/comment1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="업체 관련 사진" />
 
             <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/inimage"
@@ -57,57 +51,93 @@
                 android:id="@+id/comment2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
                 android:layout_marginTop="7dp"
-                android:text="업체 정보" />
+                android:fontFamily="@font/ygotjalnanfont"
+                android:gravity="center"
+                android:text="업체 정보"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/inlinfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="업체의 긴 설명입니다." />
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/dx"
+                android:gravity="center"
+                android:text="업체의 긴 설명입니다."
+                android:textColor="#000"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/comment3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_marginTop="7dp"
-                android:text="업체 전화번호" />
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ygotjalnanfont"
+                android:gravity="center"
+                android:text="연락처"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/innumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="054-0000-0000" />
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="054-0000-0000"
+                android:textColor="@color/colorLogo"
+                android:textSize="30sp"
+                tools:textStyle="bold" />
 
             <TextView
                 android:id="@+id/comment4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_marginTop="7dp"
-                android:text="업체 지역" />
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/ygotjalnanfont"
+                android:gravity="center"
+
+                android:text="업체 지역"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/inlocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="구미" />
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="구미"
+                android:textColor="#000"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/comment5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_marginTop="7dp"
-                android:text="업체 주소" />
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/ygotjalnanfont"
+                android:gravity="center"
+                android:text="업체 주소"
+                android:textColor="#000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/inaddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="경상북도" />
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
+                android:text="경상북도"
+                android:textColor="#000"
+                android:textSize="16sp" />
 
 
         </LinearLayout>
@@ -116,7 +146,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="#F9F9F9">
 
 
         <Button
@@ -127,7 +158,8 @@
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:background="@drawable/bt_corner"
-            android:text="Reserve"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:text="예약하기"
             android:textColor="#000" />
 
         <Button
@@ -138,7 +170,8 @@
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:background="@drawable/bt_corner"
-            android:text="Review"
+            android:fontFamily="@font/ygotjalnanfont"
+            android:text="리 뷰"
             android:textColor="#000" />
     </LinearLayout>
 

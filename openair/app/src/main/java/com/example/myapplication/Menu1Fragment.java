@@ -205,9 +205,9 @@ public class Menu1Fragment extends Fragment {
 
 
         // 받아온 주소를 공백단위로 자른다.
-
-        String[] addr_token = addr.split(" ");
         String city;
+        String[] addr_token = addr.split(" ");
+
         city = addr_token[0];
         if(city.length() == 5) {
             // 광역시일 경우 광역시를 제거한다.
@@ -276,7 +276,6 @@ public class Menu1Fragment extends Fragment {
 
 
 
-        //---------여기서부터---------
         final RecyclerView mRecyclerView = (RecyclerView)rootView.findViewById(R.id.tRecycler);
         mRecyclerView.setAdapter(mAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
@@ -328,7 +327,6 @@ public class Menu1Fragment extends Fragment {
 
         mQueue = mSession.getQueue();
         mQueue2 = mSession.getQueue();
-        Log.i("이이",city);
         requestTomorrowfd(city);
         requestWeather(city);
 
@@ -408,7 +406,9 @@ public class Menu1Fragment extends Fragment {
                             Log.i("jebal", items.toString());
                             for (int i = 0; i < items.length(); i++) {
                                 JSONObject info = items.getJSONObject(i);
-                                // 초기화
+                                //
+
+
                                 String pm10_image = "verybad2.png";
                                 String pm25_image = "verybad2.png";
                                 //
@@ -686,8 +686,6 @@ public class Menu1Fragment extends Fragment {
                 address.setText(changeaddr);
                 curMyAddress = changeaddr;
 
-
-
                 Location loc = getPoint(getContext(), changeaddr); //위경도를 다시 주소로 변환하는 함수
                 Log.i("지오코더(주소->위경도) 확인","OK");
 
@@ -705,11 +703,10 @@ public class Menu1Fragment extends Fragment {
                     Log.i("인터넷 상태 확인","FAIL");
                 }
                 else{
+
                     setWeather(list);
                     requestPlace();
-
                     Log.i("Intent setWeather 확인","OK");
-
                 }
 
             }

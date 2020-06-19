@@ -49,7 +49,7 @@ public class SessionManager {
     public static final String KEY_ID = "id";
     public static final String KEY_EMAIL = "email";
 
-    static String f2_stCategory="전체";
+    static String f2_stCategory="카테고리 선택";
     static String f3_stCategory="전체";
     static Context mContext = null;
 

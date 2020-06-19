@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LicenseActivity">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#f9f9f9"
+        android:theme="@style/AlertDialog.AppCompat">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/newlogo" />
+
+        </FrameLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFF"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/InfoApptitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FCD9F3F7"
+                android:fontFamily="@font/ygotjalnanfont"
+                android:gravity="center"
+                android:text="저작권 정보"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000" />
+
+
+            <TextView
+                android:id="@+id/Info2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                android:background="#FFF"
+
+                android:fontFamily="@font/hoonddukbokki"
+                android:text="날씨 정보 출처 : 기상청 OPEN API 신규 동네예보정보조회서비스"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/Info3"
+                android:layout_width="match_parent"
+                android:layout_height="39dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:background="#FFF"
+
+                android:fontFamily="@font/hoonddukbokki"
+                android:text="미세먼지 정보 출처 : 케이웨더 미세먼지 예보"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/Info4"
+                android:layout_width="match_parent"
+                android:layout_height="503dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:background="#FFF"
+
+                android:fontFamily="@font/hoonddukbokki"
+                android:text="본 자료는 기상청과 케이웨더에서 제공하는 실시간 관측 자료이며 실제 대기농도 수치와 다를 수 있습니다."
+                android:textSize="20sp" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+</LinearLayout>

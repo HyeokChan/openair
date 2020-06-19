@@ -59,6 +59,7 @@ public class ChildFragment1 extends Fragment {
 
     CustomDialogCombo customDialogCombo;
 
+
     public int check_applicant=0;
 
 
@@ -252,27 +253,24 @@ public class ChildFragment1 extends Fragment {
 
             @Override
             public void onClick(View v) {
-                android.app.AlertDialog.Builder dlJoin = new AlertDialog.Builder(v.getContext());
-                dlJoin.setTitle("참가여부");
 
-                LinearLayout tvLayout = new LinearLayout(v.getContext());
-                tvLayout.setOrientation(LinearLayout.VERTICAL);
-                final TextView dlCategory = new TextView(v.getContext());
-                dlCategory.setText("    카테고리:"+tvCategory.getText());
-                tvLayout.addView(dlCategory);
-                final TextView dlTime = new TextView(v.getContext());
-                dlTime.setText("    시간:"+tvTime.getText());
-                tvLayout.addView(dlTime);
-                final TextView dlArea = new TextView(v.getContext());
-                dlArea.setText("    장소:"+tvArea.getText());
-                tvLayout.addView(dlArea);
-                final TextView dlRecruit_num = new TextView(v.getContext());
-                dlRecruit_num.setText("    모집인원:"+tvRecruit_num.getText());
-                tvLayout.addView(dlRecruit_num);
-                final TextView dlMessage = new TextView(v.getContext());
-                dlMessage.setText("    참가하시겠습니까?");
-                tvLayout.addView(dlMessage);
-                dlJoin.setView(tvLayout);
+                final Dialog dljoin = new Dialog(v.getContext());
+                dljoin.setContentView(R.layout.custom_dialog_join);
+                TextView join_title = (TextView) dljoin.findViewById(R.id.title);
+                TextView join_categoty = (TextView) dljoin.findViewById(R.id.dialog_category);
+                TextView join_time = (TextView) dljoin.findViewById(R.id.dialog_time);
+                TextView join_area = (TextView) dljoin.findViewById(R.id.dialog_area);
+                TextView join_number = (TextView) dljoin.findViewById(R.id.dialog_num);
+                Button join_no_button = (Button) dljoin.findViewById(R.id.dialog_no_button);
+                Button join_yes_button = (Button) dljoin.findViewById(R.id.dialog_yes_button);
+
+                join_categoty.setText(tvCategory.getText());
+                join_time.setText(tvTime.getText());
+                join_area.setText(tvArea.getText());
+                join_number.setText(tvRecruit_num.getText());
+
+
+
 
                 int idx = tvRecruit_num.getText().toString().indexOf("/");
                 String join_num = tvRecruit_num.getText().toString().substring(0,idx);
@@ -285,60 +283,62 @@ public class ChildFragment1 extends Fragment {
 
                 if (mine.getText().equals("ME"))
                 {
-                    dlJoin.setNegativeButton("삭제하기",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id)
-                                {
-                                    // 프로그램을 종료한다
-                                    deleteRecruit(recNo.getText().toString());
-                                    dialog.dismiss(); // 누르면 바로 닫히는 형태
-                                }
-                            });
-                }
 
+                    join_yes_button.setText("삭제하기");
+                    join_yes_button.setOnClickListener(new Button.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            deleteRecruit(recNo.getText().toString());
+                            dljoin.dismiss(); // 누르면 바로 닫히는 형태
+                        }
+                    });
+                    join_no_button.setOnClickListener(new Button.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            dljoin.dismiss(); // 누르면 바로 닫히는 형태
+                        }
+                    });
+                }
                 else
                 {
-                    dlJoin.setPositiveButton("예",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id)
+                    join_yes_button.setText("예");
+                    join_yes_button.setOnClickListener(new Button.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            if(mSession.isLogin()==true )
+                            {
+                                if (r_nums>0)
                                 {
-                                    if(mSession.isLogin()==true )
-                                    {
-                                        if (r_nums>0)
-                                        {
-                                            check_applicant = 0;
-                                            check_Recruit(recNo.getText().toString());
+                                    check_applicant = 0;
+                                    check_Recruit(recNo.getText().toString());
 
-                                        }
-                                        else
-                                        {
-                                            Toast.makeText(getContext(), "정원이 가득 찼습니다.",
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
-
-                                    }
-                                    else
-                                    {
-                                        Toast.makeText(getContext(), "로그인 후 이용해주세요.",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                    dialog.dismiss(); // 누르면 바로 닫히는 형태
                                 }
-                            });
-
-                    dlJoin.setNegativeButton("아니요",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id)
+                                else
                                 {
-                                    // 프로그램을 종료한다
-                                    Log.i("recNO",recNo.getText().toString());
-                                    dialog.dismiss(); // 누르면 바로 닫히는 형태
+                                    Toast.makeText(getContext(), "정원이 가득 찼습니다.",
+                                            Toast.LENGTH_SHORT).show();
                                 }
-                            });
+
+                            }
+                            else
+                            {
+                                Toast.makeText(getContext(), "로그인 후 이용해주세요.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                            dljoin.dismiss(); // 누르면 바로 닫히는 형태
+                        }
+                    });
+                    join_no_button.setOnClickListener(new Button.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            dljoin.dismiss(); // 누르면 바로 닫히는 형태
+                        }
+                    });
+
                 }
 
 
-                dlJoin.show();
+                dljoin.show();
 
             }
         }

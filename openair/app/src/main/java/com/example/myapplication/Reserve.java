@@ -36,13 +36,13 @@ public class Reserve extends AppCompatActivity {
         TextView tvlinfo = (TextView)findViewById(R.id.inlinfo);
         tvlinfo.setText(linfo);
 
-        TextView tvnumber = (TextView)findViewById(R.id.innumber);
+        final TextView tvnumber = (TextView)findViewById(R.id.innumber);
         tvnumber.setText(number);
-
         // 업체번호 누르면 전화열기
         tvnumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent phoneDial = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+number));
                 startActivity(phoneDial);
             }

@@ -259,63 +259,63 @@ public class ChildFragment2 extends Fragment {
 
                 if (!tvRecruit_num.getText().toString().substring(0,4).equals("매칭완료"))
                 {
-                    android.support.v7.app.AlertDialog.Builder dlJoin = new android.support.v7.app.AlertDialog.Builder(v.getContext());
-                    dlJoin.setTitle("참가여부");
-                    LinearLayout tvLayout = new LinearLayout(v.getContext());
-                    tvLayout.setOrientation(LinearLayout.VERTICAL);
-                    final TextView dlCategory = new TextView(v.getContext());
-                    dlCategory.setText("    카테고리:"+tvCategory.getText());
-                    tvLayout.addView(dlCategory);
-                    final TextView dlTime = new TextView(v.getContext());
-                    dlTime.setText("    시간:"+tvTime.getText());
-                    tvLayout.addView(dlTime);
-                    final TextView dlArea = new TextView(v.getContext());
-                    dlArea.setText("    장소:"+tvArea.getText());
-                    tvLayout.addView(dlArea);
-                    final TextView dlRecruit_num = new TextView(v.getContext());
-                    dlRecruit_num.setText("    매칭인원 (팀 이름):"+tvRecruit_num.getText());
-                    tvLayout.addView(dlRecruit_num);
-                    final TextView dlMessage = new TextView(v.getContext());
-                    dlMessage.setText("    신청하시겠습니까?");
-                    tvLayout.addView(dlMessage);
 
-                    dlJoin.setView(tvLayout);
+                    final Dialog dljoinMatch = new Dialog(v.getContext());
+                    dljoinMatch.setContentView(R.layout.custom_dialog_join);
+                    TextView join_title = (TextView) dljoinMatch.findViewById(R.id.title);
+                    TextView join_categoty = (TextView) dljoinMatch.findViewById(R.id.dialog_category);
+                    TextView join_time = (TextView) dljoinMatch.findViewById(R.id.dialog_time);
+                    TextView join_area = (TextView) dljoinMatch.findViewById(R.id.dialog_area);
+
+                    TextView join_number_teamName = (TextView) dljoinMatch.findViewById(R.id.rec_mat_change);
+                    join_number_teamName.setText("인원(팀이름)");
+
+                    TextView join_number = (TextView) dljoinMatch.findViewById(R.id.dialog_num);
+                    Button join_no_button = (Button) dljoinMatch.findViewById(R.id.dialog_no_button);
+                    Button join_yes_button = (Button) dljoinMatch.findViewById(R.id.dialog_yes_button);
+
+                    join_categoty.setText(tvCategory.getText());
+                    join_time.setText(tvTime.getText());
+                    join_area.setText(tvArea.getText());
+                    join_number.setText(tvRecruit_num.getText());
+
+
                     if (mine.getText().equals("ME"))
                     {
-                        dlJoin.setNegativeButton("삭제하기",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id)
-                                    {
-                                        // 프로그램을 종료한다
-                                        deleteMatch(matNo.getText().toString());
-                                        dialog.dismiss(); // 누르면 바로 닫히는 형태
-                                    }
-                                });
+                        join_yes_button.setText("삭제하기");
+                        join_yes_button.setOnClickListener(new Button.OnClickListener(){
+                            @Override
+                            public void onClick(View v) {
+                                deleteMatch(matNo.getText().toString());
+                                dljoinMatch.dismiss(); // 누르면 바로 닫히는 형태
+                            }
+                        });
+                        join_no_button.setOnClickListener(new Button.OnClickListener(){
+                            @Override
+                            public void onClick(View v) {
+                                dljoinMatch.dismiss(); // 누르면 바로 닫히는 형태
+                            }
+                        });
                     }
-
                     else
                     {
-                        dlJoin.setPositiveButton("예",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id)
-                                    {
-                                        // 프로그램을 종료한다
+                        join_yes_button.setText("예");
+                        join_yes_button.setOnClickListener(new Button.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                joinMatch(matNo.getText().toString());
+                                dljoinMatch.dismiss(); // 누르면 바로 닫히는 형태
+                            }
+                        });
+                        join_no_button.setOnClickListener(new Button.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dljoinMatch.dismiss(); // 누르면 바로 닫히는 형태
+                            }
+                        });
 
-                                        joinMatch(matNo.getText().toString());
-                                        dialog.dismiss(); // 누르면 바로 닫히는 형태
-                                    }
-                                });
-
-                        dlJoin.setNegativeButton("아니요",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id)
-                                    {
-                                        // 프로그램을 종료한다
-                                        dialog.dismiss(); // 누르면 바로 닫히는 형태
-                                    }
-                                });
                     }
-                    dlJoin.show();
+                    dljoinMatch.show();
                 }
             }
         }

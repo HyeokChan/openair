@@ -64,6 +64,47 @@
                 android:layout_height="1dp"
                 android:background="#000" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+
+
+                <TextView
+                    android:id="@+id/place_no"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="예약 장소" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="예약 날짜" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="예약 시간" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#DCDCDC" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/reserve_recy"
                 android:layout_width="match_parent"
@@ -81,6 +122,77 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#000" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+
+
+                <TextView
+                    android:id="@+id/category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="분류" />
+
+                <TextView
+                    android:id="@+id/place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="장소" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="날짜" />
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="시간" />
+
+                <TextView
+                    android:id="@+id/totalnum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="총인원" />
+
+                <TextView
+                    android:id="@+id/recruitnum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="모집인원" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#DCDCDC" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/write_rec_recy"
@@ -100,6 +212,69 @@
                 android:layout_height="1dp"
                 android:background="#000" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="분류" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="장소" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="날짜" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="시간" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="팀이름" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="팀인원" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#DCDCDC" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/write_mat_recy"
@@ -119,6 +294,70 @@
                 android:layout_height="1dp"
                 android:background="#000" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="분류" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="장소" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="날짜" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="시간" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="총인원" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="모집인원" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#DCDCDC" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/joined_rec_recy"
                 android:layout_width="match_parent"
@@ -136,6 +375,70 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="분류" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="장소" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="날짜" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="시간" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="팀인원" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ygotjalnanfont"
+                    android:gravity="center"
+                    android:text="팀인원" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#DCDCDC" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/joined_mat_recy"
