@@ -322,7 +322,7 @@ public class Menu2Fragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.ivImage.setImageUrl(SessionManager.getURL() + "image/" + placeInfoArrayList.get(position).image, mImageLoader);
+
             holder.tvCategoty.setText(placeInfoArrayList.get(position).category);
             holder.tvName.setText(placeInfoArrayList.get(position).name);
             holder.tvText.setText(placeInfoArrayList.get(position).sinfo);

@@ -162,7 +162,16 @@ public class TimeSelect extends AppCompatActivity {
             myViewHolder.tvDust.setText(timeSelectInfoArrayList.get(position).dust);
             myViewHolder.cbSelect.setEnabled(timeSelectInfoArrayList.get(position).isSelected);
 
-            if (myViewHolder.tvDust.getText().toString().equals("좋음"))
+            if (myViewHolder.tvReserve.getText().equals("예약불가"))
+            {
+                myViewHolder.tvReserve.setTextColor(Color.RED);
+            }
+            else
+            {
+                myViewHolder.tvReserve.setTextColor(Color.BLACK);
+            }
+
+            /*if (myViewHolder.tvDust.getText().toString().equals("좋음"))
             {
                 myViewHolder.tvTime.setBackgroundColor(Color.parseColor("#ffffff"));
                 myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -183,7 +192,7 @@ public class TimeSelect extends AppCompatActivity {
                 myViewHolder.tvReserve.setBackgroundColor(Color.parseColor("#ffffff"));
                 myViewHolder.tvDust.setBackgroundColor(Color.parseColor("#ffffff"));
                 myViewHolder.cbSelect.setBackgroundColor(Color.parseColor("#ffffff"));
-            }
+            }*/
 
             myViewHolder.cbSelect.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -231,7 +240,7 @@ public class TimeSelect extends AppCompatActivity {
                 }
                 if(k==1)
                 {
-                    timeInfoArrayList.add(new TimeSelectInfo(base_time.get(j),"예약가능","나쁨",true));
+                    timeInfoArrayList.add(new TimeSelectInfo(base_time.get(j),"예약가능","보통",true));
                 }
 
             }

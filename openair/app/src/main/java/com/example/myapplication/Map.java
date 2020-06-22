@@ -27,6 +27,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -86,12 +87,43 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         LatLng current = new LatLng(latitude, longitude);
         // 구글 맵에 표시할 마커에 대한 옵션 설정
         MarkerOptions makerOptions = new MarkerOptions();
+        MarkerOptions makerOptions1 = new MarkerOptions();
+        LatLng foot1 = new LatLng(36.093161, 128.449256); //킹풋살장
+        LatLng foot2 = new LatLng(36.132943, 128.459939); //강동풋살구장
+        LatLng foot3 = new LatLng(36.128801, 128.331013); //구미 LM풋살파크
+        LatLng foot4 = new LatLng(36.074369, 128.354129); //남구미 풋살존
+        LatLng foot5 = new LatLng(36.165163, 128.357882); //비바풋살클럽
+        LatLng foot6 = new LatLng(36.154098, 128.316300); //스피드풋살클럽
+        LatLng foot7 = new LatLng(36.103445, 128.386118); //예스구미풋볼클럽
+        LatLng golf1 = new LatLng(36.161582, 128.449619); //골프존카운티 선산
+        LatLng golf2 = new LatLng(36.171798, 128.482136); //구미 컨트리 클럽
+        LatLng golf3 = new LatLng(36.083211, 128.469293); //구미 마이다스 골프 아카데미
+        LatLng fish1 = new LatLng(36.093635, 128.430672); //낚시꾼실내낚시터
+        LatLng fish2 = new LatLng(36.054525, 128.340429); //봇또랑가든낚시터
+        LatLng fish3 = new LatLng(36.097452, 128.476506); //사각지유료낚시터
+        LatLng fish4 = new LatLng(36.116873, 128.329838); //형곡낚시터
+
         makerOptions
                 .position(current)
-                .title("현재 위치");
+                .title("현재 위치").snippet("내 위치");
+
 
         // 마커를 생성한다.
         mMap.addMarker(makerOptions);
+        mMap.addMarker(new MarkerOptions().position(foot1).title("킹풋살장 경상북도 구미시 인동동 329-1").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).alpha(0.5f));
+        mMap.addMarker(new MarkerOptions().position(foot2).title("강동풋살구장 경상북도 구미시 금전동 701-37").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).alpha(0.5f));
+        mMap.addMarker(new MarkerOptions().position(foot3).title("LM 풋살파크 구미시 원평2동 원평동 1008-1번지 6층 경부선구미종합역사 구미시 경상북도 KR").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).alpha(0.5f));
+        mMap.addMarker(new MarkerOptions().position(foot4).title("남구미풋살존 경상북도 구미시 오태동 산94-18").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).alpha(0.5f));
+        mMap.addMarker(new MarkerOptions().position(foot5).title("비바풋살클럽 경상북도 구미시 고아읍 송림리 382-1").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).alpha(0.5f));
+        mMap.addMarker(new MarkerOptions().position(foot6).title("스피드풋살클럽 경상북도 구미시 봉곡동 178").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).alpha(0.5f));
+        mMap.addMarker(new MarkerOptions().position(foot7).title("예스구미풋볼클럽 경상북도 구미시 공단동 257-16").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).alpha(0.5f));
+        mMap.addMarker(new MarkerOptions().position(golf1).title("골프존카운티 선산 경상북도 구미시 산동면 강동로 953-73").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).alpha(0.5f));
+        mMap.addMarker(new MarkerOptions().position(golf2).title("구미 컨트리 클럽 경상북도 구미시 장천면 송백로 229").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).alpha(0.5f));
+        mMap.addMarker(new MarkerOptions().position(golf3).title("구미 마이다스 골프 아카데미 경상북도 칠곡군 가산면 학하2길 54-171").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).alpha(0.5f));
+        mMap.addMarker(new MarkerOptions().position(fish1).title("낚시꾼실내낚시터 구미시 진평동 진평동 84-8번지 1층 구미시 경상북도 KR").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)).alpha(0.5f));
+        mMap.addMarker(new MarkerOptions().position(fish2).title("봇또랑가든낚시터 경상북도 칠곡군 북삼읍 율리 553-5 KR").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)).alpha(0.5f));
+        mMap.addMarker(new MarkerOptions().position(fish3).title("사각지 유료낚시터 경상북도 구미시 신동 57").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)).alpha(0.5f));
+        mMap.addMarker(new MarkerOptions().position(fish4).title("형곡낚시터 형곡동 120-6번지 구미시 경상북도 KR").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)).alpha(0.5f));
 
         //카메라 위치로 옮긴다.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 15));

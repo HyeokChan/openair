@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.baoyz.pullrefreshlayout:library:1.2.0@aar'
 
+    implementation 'com.facebook.android:account-kit-sdk:5.+'
 }
 
 apply plugin: 'com.google.gms.google-services'
