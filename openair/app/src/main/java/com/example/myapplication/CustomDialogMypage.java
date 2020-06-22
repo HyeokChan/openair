@@ -66,7 +66,7 @@ public class CustomDialogMypage extends AppCompatActivity {
             testList.add(new test(Mypage.applicantId.get(i).getNick(),Mypage.applicantId.get(i).getPhone()));
         }
 
-        MyAdapter myAdapter = new MyAdapter(testList);
+            MyAdapter myAdapter = new MyAdapter(testList);
         mypage_dialog.setAdapter(myAdapter);
 
 

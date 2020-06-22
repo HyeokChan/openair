@@ -44,7 +44,8 @@ public class Cash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cash);
 
-
+        TextView cashName = (TextView)findViewById(R.id.cashname);
+        cashName.setText("");
         for (int i = 0; i < TimeSelect.arr_time.size(); i++) {
             if (!array_time.contains(TimeSelect.arr_time.get(i))) {
                 array_time.add(TimeSelect.arr_time.get(i));
@@ -65,10 +66,6 @@ public class Cash extends AppCompatActivity {
                 array_time.clear();
 
                 //insertReserve(mSession.getID(), Menu2Fragment.c_name, DateSelect.c_date,)
-
-                Toast.makeText(Cash.this,
-                        "예약 신청중입니다.",
-                        Toast.LENGTH_LONG).show();
 
                 Intent HomeIntent = new Intent(Cash.this, MainActivity.class);
                 HomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
